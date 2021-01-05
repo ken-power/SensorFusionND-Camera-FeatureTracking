@@ -78,7 +78,8 @@ int main(int argc, const char *argv[])
         vector<cv::KeyPoint> keypoints; // create empty feature list for current image
         //string detectorType = "SHITOMASI";
         //string detectorType = "HARRIS";
-        string detectorType = "FAST";
+        //string detectorType = "FAST";
+        string detectorType = "BRISK";
 
         //// STUDENT ASSIGNMENT
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
@@ -98,6 +99,11 @@ int main(int argc, const char *argv[])
         {
             cout << "*** Using FAST keypoint detector" << endl;
             detKeypointsFAST(keypoints, imgGray, false);
+        }
+        else if (detectorType == "BRISK")
+        {
+            cout << "*** Using BRISK keypoint detector" << endl;
+            detKeypointsBRISK(keypoints, imgGray, false);
         }
         else
         {

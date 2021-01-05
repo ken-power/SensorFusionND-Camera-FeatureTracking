@@ -210,3 +210,31 @@ void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
         cv::waitKey(0);
     }
 }
+
+void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
+{
+    cv::Ptr<cv::FeatureDetector> detector = cv::BRISK::create();
+
+    double t = (double)cv::getTickCount();
+    detector->detect(img, keypoints);
+    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+    cout << "BRISK with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+
+    if (bVis)
+    {
+        visualizeKeypoints(keypoints, img, "BRISK Corner Detection Results");
+    }
+}
+
+void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string windowName)
+{
+    cv::Mat visImage = img.clone();
+    cv::drawKeypoints(img,
+                      keypoints,
+                      visImage,
+                      cv::Scalar::all(-1),
+                      cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+    cv::namedWindow(windowName, 6);
+    imshow(windowName, visImage);
+    cv::waitKey(0);
+}
