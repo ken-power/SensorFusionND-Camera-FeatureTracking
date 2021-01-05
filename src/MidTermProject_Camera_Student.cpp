@@ -164,7 +164,7 @@ int main(int argc, const char *argv[])
             //// EOF STUDENT ASSIGNMENT
 
             // store matches in current data frame
-            (dataBuffer.end() - 1)->kptMatches = matches;
+            (dataBuffer.end() - 1)->keypointMatches = matches;
 
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
 
