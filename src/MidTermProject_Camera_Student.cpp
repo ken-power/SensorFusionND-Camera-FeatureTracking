@@ -60,9 +60,9 @@ int main(int argc, const char *argv[])
         //// TASK MP.1 -> replace the following code with ring buffer of size dataBufferSize
 
         // push image into data frame buffer
-        DataFrame frame;
-        frame.cameraImg = imgGray;
-        dataBuffer.push_back(frame);
+        DataFrame frame; // instantiate the dataframe
+        frame.cameraImg = imgGray; // add the image to the dataframe
+        dataBuffer.push_back(frame); // push the dataframe onto the data buffer
 
         //// EOF STUDENT ASSIGNMENT
         cout << "#1 : LOAD IMAGE INTO BUFFER done" << endl;
@@ -89,9 +89,12 @@ int main(int argc, const char *argv[])
 
         //// STUDENT ASSIGNMENT
         //// TASK MP.3 -> only keep keypoints on the preceding vehicle
+        /// (Remember, there are keypoints everywhere, e.g., on the road, on other vehicles, on the bridge, etc.
+        /// We just want to keep the keypoints on the preceding vehicle)
 
         // only keep keypoints on the preceding vehicle
         bool bFocusOnVehicle = true;
+        // define a rectangle that encloses the preceding vehicle
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (bFocusOnVehicle)
         {
@@ -101,7 +104,8 @@ int main(int argc, const char *argv[])
         //// EOF STUDENT ASSIGNMENT
 
         // optional : limit number of keypoints (helpful for debugging and learning)
-        bool bLimitKpts = false;
+        // It helps to limit the number of keypoints if we have so many that the result is just a blur of colors
+        bool bLimitKpts = true;
         if (bLimitKpts)
         {
             int maxKeypoints = 50;
@@ -134,7 +138,9 @@ int main(int argc, const char *argv[])
 
         cout << "#3 : EXTRACT DESCRIPTORS done" << endl;
 
-        if (dataBuffer.size() > 1) // wait until at least two images have been processed
+        // wait until at least two images have been processed (we want to match keypoints between 2 images,
+        // so if we have only one image then this won't work)
+        if (dataBuffer.size() > 1)
         {
 
             /* MATCH KEYPOINT DESCRIPTORS */
@@ -150,7 +156,10 @@ int main(int argc, const char *argv[])
 
             matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
                              (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
-                             matches, descriptorType, matcherType, selectorType);
+                             matches,
+                             descriptorType,
+                             matcherType,
+                             selectorType);
 
             //// EOF STUDENT ASSIGNMENT
 
