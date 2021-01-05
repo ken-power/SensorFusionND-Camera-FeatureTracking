@@ -33,15 +33,41 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     }
 
     // perform matching task
-    if (selectorType.compare("SEL_NN") == 0)
+    if (selectorType == "SEL_NN")
     { // nearest neighbor (best match)
 
         matcher->match(descSource, descRef, matches); // Finds the best match for each descriptor in desc1
     }
-    else if (selectorType.compare("SEL_KNN") == 0)
-    { // k nearest neighbors (k=2)
+    else if (selectorType == "SEL_KNN")
+    {
+        // implement k-nearest-neighbor matching
+        vector<vector<cv::DMatch>> knn_matches;
+        auto t = (double) cv::getTickCount();
 
-        // ...
+        int k = 2; // finds the 2 best matches
+        matcher->knnMatch(descSource, descRef, knn_matches, k);
+
+        t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
+        cout << " (KNN) with n=" << knn_matches.size() << " matches in " << 1000 * t / 1.0 << " ms";
+
+        // filter matches using descriptor distance ratio test
+        double minDescDistRatio = 0.8;
+
+        for (auto &knn_match : knn_matches)
+        {
+            if (knn_match[0].distance < minDescDistRatio * knn_match[1].distance)
+            {
+                matches.push_back(knn_match[0]);
+            }
+        }
+
+        cout << "; matches = " << matches.size() << ", KNN matches = " << knn_matches.size();
+
+        long keypointsRemoved = static_cast<long>(knn_matches.size() - matches.size());
+        float percentageKeypointsRemoved =
+                (static_cast<float>(keypointsRemoved) / static_cast<float>(knn_matches.size())) * 100;
+
+        cout << " => keypoints removed = " << keypointsRemoved << " (" << percentageKeypointsRemoved << "%)" << endl;
     }
 }
 

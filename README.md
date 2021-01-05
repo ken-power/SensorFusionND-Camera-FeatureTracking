@@ -23,8 +23,8 @@ Number|Criteria|Meets Specifications|Status
 Number|Criteria|Meets Specifications|Status
 :---:|---|---|---
 4|Keypoint Descriptors|Implement descriptors BRIEF, ORB, FREAK, AKAZE and SIFT and make them selectable by setting a string accordingly.|DONE
-5|Descriptor Matching|Implement FLANN matching as well as k-nearest neighbor selection. Both methods must be selectable using the respective strings in the main function.|IN PROGRESS
-6|Descriptor Distance Ratio|Use the K-Nearest-Neighbor matching to implement the descriptor distance ratio test, which looks at the ratio of best vs. second-best match to decide whether to keep an associated pair of keypoints.|PLANNED
+5|Descriptor Matching|Implement FLANN matching as well as k-nearest neighbor selection. Both methods must be selectable using the respective strings in the main function.|DONE
+6|Descriptor Distance Ratio|Use the K-Nearest-Neighbor matching to implement the descriptor distance ratio test, which looks at the ratio of best vs. second-best match to decide whether to keep an associated pair of keypoints.|DONE
 
 #### Performance
 Number|Criteria|Meets Specifications|Status
@@ -363,6 +363,46 @@ FLANN matching is implemented in the `matchDescriptors()` function in [matching2
         // implement FLANN matching
         matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
     }
+```
+
+### Descriptor Distance Ratio
+Use the K-Nearest-Neighbor matching to implement the descriptor distance ratio test, which looks at the ratio of best vs. second-best match to decide whether to keep an associated pair of keypoints.
+
+This is implemented in the `matchDescriptors()` function in [matching2D_Student.cpp](src/matching2D_Student.cpp)
+
+```c++
+    else if (selectorType == "SEL_KNN")
+    {
+        // implement k-nearest-neighbor matching
+        vector<vector<cv::DMatch>> knn_matches;
+        auto t = (double) cv::getTickCount();
+
+        int k = 2; // finds the 2 best matches
+        matcher->knnMatch(descSource, descRef, knn_matches, k);
+
+        t = ((double) cv::getTickCount() - t) / cv::getTickFrequency();
+        cout << " (KNN) with n=" << knn_matches.size() << " matches in " << 1000 * t / 1.0 << " ms";
+
+        // filter matches using descriptor distance ratio test
+        double minDescDistRatio = 0.8;
+
+        for (auto &knn_match : knn_matches)
+        {
+            if (knn_match[0].distance < minDescDistRatio * knn_match[1].distance)
+            {
+                matches.push_back(knn_match[0]);
+            }
+        }
+
+        cout << "; matches = " << matches.size() << ", KNN matches = " << knn_matches.size();
+
+        long keypointsRemoved = static_cast<long>(knn_matches.size() - matches.size());
+        float percentageKeypointsRemoved =
+                (static_cast<float>(keypointsRemoved) / static_cast<float>(knn_matches.size())) * 100;
+
+        cout << " => keypoints removed = " << keypointsRemoved << " (" << percentageKeypointsRemoved << "%)" << endl;
+    }
+
 ```
 
 # Building and Running the Project
