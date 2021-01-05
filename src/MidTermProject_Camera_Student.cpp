@@ -127,7 +127,20 @@ int main(int argc, const char *argv[])
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (bFocusOnVehicle)
         {
-            // ...
+            for(auto it = keypoints.begin(); it != keypoints.end();)
+            {
+                // remove the keypoint if it is not contained within the rectangle of interest
+                if(!vehicleRect.contains(it->pt))
+                {
+                    //cout << "||| Removing keypoint " << it->pt << " not contained in rectangle of interest" << endl;
+                    keypoints.erase(it);
+                }
+                else
+                {
+                    //cout << "/// Keeping keypoint " << it->pt << " contained in rectangle of interest" << endl;
+                    it++;
+                }
+            }
         }
 
         //// EOF STUDENT ASSIGNMENT
