@@ -76,57 +76,47 @@ int main(int argc, const char *argv[])
 
         // extract 2D keypoints from current image
         vector<cv::KeyPoint> keypoints; // create empty feature list for current image
-        //string detectorType = "SHITOMASI";
-        //string detectorType = "HARRIS";
-        //string detectorType = "FAST";
-        //string detectorType = "BRISK";
-        //string detectorType = "ORB";
-        //string detectorType = "AKAZE";
-        string detectorType = "SIFT";
 
         //// STUDENT ASSIGNMENT
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
-        if (detectorType == "SHITOMASI")
+        KeypointDetector keypointDetectorType = KeypointDetector::SIFT;
+
+        switch (keypointDetectorType)
         {
-            cout << "*** Using SHITOMASI keypoint detector" << endl;
-            detKeypointsShiTomasi(keypoints, imgGray, false);
+            case KeypointDetector::Shi_Tomasi:
+                cout << "*** Using Shi-Tomasi keypoint detector" << endl;
+                detKeypointsShiTomasi(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::HARRIS:
+                cout << "*** Using HARRIS keypoint detector" << endl;
+                detKeypointsHarris(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::FAST:
+                cout << "*** Using FAST keypoint detector" << endl;
+                detKeypointsFAST(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::BRISK:
+                cout << "*** Using BRISK keypoint detector" << endl;
+                detKeypointsBRISK(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::ORB:
+                cout << "*** Using ORB keypoint detector" << endl;
+                detKeypointsORB(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::AKAZE:
+                cout << "*** Using AKAZE keypoint detector" << endl;
+                detKeypointsAKAZE(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::SIFT:
+                cout << "*** Using SIFT keypoint detector" << endl;
+                detKeypointsSIFT(keypoints, imgGray, false);
+                break;
+            default:
+                cout << "*** Not using a specified keypoint detector" << endl;
         }
-        else if (detectorType == "HARRIS")
-        {
-            cout << "*** Using HARRIS keypoint detector" << endl;
-            detKeypointsHarris(keypoints, imgGray, false);
-        }
-        else if (detectorType == "FAST")
-        {
-            cout << "*** Using FAST keypoint detector" << endl;
-            detKeypointsFAST(keypoints, imgGray, false);
-        }
-        else if (detectorType == "BRISK")
-        {
-            cout << "*** Using BRISK keypoint detector" << endl;
-            detKeypointsBRISK(keypoints, imgGray, false);
-        }
-        else if (detectorType == "ORB")
-        {
-            cout << "*** Using ORB keypoint detector" << endl;
-            detKeypointsORB(keypoints, imgGray, false);
-        }
-        else if (detectorType == "AKAZE")
-        {
-            cout << "*** Using AKAZE keypoint detector" << endl;
-            detKeypointsAKAZE(keypoints, imgGray, false);
-        }
-        else if (detectorType == "SIFT")
-        {
-            cout << "*** Using SIFT keypoint detector" << endl;
-            detKeypointsSIFT(keypoints, imgGray, false);
-        }
-        else
-        {
-            cout << "*** Not using a specified keypoint detector" << endl;
-        }
+        
         //// EOF STUDENT ASSIGNMENT
 
         //// STUDENT ASSIGNMENT
@@ -152,7 +142,7 @@ int main(int argc, const char *argv[])
         {
             int maxKeypoints = 50;
 
-            if (detectorType.compare("SHITOMASI") == 0)
+            if(keypointDetectorType != KeypointDetector::Shi_Tomasi)
             { // there is no response info, so keep the first 50 as they are sorted in descending quality order
                 keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
             }

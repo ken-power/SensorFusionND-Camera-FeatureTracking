@@ -18,6 +18,17 @@
 
 #include "dataStructures.h"
 
+enum KeypointDetector
+{
+    Shi_Tomasi,
+    HARRIS,
+    FAST,
+    BRISK,
+    ORB,
+    AKAZE,
+    SIFT
+};
+
 void visualizeKeypoints(const std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const std::string windowName);
 void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis);
 
