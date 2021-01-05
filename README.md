@@ -16,7 +16,7 @@ Number|Criteria|Meets Specifications|Status
 #### Keypoints
 Number|Criteria|Meets Specifications|Status
 :---:|---|---|---
-2|Keypoint Detection|Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.|PLANNED
+2|Keypoint Detection|Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.|IN PROGRESS
 3|Keypoint Removal|Remove all keypoints outside of a pre-defined rectangle and only use the keypoints within the rectangle for further processing.|PLANNED
 
 #### Descriptors
@@ -143,7 +143,7 @@ BRISK descriptor extraction in 1.145 ms
 #3 : EXTRACT DESCRIPTORS done
 #4 : MATCH KEYPOINT DESCRIPTORS done
 ```
-#### Resuts with ring buffer implementation:
+#### Results with ring buffer implementation:
 ```shell
 ------>>>> Data Buffer Size = 1    <<<<------
 #1 : LOAD IMAGE INTO BUFFER done
@@ -233,6 +233,31 @@ BRISK descriptor extraction in 1.05039 ms
 #3 : EXTRACT DESCRIPTORS done
 #4 : MATCH KEYPOINT DESCRIPTORS done
 ```
+
+## 2. Keypoints
+
+This project implements the following keypoint detectors:
+* [Shi-Tomasi](#Shi Tomasi)
+* [HARRIS](#HARRIS)
+* [FAST](#FAST)
+* [BRISK](#BRISK)
+* [ORB](#ORB)
+* [AKAZE](#AKAZE)
+* [SIFT](#SIFT)
+
+### Shi Tomasi
+
+### HARRIS
+
+### FAST
+
+### BRISK
+
+### ORB
+
+### AKAZE
+
+### SIFT
 
 ## Dependencies for Running Locally
 * cmake >= 3.1
