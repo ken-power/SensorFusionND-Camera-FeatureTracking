@@ -29,7 +29,7 @@ Number|Criteria|Meets Specifications|Status
 #### Performance
 Number|Criteria|Meets Specifications|Status
 :---:|---|---|---
-7|Performance Evaluation 1|Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.|PLANNED
+7|Performance Evaluation 1|Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.|IN PROGRESS
 8|Performance Evaluation 2|Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.|PLANNED
 9|Performance Evaluation 3|Log the time it takes for keypoint detection and descriptor extraction. The results must be entered into a spreadsheet and based on this data, the TOP3 detector / descriptor combinations must be recommended as the best choice for our purpose of detecting keypoints on vehicles.|PLANNED
 
@@ -404,6 +404,31 @@ This is implemented in the `matchDescriptors()` function in [matching2D_Student.
     }
 
 ```
+
+## 4. Performance
+
+### Performance Evaluation 1: Number of Keypoints
+Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.
+
+Keypoint Detector|Image 1|Image 2|Image 3|Image 4|Image 5|Image 6|Image 7|Image 8|Image 9|Image 10|Total 
+--- | ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:
+Shi-Tomasi|1370|1301|1361|1358|1333|1284|1322|1366|1389|1339|13423
+HARRIS|115|98|113|121|160|383|85|210|171|281|1737
+FAST|1824|1832|1810|1817|1793|1796|1788|1695|1749|1770|17874
+BRISK|2757|2777|2741|2735|2757|2695|2715|2628|2639|2672|27116
+ORB|500|500|500|500|500|500|500|500|500|500|5000
+AKAZE|1351|1327|1311|1351|1360|1347|1363|1331|1358|1331|13430
+SIFT|1438|1371|1380|1335|1305|1369|1396|1382|1463|1422|13861
+
+Note, HARRIS detects a comparatively small number of keypoints compared to the other detectors. More critically, for the images in this dataset, none of the keypoints detected by HARRIS are in the preceding vehicle. Hence, this immediately rules out HARRIS as a suitable detector for detecting keypoints on vehicles. 
+
+### Performance Evaluation 2: Number of Matched Keypoints
+Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.
+
+### Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
+Log the time it takes for keypoint detection and descriptor extraction. The results must be entered into a spreadsheet and based on this data, the TOP3 detector / descriptor combinations must be recommended as the best choice for our purpose of detecting keypoints on vehicles.
+
+#### Recommendation for Detecting Keypoints on Vehicles
 
 # Building and Running the Project
 ## Dependencies
