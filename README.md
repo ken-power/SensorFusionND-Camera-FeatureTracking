@@ -16,7 +16,7 @@ Number|Criteria|Meets Specifications|Status
 #### Keypoints
 Number|Criteria|Meets Specifications|Status
 :---:|---|---|---
-2|Keypoint Detection|Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.|IN PROGRESS
+2|Keypoint Detection|Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.|DONE
 3|Keypoint Removal|Remove all keypoints outside of a pre-defined rectangle and only use the keypoints within the rectangle for further processing.|PLANNED
 
 #### Descriptors
@@ -237,27 +237,73 @@ BRISK descriptor extraction in 1.05039 ms
 ## 2. Keypoints
 
 This project implements the following keypoint detectors:
-* [Shi-Tomasi](#Shi Tomasi)
-* [HARRIS](#HARRIS)
-* [FAST](#FAST)
-* [BRISK](#BRISK)
-* [ORB](#ORB)
-* [AKAZE](#AKAZE)
-* [SIFT](#SIFT)
+* Shi-Tomasi
+* HARRIS
+* FAST
+* BRISK
+* ORB
+* AKAZE
+* SIFT
 
-### Shi Tomasi
+The file [matching2D_Student.cpp](src/matching2D_Student.cpp) implements a function for each of these keypoint detectors. 
 
-### HARRIS
+The `KeypointDetector` enum in file [matching2D.hpp](src/matching2D.hpp) is used to choose the desired keypoint detector.
+```c++
+enum KeypointDetector
+{
+    Shi_Tomasi,
+    HARRIS,
+    FAST,
+    BRISK,
+    ORB,
+    AKAZE,
+    SIFT
+};
+```
 
-### FAST
+Instantiate the `keypointDetectorType` variable specifying the desired `KeypointDetector`, e.g. in [MidTermProject_Camera_Student.cpp](src/MidTermProject_Camera_Student.cpp):
 
-### BRISK
+```c++
+        KeypointDetector keypointDetectorType = KeypointDetector::SIFT;
+```
 
-### ORB
+The `switch` statement then calls the appropriate function based on which detector type is chosen.
+```c++
+        switch (keypointDetectorType)
+        {
+            case KeypointDetector::Shi_Tomasi:
+                cout << "*** Using Shi-Tomasi keypoint detector" << endl;
+                detKeypointsShiTomasi(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::HARRIS:
+                cout << "*** Using HARRIS keypoint detector" << endl;
+                detKeypointsHarris(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::FAST:
+                cout << "*** Using FAST keypoint detector" << endl;
+                detKeypointsFAST(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::BRISK:
+                cout << "*** Using BRISK keypoint detector" << endl;
+                detKeypointsBRISK(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::ORB:
+                cout << "*** Using ORB keypoint detector" << endl;
+                detKeypointsORB(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::AKAZE:
+                cout << "*** Using AKAZE keypoint detector" << endl;
+                detKeypointsAKAZE(keypoints, imgGray, false);
+                break;
+            case KeypointDetector::SIFT:
+                cout << "*** Using SIFT keypoint detector" << endl;
+                detKeypointsSIFT(keypoints, imgGray, false);
+                break;
+            default:
+                cout << "*** Not using a specified keypoint detector" << endl;
+        }
+```
 
-### AKAZE
-
-### SIFT
 
 ## Dependencies for Running Locally
 * cmake >= 3.1
