@@ -13,6 +13,9 @@
 #include <opencv2/xfeatures2d.hpp>
 #include <opencv2/xfeatures2d/nonfree.hpp>
 
+#include <boost/circular_buffer.hpp>
+#include <boost/assert.hpp>
+
 #include "dataStructures.h"
 #include "matching2D.hpp"
 
