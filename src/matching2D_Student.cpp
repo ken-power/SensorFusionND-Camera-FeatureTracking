@@ -117,11 +117,6 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
     cv::normalize(dst, dst_norm, 0, 255, cv::NORM_MINMAX, CV_32FC1, cv::Mat());
     cv::convertScaleAbs(dst_norm, dst_norm_scaled);
 
-    // visualize results
-    string windowName = "Harris Corner Detector Response Matrix";
-    cv::namedWindow(windowName, 4);
-    cv::imshow(windowName, dst_norm_scaled);
-    cv::waitKey(0);
 
     // Locate local maxima in the Harris response matrix
     // and perform a non-maximum suppression (NMS) in a local neighborhood around
@@ -168,8 +163,7 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
     // visualize results
     if (bVis)
     {
-        // visualize keypoints
-        windowName = "Harris Corner Detection Results";
+        string windowName = "Harris Corner Detection Results";
         cv::namedWindow(windowName, 5);
         cv::Mat visImage = dst_norm_scaled.clone();
         cv::drawKeypoints(dst_norm_scaled,
@@ -178,6 +172,41 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
                           cv::Scalar::all(-1),
                           cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
         cv::imshow(windowName, visImage);
+        cv::waitKey(0);
+    }
+}
+
+
+
+
+void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
+{
+    // difference between intensity of the central pixel and pixels of a circle around this pixel
+    int threshold = 30;
+
+    // perform non-maxima suppression on keypoints
+    bool bNMS = true;
+
+    cv::FastFeatureDetector::DetectorType type = cv::FastFeatureDetector::TYPE_9_16; // TYPE_9_16, TYPE_7_12, TYPE_5_8
+    cv::Ptr<cv::FeatureDetector> detector = cv::FastFeatureDetector::create(threshold, bNMS, type);
+
+    double t = (double)cv::getTickCount();
+    detector->detect(img, keypoints);
+    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+    cout << "FAST with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+
+    // visualize results
+    if (bVis)
+    {
+        cv::Mat visImage = img.clone();
+        cv::drawKeypoints(img,
+                          keypoints,
+                          visImage,
+                          cv::Scalar::all(-1),
+                          cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+        string windowName = "FAST Corner Detection Results";
+        cv::namedWindow(windowName, 6);
+        imshow(windowName, visImage);
         cv::waitKey(0);
     }
 }
