@@ -345,7 +345,8 @@ This project implements the BRIEF, ORB, FREAK, AKAZE and SIFT descriptors, and m
 void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, string descriptorType);
 ```
 
-## Dependencies for Running Locally
+# Building and Running the Project
+## Dependencies
 * cmake >= 3.1
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
 * make >= 4.1 (Linux, Mac), 3.81 (Windows)
@@ -359,13 +360,14 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
   * Linux: gcc / g++ is installed by default on most Linux distros
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
+* Boost >= 1.75.0
+  * The Boost C++ Libraries can be found [here](https://www.boost.org/)
 
 ## Basic Build Instructions
 
-1. Clone this repo.
-2. Make a build directory in the top level directory: `mkdir build && cd build`
-3. Compile: `cmake .. && make`
-4. Run it: `./2D_feature_tracking`.
+1. Make a build directory in the top level directory: `mkdir build && cd build`
+2. Compile: `cmake .. && make`
+3. Run it: `./2D_feature_tracking`.
 
 
 # References
