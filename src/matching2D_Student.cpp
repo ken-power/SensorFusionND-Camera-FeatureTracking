@@ -39,6 +39,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
 {
     // select appropriate descriptor
     cv::Ptr<cv::DescriptorExtractor> extractor;
+    cout << "Using " << descriptorType << " descriptor to identify keypoints" << endl;
 
     if (descriptorType == "BRISK")
     {
@@ -48,10 +49,25 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
 
         extractor = cv::BRISK::create(threshold, octaves, patternScale);
     }
+    else if (descriptorType == "ORB")
+    {
+        extractor = cv::ORB::create();
+    }
+    else if (descriptorType == "FREAK")
+    {
+        extractor = cv::xfeatures2d::FREAK::create();
+    }
+    else if (descriptorType == "AKAZE")
+    {
+        extractor = cv::AKAZE::create();
+    }
+    else if (descriptorType == "SIFT")
+    {
+        extractor = cv::SIFT::create();
+    }
     else
     {
-
-        //...
+        std::cerr << descriptorType << " is not a supported descriptor type." << endl;
     }
 
     // perform feature description

@@ -22,7 +22,7 @@ Number|Criteria|Meets Specifications|Status
 #### Descriptors
 Number|Criteria|Meets Specifications|Status
 :---:|---|---|---
-4|Keypoint Descriptors|Implement descriptors BRIEF, ORB, FREAK, AKAZE and SIFT and make them selectable by setting a string accordingly.|PLANNED
+4|Keypoint Descriptors|Implement descriptors BRIEF, ORB, FREAK, AKAZE and SIFT and make them selectable by setting a string accordingly.|DONE
 5|Descriptor Matching|Implement FLANN matching as well as k-nearest neighbor selection. Both methods must be selectable using the respective strings in the main function.|PLANNED
 6|Descriptor Distance Ratio|Use the K-Nearest-Neighbor matching to implement the descriptor distance ratio test, which looks at the ratio of best vs. second-best match to decide whether to keep an associated pair of keypoints.|PLANNED
 
@@ -334,6 +334,15 @@ The following code then removes all keypoints not contained within the defined r
                 }
             }
         }
+```
+
+## 3. Descriptors
+
+### Keypoint Descriptors
+This project implements the BRIEF, ORB, FREAK, AKAZE and SIFT descriptors, and makes them selectable. The `descriptorType` is specified as a parameter to the `descKeypoints` function, which is implemented in the file [matching2D_Student.cpp](src/matching2D_Student.cpp), and has the following signature:
+```c++
+// Use one of several types of state-of-art descriptors to uniquely identify keypoints
+void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, string descriptorType);
 ```
 
 ## Dependencies for Running Locally
