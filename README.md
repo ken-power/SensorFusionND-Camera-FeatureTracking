@@ -11,7 +11,7 @@ Number|Criteria|Meets Specifications|Status
 #### Data Buffer
 Number|Criteria|Meets Specifications|Status
 :---:|---|---|---
-1|Data Buffer Optimization|Implement a vector for dataBuffer objects whose size does not exceed a limit (e.g. 2 elements). This can be achieved by pushing in new elements on one end and removing elements on the other end.|PLANNED
+1|Data Buffer Optimization|Implement a vector for dataBuffer objects whose size does not exceed a limit (e.g. 2 elements). This can be achieved by pushing in new elements on one end and removing elements on the other end.|DONE
 
 #### Keypoints
 Number|Criteria|Meets Specifications|Status
@@ -38,8 +38,201 @@ Number|Criteria|Meets Specifications|Status
 
 ## 1. Data Buffer
 
-Rather than implement a custom ring buffer, this project is using the Circular Buffer implementation from the Boost C++ libraries. The [references section](#References) contains links to relevant articles to help add Boost to the project. 
+Rather than implement a custom ring buffer, this project is using the Circular Buffer implementation from the Boost C++ libraries. The [references section](#References) contains links to relevant articles to help add Boost to the project. The class ```boost::circular_buffer``` serves as a drop-in replacement for ```vector```.
 
+The only change I need to make was to replace this line
+```c++
+    vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
+```
+
+with this line (and use the defined variable ```dataBufferSize``` to set the ring buffer capacity:
+```c++
+    int dataBufferSize = 2;       // no. of images which are held in memory (ring buffer) at the same time
+    boost::circular_buffer<DataFrame> dataBuffer(dataBufferSize); // buffer of data frames which are held in memory at the same time
+```
+
+The following results show that with the vector implementation, the size of the buffer keeps rising each time a new image is processed. With the ring buffer implementation, the size of the buffer is constrained to the desired data buffer size, in this case 2.
+
+#### Results with vector implementation:
+```shell
+------>>>> Data Buffer Size = 1    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1370 keypoints in 11.9359 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.37182 ms
+#3 : EXTRACT DESCRIPTORS done
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1301 keypoints in 12.0098 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.837618 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 3    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1361 keypoints in 8.18416 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.98411 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 4    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1358 keypoints in 11.0209 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.02524 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 5    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1333 keypoints in 12.662 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.0883 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 6    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1284 keypoints in 7.9035 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.8943 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 7    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1322 keypoints in 8.43149 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.985863 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 8    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1366 keypoints in 9.2397 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.50615 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 9    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1389 keypoints in 7.78882 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.844176 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 10    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1339 keypoints in 9.5957 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.145 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+```
+#### Resuts with ring buffer implementation:
+```shell
+------>>>> Data Buffer Size = 1    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1370 keypoints in 11.831 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.963352 ms
+#3 : EXTRACT DESCRIPTORS done
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1301 keypoints in 10.131 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.982599 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1361 keypoints in 10.3851 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.45686 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1358 keypoints in 11.1961 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.00384 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1333 keypoints in 11.6565 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.00851 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1284 keypoints in 8.82204 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.02393 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1322 keypoints in 8.65441 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.980091 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1366 keypoints in 10.6717 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.930967 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1389 keypoints in 9.21086 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 0.939394 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+Press key to continue to next image
+------>>>> Data Buffer Size = 2    <<<<------
+#1 : LOAD IMAGE INTO BUFFER done
+Shi-Tomasi detection with n=1339 keypoints in 13.4377 ms
+NOTE: Keypoints have been limited!
+#2 : DETECT KEYPOINTS done
+BRISK descriptor extraction in 1.05039 ms
+#3 : EXTRACT DESCRIPTORS done
+#4 : MATCH KEYPOINT DESCRIPTORS done
+```
 
 ## Dependencies for Running Locally
 * cmake >= 3.1

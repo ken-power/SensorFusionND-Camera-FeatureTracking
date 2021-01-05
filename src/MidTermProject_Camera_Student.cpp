@@ -40,7 +40,8 @@ int main(int argc, const char *argv[])
 
     // misc
     int dataBufferSize = 2;       // no. of images which are held in memory (ring buffer) at the same time
-    vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
+    boost::circular_buffer<DataFrame> dataBuffer(dataBufferSize); // buffer of data frames which are held in memory at the same time
+    //vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
     bool bVis = false;            // visualize results
 
     /* MAIN LOOP OVER ALL IMAGES */
@@ -68,6 +69,7 @@ int main(int argc, const char *argv[])
         dataBuffer.push_back(frame); // push the dataframe onto the data buffer
 
         //// EOF STUDENT ASSIGNMENT
+        cout << "------>>>> Data Buffer Size = " << dataBuffer.size() << "    <<<<------" << endl;
         cout << "#1 : LOAD IMAGE INTO BUFFER done" << endl;
 
         /* DETECT IMAGE KEYPOINTS */
