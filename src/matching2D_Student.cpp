@@ -172,74 +172,48 @@ void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     cv::FastFeatureDetector::DetectorType type = cv::FastFeatureDetector::TYPE_9_16; // TYPE_9_16, TYPE_7_12, TYPE_5_8
     cv::Ptr<cv::FeatureDetector> detector = cv::FastFeatureDetector::create(threshold, bNMS, type);
 
-    double t = (double)cv::getTickCount();
-    detector->detect(img, keypoints);
-    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "FAST with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-
-    if (bVis)
-    {
-        visualizeKeypoints(keypoints, img, "FAST Corner Detection Results");
-    }
+    detectKeypoints(detector, "FAST", keypoints, img, bVis);
 }
 
 void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::BRISK::create();
 
-    double t = (double)cv::getTickCount();
-    detector->detect(img, keypoints);
-    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "BRISK with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-
-    if (bVis)
-    {
-        visualizeKeypoints(keypoints, img, "BRISK Corner Detection Results");
-    }
+    detectKeypoints(detector, "BRISK", keypoints, img, bVis);
 }
 
 void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::ORB::create();
 
-    double t = (double)cv::getTickCount();
-    detector->detect(img, keypoints);
-    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "ORB with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-
-    if (bVis)
-    {
-        visualizeKeypoints(keypoints, img, "ORB Corner Detection Results");
-    }
+    detectKeypoints(detector, "ORB", keypoints, img, bVis);
 }
 
 void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::AKAZE::create();
 
-    double t = (double)cv::getTickCount();
-    detector->detect(img, keypoints);
-    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "AKAZE with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-
-    if (bVis)
-    {
-        visualizeKeypoints(keypoints, img, "AKAZE Corner Detection Results");
-    }
+    detectKeypoints(detector, "AKAZE", keypoints, img, bVis);
 }
 
 void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::SIFT::create();
 
+    detectKeypoints(detector, "SIFT", keypoints, img, bVis);
+}
+
+void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis)
+{
     double t = (double)cv::getTickCount();
     detector->detect(img, keypoints);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "SIFT with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    cout << detectorName << " with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
     if (bVis)
     {
-        visualizeKeypoints(keypoints, img, "SIFT Corner Detection Results");
+        string windowName = detectorName + " Corner Detection Results";
+        visualizeKeypoints(keypoints, img, windowName);
     }
 }
 
