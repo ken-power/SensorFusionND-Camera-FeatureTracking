@@ -78,7 +78,7 @@ int main(int argc, const char *argv[])
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
-        KeypointDetector keypointDetectorType = KeypointDetector::SIFT;
+        KeypointDetector keypointDetectorType = KeypointDetector::Shi_Tomasi;
 
         switch (keypointDetectorType)
         {
@@ -191,7 +191,7 @@ int main(int argc, const char *argv[])
             /* MATCH KEYPOINT DESCRIPTORS */
 
             vector<cv::DMatch> matches;
-            string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
+            string matcherType = "MAT_FLANN";        // MAT_BF, MAT_FLANN
             string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
             string selectorType = "SEL_NN";       // SEL_NN, SEL_KNN
 
@@ -199,12 +199,19 @@ int main(int argc, const char *argv[])
             //// TASK MP.5 -> add FLANN matching in file matching2D.cpp
             //// TASK MP.6 -> add KNN match selection and perform descriptor distance ratio filtering with t=0.8 in file matching2D.cpp
 
-            matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
-                             (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
-                             matches,
-                             descriptorType,
-                             matcherType,
-                             selectorType);
+            try
+            {
+                matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
+                                 (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
+                                 matches,
+                                 descriptorType,
+                                 matcherType,
+                                 selectorType);
+            }
+            catch (const std::exception &ex)
+            {
+                std::cerr << "Exception: " << ex.what() << std::endl;
+            }
 
             //// EOF STUDENT ASSIGNMENT
 

@@ -11,14 +11,25 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     bool crossCheck = false;
     cv::Ptr<cv::DescriptorMatcher> matcher;
 
-    if (matcherType.compare("MAT_BF") == 0)  // Brute Force matching
+    cout << ">>> Using " << matcherType << " Matcher Type" << endl;
+
+    if (matcherType == "MAT_BF")  // Brute Force matching
     {
         int normType = cv::NORM_HAMMING;
         matcher = cv::BFMatcher::create(normType, crossCheck);
     }
-    else if (matcherType.compare("MAT_FLANN") == 0)
+    else if (matcherType == "MAT_FLANN")
     {
-        // ...
+        if (descSource.type() != CV_32F)
+        {
+            // OpenCV bug workaround : convert binary descriptors to floating point due
+            // to a bug in current OpenCV implementation
+            descSource.convertTo(descSource, CV_32F);
+            descRef.convertTo(descRef, CV_32F);
+        }
+
+        // implement FLANN matching
+        matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
     }
 
     // perform matching task
