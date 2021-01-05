@@ -90,15 +90,9 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
     cout << "Shi-Tomasi detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
-    // visualize results
     if (bVis)
     {
-        cv::Mat visImage = img.clone();
-        cv::drawKeypoints(img, keypoints, visImage, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-        string windowName = "Shi-Tomasi Corner Detector Results";
-        cv::namedWindow(windowName, 6);
-        imshow(windowName, visImage);
-        cv::waitKey(0);
+        visualizeKeypoints(keypoints, img, "Shi-Tomasi Corner Detection Results");
     }
 }
 
@@ -160,19 +154,9 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
         } // eof loop over cols
     }     // eof loop over rows
 
-    // visualize results
     if (bVis)
     {
-        string windowName = "Harris Corner Detection Results";
-        cv::namedWindow(windowName, 5);
-        cv::Mat visImage = dst_norm_scaled.clone();
-        cv::drawKeypoints(dst_norm_scaled,
-                          keypoints,
-                          visImage,
-                          cv::Scalar::all(-1),
-                          cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-        cv::imshow(windowName, visImage);
-        cv::waitKey(0);
+        visualizeKeypoints(keypoints, img, "Harris Corner Detection Results");
     }
 }
 
@@ -195,19 +179,9 @@ void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
     cout << "FAST with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
-    // visualize results
     if (bVis)
     {
-        cv::Mat visImage = img.clone();
-        cv::drawKeypoints(img,
-                          keypoints,
-                          visImage,
-                          cv::Scalar::all(-1),
-                          cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-        string windowName = "FAST Corner Detection Results";
-        cv::namedWindow(windowName, 6);
-        imshow(windowName, visImage);
-        cv::waitKey(0);
+        visualizeKeypoints(keypoints, img, "FAST Corner Detection Results");
     }
 }
 
