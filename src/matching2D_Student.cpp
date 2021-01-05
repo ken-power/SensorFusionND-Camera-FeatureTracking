@@ -161,8 +161,6 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
 }
 
 
-
-
 void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
     // difference between intensity of the central pixel and pixels of a circle around this pixel
@@ -227,6 +225,21 @@ void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool 
     if (bVis)
     {
         visualizeKeypoints(keypoints, img, "AKAZE Corner Detection Results");
+    }
+}
+
+void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
+{
+    cv::Ptr<cv::FeatureDetector> detector = cv::SIFT::create();
+
+    double t = (double)cv::getTickCount();
+    detector->detect(img, keypoints);
+    t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+    cout << "SIFT with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+
+    if (bVis)
+    {
+        visualizeKeypoints(keypoints, img, "SIFT Corner Detection Results");
     }
 }
 
