@@ -18,10 +18,20 @@
 
 using namespace std;
 
+void RunExperiment(const KeypointDetector &keypointDetectorType);
+
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
+    KeypointDetector keypointDetectorType = KeypointDetector::Shi_Tomasi;
 
+    RunExperiment(keypointDetectorType);
+
+    return 0;
+}
+
+void RunExperiment(const KeypointDetector &keypointDetectorType)
+{
     /* INIT VARIABLES AND DATA STRUCTURES */
 
     // data location
@@ -77,8 +87,6 @@ int main(int argc, const char *argv[])
         //// STUDENT ASSIGNMENT
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
-
-        KeypointDetector keypointDetectorType = KeypointDetector::Shi_Tomasi;
 
         switch (keypointDetectorType)
         {
@@ -242,5 +250,4 @@ int main(int argc, const char *argv[])
 
     } // eof loop over all images
 
-    return 0;
 }
