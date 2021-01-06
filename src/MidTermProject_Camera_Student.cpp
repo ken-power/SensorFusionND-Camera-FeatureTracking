@@ -18,20 +18,31 @@
 
 using namespace std;
 
-void RunExperiment(const KeypointDetector &keypointDetectorType, const string descriptorType);
+void RunExperiment(const KeypointDetector &keypointDetector,
+                   const string descriptor,
+                   const string matcherType,
+                   const string descriptorType,
+                   const string selectorType);
 
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
-    KeypointDetector keypointDetectorType = KeypointDetector::Shi_Tomasi;
-    string descriptorType = "BRIEF"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+    KeypointDetector keypointDetector = KeypointDetector::Shi_Tomasi;
+    string descriptor = "BRIEF"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+    string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
+    string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
+    string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
 
-    RunExperiment(keypointDetectorType, descriptorType);
+    RunExperiment(keypointDetector, descriptor, matcherType, descriptorType, selectorType);
 
     return 0;
 }
 
-void RunExperiment(const KeypointDetector &keypointDetectorType, const string descriptorType)
+void RunExperiment(const KeypointDetector &keypointDetector,
+                   const string descriptor,
+                   const string matcherType,
+                   const string descriptorType,
+                   const string selectorType)
 {
     /* INIT VARIABLES AND DATA STRUCTURES */
 
@@ -89,7 +100,7 @@ void RunExperiment(const KeypointDetector &keypointDetectorType, const string de
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
-        switch (keypointDetectorType)
+        switch (keypointDetector)
         {
             case KeypointDetector::Shi_Tomasi:
                 cout << "*** Using Shi-Tomasi keypoint detector" << endl;
@@ -161,7 +172,7 @@ void RunExperiment(const KeypointDetector &keypointDetectorType, const string de
         {
             int maxKeypoints = 50;
 
-            if (keypointDetectorType != KeypointDetector::Shi_Tomasi)
+            if (keypointDetector != KeypointDetector::Shi_Tomasi)
             { // there is no response info, so keep the first 50 as they are sorted in descending quality order
                 keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
             }
@@ -183,7 +194,7 @@ void RunExperiment(const KeypointDetector &keypointDetectorType, const string de
         descKeypoints((dataBuffer.end() - 1)->keypoints,
                       (dataBuffer.end() - 1)->cameraImg,
                       descriptors,
-                      descriptorType);
+                      descriptor);
         //// EOF STUDENT ASSIGNMENT
 
         // push descriptors for current frame to end of data buffer
@@ -199,10 +210,6 @@ void RunExperiment(const KeypointDetector &keypointDetectorType, const string de
             /* MATCH KEYPOINT DESCRIPTORS */
 
             vector<cv::DMatch> matches;
-            string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
-            string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
-            string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
-
             //// STUDENT ASSIGNMENT
             //// TASK MP.5 -> add FLANN matching in file matching2D.cpp
             //// TASK MP.6 -> add KNN match selection and perform descriptor distance ratio filtering with t=0.8 in file matching2D.cpp
