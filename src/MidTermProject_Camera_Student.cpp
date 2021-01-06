@@ -22,7 +22,8 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    const string descriptor,
                    const string matcherType,
                    const string descriptorType,
-                   const string selectorType);
+                   const string selectorType,
+                   const bool isFocusOnPresedingVehicleOnly);
 
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
@@ -33,7 +34,10 @@ int main(int argc, const char *argv[])
     string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
     string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
 
-    RunExperiment(keypointDetector, descriptor, matcherType, descriptorType, selectorType);
+    // only keep keypoints on the preceding vehicle
+    bool isFocusOnPresedingVehicleOnly = true;
+
+    RunExperiment(keypointDetector, descriptor, matcherType, descriptorType, selectorType, isFocusOnPresedingVehicleOnly);
 
     return 0;
 }
@@ -47,7 +51,8 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    const string descriptor,
                    const string matcherType,
                    const string descriptorType,
-                   const string selectorType)
+                   const string selectorType,
+                   const bool isFocusOnPresedingVehicleOnly)
 {
     /* INIT VARIABLES AND DATA STRUCTURES */
 
@@ -146,11 +151,9 @@ void RunExperiment(const KeypointDetector &keypointDetector,
         /// (Remember, there are keypoints everywhere, e.g., on the road, on other vehicles, on the bridge, etc.
         /// We just want to keep the keypoints on the preceding vehicle)
 
-        // only keep keypoints on the preceding vehicle
-        bool bFocusOnVehicle = true;
         // define a rectangle that encloses the preceding vehicle
         cv::Rect vehicleRect(535, 180, 180, 150);
-        if (bFocusOnVehicle)
+        if (isFocusOnPresedingVehicleOnly)
         {
             for(auto it = keypoints.begin(); it != keypoints.end();)
             {
