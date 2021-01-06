@@ -38,6 +38,11 @@ int main(int argc, const char *argv[])
     return 0;
 }
 
+
+/*
+ * This function encapsulates running an experiment with a given combination of detector, descriptor, matcher,
+ * descriptor type, and selector.
+ */
 void RunExperiment(const KeypointDetector &keypointDetector,
                    const string descriptor,
                    const string matcherType,
