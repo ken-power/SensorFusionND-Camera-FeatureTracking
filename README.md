@@ -30,8 +30,8 @@ Number|Criteria|Meets Specifications|Status
 Number|Criteria|Meets Specifications|Status
 :---:|---|---|---
 7|Performance Evaluation 1|Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.|IN PROGRESS
-8|Performance Evaluation 2|Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.|PLANNED
-9|Performance Evaluation 3|Log the time it takes for keypoint detection and descriptor extraction. The results must be entered into a spreadsheet and based on this data, the TOP3 detector / descriptor combinations must be recommended as the best choice for our purpose of detecting keypoints on vehicles.|PLANNED
+8|Performance Evaluation 2|Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.|IN PROGRESS
+9|Performance Evaluation 3|Log the time it takes for keypoint detection and descriptor extraction. The results must be entered into a spreadsheet and based on this data, the TOP3 detector / descriptor combinations must be recommended as the best choice for our purpose of detecting keypoints on vehicles.|IN PROGRESS
 
 
 # Project Report
@@ -425,8 +425,229 @@ Note, HARRIS detects a comparatively small number of keypoints compared to the o
 ### Performance Evaluation 2: Number of Matched Keypoints
 Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.
 
+#### Shi-Tomasi
+
+* CONTINUE FROM HERE - I HAD FORGOTTEN TO IMPLEMENT THE BRIEF DESCRIPTOR
+* I HAVE THE NUMBERS NOW - NEXT STEP IS ADD THEM TO THE TABLE
+* I AM TIRED NOW
+
+Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+1 --> 0|125|||||
+2 --> 1|118|||||
+3 --> 2|123|||||
+4 --> 3|120|||||
+5 --> 4|120|||||
+6 --> 5|113|||||
+7 --> 6|114|||||
+8 --> 7|123|||||
+9 --> 8|111|||||
+Totals||||||
+
+#### Harris
+
+Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+1 --> 0||||||
+2 --> 1||||||
+3 --> 2||||||
+4 --> 3||||||
+5 --> 4||||||
+6 --> 5||||||
+7 --> 6||||||
+8 --> 7||||||
+9 --> 8||||||
+Totals||||||
+
+#### FAST
+
+Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+1 --> 0||||||
+2 --> 1||||||
+3 --> 2||||||
+4 --> 3||||||
+5 --> 4||||||
+6 --> 5||||||
+7 --> 6||||||
+8 --> 7||||||
+9 --> 8||||||
+Totals||||||
+
+#### BRISK
+
+Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+1 --> 0||||||
+2 --> 1||||||
+3 --> 2||||||
+4 --> 3||||||
+5 --> 4||||||
+6 --> 5||||||
+7 --> 6||||||
+8 --> 7||||||
+9 --> 8||||||
+Totals||||||
+
+#### ORB
+
+Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+1 --> 0||||||
+2 --> 1||||||
+3 --> 2||||||
+4 --> 3||||||
+5 --> 4||||||
+6 --> 5||||||
+7 --> 6||||||
+8 --> 7||||||
+9 --> 8||||||
+Totals||||||
+
+#### AKAZE
+
+Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+1 --> 0||||||
+2 --> 1||||||
+3 --> 2||||||
+4 --> 3||||||
+5 --> 4||||||
+6 --> 5||||||
+7 --> 6||||||
+8 --> 7||||||
+9 --> 8||||||
+Totals||||||
+
+#### SIFT
+
+Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+1 --> 0||||||
+2 --> 1||||||
+3 --> 2||||||
+4 --> 3||||||
+5 --> 4||||||
+6 --> 5||||||
+7 --> 6||||||
+8 --> 7||||||
+9 --> 8||||||
+Totals||||||
+
 ### Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
 Log the time it takes for keypoint detection and descriptor extraction. The results must be entered into a spreadsheet and based on this data, the TOP3 detector / descriptor combinations must be recommended as the best choice for our purpose of detecting keypoints on vehicles.
+
+#### Shi-Tomasi
+
+Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+0|1.98759|||||
+1|1.43586|||||
+2|2.0864|||||
+3|1.50354|||||
+4|2.35249|||||
+5|1.39628|||||
+6|1.46287|||||
+7|1.37681|||||
+8|1.35603|||||
+9|1.36793|||||
+Totals||||||
+
+#### Harris
+
+Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+0||||||
+1||||||
+2||||||
+3||||||
+4||||||
+5||||||
+6||||||
+7||||||
+8||||||
+9||||||
+Totals||||||
+
+#### FAST
+
+Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+0||||||
+1||||||
+2||||||
+3||||||
+4||||||
+5||||||
+6||||||
+7||||||
+8||||||
+9||||||
+Totals||||||
+
+#### BRISK
+
+Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+0||||||
+1||||||
+2||||||
+3||||||
+4||||||
+5||||||
+6||||||
+7||||||
+8||||||
+9||||||
+Totals||||||
+
+#### ORB
+
+Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+0||||||
+1||||||
+2||||||
+3||||||
+4||||||
+5||||||
+6||||||
+7||||||
+8||||||
+9||||||
+Totals||||||
+
+#### AKAZE
+
+Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+0||||||
+1||||||
+2||||||
+3||||||
+4||||||
+5||||||
+6||||||
+7||||||
+8||||||
+9||||||
+Totals||||||
+
+#### SIFT
+
+Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+--- | ---:| ---:| ---:| ---:| ---:| ---:| 
+0||||||
+1||||||
+2||||||
+3||||||
+4||||||
+5||||||
+6||||||
+7||||||
+8||||||
+9||||||
+Totals||||||
 
 #### Recommendation for Detecting Keypoints on Vehicles
 
