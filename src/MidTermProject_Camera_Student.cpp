@@ -18,19 +18,20 @@
 
 using namespace std;
 
-void RunExperiment(const KeypointDetector &keypointDetectorType);
+void RunExperiment(const KeypointDetector &keypointDetectorType, const string descriptorType);
 
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
     KeypointDetector keypointDetectorType = KeypointDetector::Shi_Tomasi;
+    string descriptorType = "BRIEF"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
 
-    RunExperiment(keypointDetectorType);
+    RunExperiment(keypointDetectorType, descriptorType);
 
     return 0;
 }
 
-void RunExperiment(const KeypointDetector &keypointDetectorType)
+void RunExperiment(const KeypointDetector &keypointDetectorType, const string descriptorType)
 {
     /* INIT VARIABLES AND DATA STRUCTURES */
 
@@ -179,7 +180,6 @@ void RunExperiment(const KeypointDetector &keypointDetectorType)
         //// -> BRIEF, ORB, FREAK, AKAZE, SIFT
 
         cv::Mat descriptors;
-        string descriptorType = "BRIEF"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
         descKeypoints((dataBuffer.end() - 1)->keypoints,
                       (dataBuffer.end() - 1)->cameraImg,
                       descriptors,
