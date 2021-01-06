@@ -23,7 +23,8 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    const string matcherType,
                    const string descriptorType,
                    const string selectorType,
-                   const bool isFocusOnPresedingVehicleOnly);
+                   const bool isFocusOnPresedingVehicleOnly,
+                   bool visualizeImageMatches);
 
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
@@ -36,8 +37,16 @@ int main(int argc, const char *argv[])
 
     // only keep keypoints on the preceding vehicle
     bool isFocusOnPresedingVehicleOnly = true;
+    // visualize matches between current and previous image
+    bool visualizeImageMatches = false;
 
-    RunExperiment(keypointDetector, descriptor, matcherType, descriptorType, selectorType, isFocusOnPresedingVehicleOnly);
+    RunExperiment(keypointDetector,
+                  descriptor,
+                  matcherType,
+                  descriptorType,
+                  selectorType,
+                  isFocusOnPresedingVehicleOnly,
+                  visualizeImageMatches);
 
     return 0;
 }
@@ -52,7 +61,8 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    const string matcherType,
                    const string descriptorType,
                    const string selectorType,
-                   const bool isFocusOnPresedingVehicleOnly)
+                   const bool isFocusOnPresedingVehicleOnly,
+                   bool visualizeImageMatches)
 {
     /* INIT VARIABLES AND DATA STRUCTURES */
 
@@ -71,7 +81,6 @@ void RunExperiment(const KeypointDetector &keypointDetector,
     int dataBufferSize = 2;       // no. of images which are held in memory (ring buffer) at the same time
     boost::circular_buffer<DataFrame> dataBuffer(dataBufferSize); // buffer of data frames which are held in memory at the same time
     //vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
-    bool bVis = false;            // visualize results
 
     /* MAIN LOOP OVER ALL IMAGES */
 
@@ -244,8 +253,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
 
             // visualize matches between current and previous image
-            bVis = false;
-            if (bVis)
+            if (visualizeImageMatches)
             {
                 cv::Mat matchImg = ((dataBuffer.end() - 1)->cameraImg).clone();
                 cv::drawMatches((dataBuffer.end() - 2)->cameraImg, (dataBuffer.end() - 2)->keypoints,
@@ -260,7 +268,6 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                 cout << "Press key to continue to next image" << endl;
                 cv::waitKey(0); // wait for key to be pressed
             }
-            bVis = false;
         }
 
     } // eof loop over all images
