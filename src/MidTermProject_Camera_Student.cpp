@@ -23,7 +23,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    const string matcherType,
                    const string descriptorType,
                    const string selectorType,
-                   const bool isFocusOnPresedingVehicleOnly,
+                   const bool isFocusOnPrecedingVehicleOnly,
                    bool visualizeImageMatches);
 
 /* MAIN PROGRAM */
@@ -36,7 +36,7 @@ int main(int argc, const char *argv[])
     string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
 
     // only keep keypoints on the preceding vehicle
-    bool isFocusOnPresedingVehicleOnly = true;
+    bool isFocusOnPrecedingVehicleOnly = true;
     // visualize matches between current and previous image
     bool visualizeImageMatches = false;
 
@@ -45,7 +45,7 @@ int main(int argc, const char *argv[])
                   matcherType,
                   descriptorType,
                   selectorType,
-                  isFocusOnPresedingVehicleOnly,
+                  isFocusOnPrecedingVehicleOnly,
                   visualizeImageMatches);
 
     return 0;
@@ -61,7 +61,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    const string matcherType,
                    const string descriptorType,
                    const string selectorType,
-                   const bool isFocusOnPresedingVehicleOnly,
+                   const bool isFocusOnPrecedingVehicleOnly,
                    bool visualizeImageMatches)
 {
     /* INIT VARIABLES AND DATA STRUCTURES */
@@ -162,7 +162,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
 
         // define a rectangle that encloses the preceding vehicle
         cv::Rect vehicleRect(535, 180, 180, 150);
-        if (isFocusOnPresedingVehicleOnly)
+        if (isFocusOnPrecedingVehicleOnly)
         {
             for(auto it = keypoints.begin(); it != keypoints.end();)
             {
