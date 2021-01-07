@@ -55,7 +55,7 @@ struct KeypointCountResult
 struct KeypointMatchResult
 {
     KeypointMatchResult(){}
-    std::pair<string, string> matchedImagePair;
+    std::pair<unsigned int, unsigned int> matchedImagePair;
     unsigned int totalMatches;
     unsigned int knnMatches;
     unsigned int removed;

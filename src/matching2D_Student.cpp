@@ -80,7 +80,6 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
         results.keypointMatch.knnMatches = knn_matches.size();
         results.keypointMatch.removed = keypointsRemoved;
         results.keypointMatch.percentageRemoved = percentageKeypointsRemoved;
-
     }
 }
 

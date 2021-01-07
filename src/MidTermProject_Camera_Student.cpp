@@ -58,12 +58,21 @@ int main(int argc, const char *argv[])
                   visualizeImageMatches,
                   results);
 
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1----------------------" << endl;
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------" << endl;
     cout << "Filename | Total Keypoints Detected | Time to detect all keypoints (ms) | Keypoints on Preceding Vehicle" << endl;
     cout << ":--- | ---:| ---:| ---:" << endl;
     for(auto r:results.results)
     {
         std::cout << r.keypointCount.imageName << " " << r.keypointCount.totalKeypoints << " " << r.keypointCount.matchTiming << " " << r.keypointCount.precedingVehicleKeypoints << endl;
+    }
+
+
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------" << endl;
+    cout << "Image Pair | Total Keypoints Matched | KNN Matches | Keypoints Removed | % Removed" << endl;
+    cout << ":--- | ---:| ---:| ---:| --:" << endl;
+    for(auto r:results.results)
+    {
+        std::cout << r.keypointMatch.matchedImagePair.second << " --> " << r.keypointMatch.matchedImagePair.first << " " <<  r.keypointMatch.totalMatches << " " << r.keypointMatch.knnMatches << " " << r.keypointMatch.removed << " " << r.keypointMatch.percentageRemoved << endl;
     }
 
     return 0;
@@ -84,6 +93,8 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    ExperimentResults &results)
 {
     /* INIT VARIABLES AND DATA STRUCTURES */
+    unsigned int firstImage = 0;
+    unsigned int secondImage = 1;
 
     // data location
     string dataPath = "../";
@@ -248,7 +259,6 @@ void RunExperiment(const KeypointDetector &keypointDetector,
         // so if we have only one image then this won't work)
         if (dataBuffer.size() > 1)
         {
-
             /* MATCH KEYPOINT DESCRIPTORS */
 
             vector<cv::DMatch> matches;
@@ -258,6 +268,9 @@ void RunExperiment(const KeypointDetector &keypointDetector,
 
             try
             {
+                resultLine.keypointMatch.matchedImagePair.first = firstImage;
+                resultLine.keypointMatch.matchedImagePair.second = secondImage;
+
                 matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
                                  (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
                                  matches,
@@ -294,6 +307,9 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                 cout << "Press key to continue to next image" << endl;
                 cv::waitKey(0); // wait for key to be pressed
             }
+
+            firstImage++;
+            secondImage++;
         }
 
         results.results.push_back(resultLine);
