@@ -17,6 +17,7 @@
 #include <opencv2/xfeatures2d/nonfree.hpp>
 
 #include "dataStructures.h"
+#include "reporting.h"
 
 void visualizeKeypoints(const std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const std::string windowName, ExperimentResultLine &results);
 void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResultLine &results);
