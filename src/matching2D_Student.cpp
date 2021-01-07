@@ -125,7 +125,16 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
 
     // perform feature description
     double t = (double)cv::getTickCount();
-    extractor->compute(img, keypoints, descriptors);
+
+    try
+    {
+        extractor->compute(img, keypoints, descriptors);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "Exception with Detector/Descriptor combination: " << ex.what() << std::endl;
+    }
+
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
     double extractionTime = 1000 * t / 1.0;
     cout << descriptorType << " descriptor extraction in " << extractionTime << " ms" << endl;

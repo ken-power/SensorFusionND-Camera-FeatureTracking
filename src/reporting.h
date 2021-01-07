@@ -68,7 +68,7 @@ struct TotalKeypointMatches
     string detector;
     unsigned int BRISK = 0;
     unsigned int BRIEF = 0;
-    unsigned int ORG = 0;
+    unsigned int ORB = 0;
     unsigned int FREAK = 0;
     unsigned int AKAZE = 0;
     unsigned int SIFT = 0;
@@ -98,10 +98,11 @@ struct PerformanceEvaluationSummary
 
 void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSummary &summary, bool displayAllResults);
 void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &eval1Summary, const string &separator, bool displayAllResults);
-void PerformanceEvaluation2(Experiment &experiment, const string &separator, bool displayAllResults);
+void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMatches> &eval2Summary, const string &separator, bool displayAllResults);
 void PerformanceEvaluation3(Experiment &experiment, const string &separator, bool displayAllResults);
 string DetectorNameAsString(const KeypointDetector detector);
 
 void DisplayPE1Summary(const TotalKeypoints &data);
+void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results);
 
 #endif //CAMERA_FUSION_REPORTING_H

@@ -36,13 +36,13 @@ void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSumma
     const string separator = " | ";
 
     PerformanceEvaluation1(experiment, summary.eval1Summary, separator, displayAllResults);
-    PerformanceEvaluation2(experiment, separator, displayAllResults);
+    PerformanceEvaluation2(experiment, summary.eval2Summary, separator, displayAllResults);
     PerformanceEvaluation3(experiment, separator, displayAllResults);
 }
 
 void DisplayPE1Summary(const TotalKeypoints &data)
 {
-    cout << "Performance Evaluation 1 Summary Table" << endl;
+    cout << "\nPerformance Evaluation 1 Summary Table\n\n" << endl;
 
     cout << " Detector | Keypoints" << endl;
     cout << " :--- | ---:" << endl;
@@ -54,6 +54,21 @@ void DisplayPE1Summary(const TotalKeypoints &data)
     cout << "ORB" << " | " << data.ORB << endl;
     cout << "AKAZE" << " | " << data.AKAZE << endl;
     cout << "SIFT" << " | " << data.SIFT << endl;
+}
+
+void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results)
+{
+    cout << "\nPerformance Evaluation 2 Summary Table\n\n" << endl;
+
+    cout << "PE2: Result size = " << results.size() << endl;
+
+    cout << " Detector \\ Keypoints|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
+    cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
+
+    for(auto data:results)
+    {
+        cout << data.detector << " | " << data.BRISK << " | " << data.BRIEF << " | " << data.ORB << " | " << data.FREAK << " | " << data.AKAZE << " | " << data.SIFT << endl;
+    }
 }
 
 void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &eval1Summary, const string &separator, bool displayAllResults)
@@ -112,7 +127,7 @@ void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &eval1Summary
     }
 }
 
-void PerformanceEvaluation2(Experiment &experiment, const string &separator, bool displayAllResults)
+void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMatches> &eval2Summary, const string &separator, bool displayAllResults)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------\n" << endl;
 
@@ -144,6 +159,60 @@ void PerformanceEvaluation2(Experiment &experiment, const string &separator, boo
         total += result.keypointMatch.totalMatches;
     }
     cout << "Total: " << separator << total << endl;
+
+    TotalKeypointMatches m;
+    int index = 0;
+
+    if (eval2Summary.size() > 0)
+    {
+        for (auto elememnt:eval2Summary)
+        {
+            cout << "DEBUG HELLO" << endl;
+            if (elememnt.detector == DetectorNameAsString(experiment.hyperparameters.keypointDetector))
+            {
+                m = elememnt;
+                cout << "DEBUG: Getting TotalKeypointMatches from vector for " << elememnt.detector << " INDEX= "
+                     << index << endl;
+                eval2Summary.erase(eval2Summary.begin()+index);
+                break;
+            }
+            index++;
+        }
+    }
+    else
+    {
+        m = TotalKeypointMatches();
+        cout << "DEBUG NEW TotalKeypointMatches()" << endl;
+    }
+
+    if(experiment.hyperparameters.descriptor == "BRISK")
+    {
+        m.BRISK = total;
+    }
+    else if(experiment.hyperparameters.descriptor == "BRIEF")
+    {
+        m.BRIEF = total;
+    }
+    else if(experiment.hyperparameters.descriptor == "ORB")
+    {
+        m.ORB = total;
+    }
+    else if(experiment.hyperparameters.descriptor == "FREAK")
+    {
+        m.FREAK = total;
+    }
+    else if(experiment.hyperparameters.descriptor == "AKAZE")
+    {
+        m.AKAZE = total;
+    }
+    else if(experiment.hyperparameters.descriptor == "SIFT")
+    {
+        m.SIFT = total;
+    }
+
+    m.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
+    cout << "DEBUG UPDATING  m" << endl;
+    eval2Summary.push_back(m);
 }
 
 

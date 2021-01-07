@@ -21,8 +21,7 @@ using namespace std;
 
 
 void RunExperiment(Experiment &experiment);
-
-void RunExperimentSet(std::vector<KeypointDetector> detectors, Hyperparameters hyperparameters);
+void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<KeypointDetector> detectors, const std::vector<string> descriptors);
 
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
@@ -58,29 +57,47 @@ int main(int argc, const char *argv[])
             KeypointDetector::BRISK
     };
 
-    RunExperimentSet(detectors, experiment.hyperparameters);
+    std::vector<string> descriptors = {
+            "BRISK",
+            "BRIEF",
+            "ORB",
+            "FREAK",
+            "AKAZE",
+            "SIFT"
+    };
+
+    RunExperimentSet(experiment.hyperparameters, detectors, descriptors);
 
     return 0;
 }
 
-void RunExperimentSet(std::vector<KeypointDetector> detectors, Hyperparameters hyperparameters)
+void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<KeypointDetector> detectors, const std::vector<string> descriptors)
 {
     TotalKeypoints eval1Summary;
     PerformanceEvaluationSummary summary = PerformanceEvaluationSummary();
     summary.eval1Summary = eval1Summary;
 
+    std::vector<TotalKeypointMatches> eval2Summary;
+    summary.eval2Summary = eval2Summary;
+
     for(auto detector:detectors)
     {
-        cout << "RUNNING EXPERIMENT ON " << DetectorNameAsString(detector) << "  detector" << endl;
-        hyperparameters.keypointDetector = detector;
-        Experiment ex = Experiment();
-        ex.hyperparameters = hyperparameters;
+        for(auto descriptor:descriptors)
+        {
+            cout << "RUNNING EXPERIMENT WITH detector = " << DetectorNameAsString(detector) << "  and descriptor = " << descriptor << endl;
+            hyperparameters.keypointDetector = detector;
+            hyperparameters.descriptor = descriptor;
 
-        RunExperiment(ex);
-        ProcessExperimentResults(ex, summary, false);
+            Experiment ex = Experiment();
+            ex.hyperparameters = hyperparameters;
+
+            RunExperiment(ex);
+            ProcessExperimentResults(ex, summary, false);
+        }
     }
 
     DisplayPE1Summary(summary.eval1Summary);
+    DisplayPE2Summary(summary.eval2Summary);
 }
 
 
