@@ -41,16 +41,22 @@ int main(int argc, const char *argv[])
     Experiment experiment = Experiment();
     experiment.hyperparameters = hyperparameters;
     RunExperiment(experiment);
-    ProcessExperimentResults(experiment, false);
+
+    PerformanceEvaluationSummary summary = PerformanceEvaluationSummary();
+    TotalKeypoints eval1Summary;
+    summary.eval1Summary = eval1Summary;
+    ProcessExperimentResults(experiment, summary, false);
 
     // Run experiments for all detectors
-    std::vector<KeypointDetector> detectors = {KeypointDetector::Shi_Tomasi,
-                                    KeypointDetector::HARRIS,
-                                    KeypointDetector::FAST,
-                                    KeypointDetector::SIFT,
-                                    KeypointDetector::AKAZE,
-                                    KeypointDetector::ORB,
-                                    KeypointDetector::BRISK};
+    std::vector<KeypointDetector> detectors = {
+            KeypointDetector::Shi_Tomasi,
+            KeypointDetector::HARRIS,
+            KeypointDetector::FAST,
+            KeypointDetector::SIFT,
+            KeypointDetector::AKAZE,
+            KeypointDetector::ORB,
+            KeypointDetector::BRISK
+    };
 
     RunExperimentSet(detectors, experiment.hyperparameters);
 
@@ -59,6 +65,10 @@ int main(int argc, const char *argv[])
 
 void RunExperimentSet(std::vector<KeypointDetector> detectors, Hyperparameters hyperparameters)
 {
+    TotalKeypoints eval1Summary;
+    PerformanceEvaluationSummary summary = PerformanceEvaluationSummary();
+    summary.eval1Summary = eval1Summary;
+
     for(auto detector:detectors)
     {
         cout << "RUNNING EXPERIMENT ON " << DetectorNameAsString(detector) << "  detector" << endl;
@@ -67,8 +77,10 @@ void RunExperimentSet(std::vector<KeypointDetector> detectors, Hyperparameters h
         ex.hyperparameters = hyperparameters;
 
         RunExperiment(ex);
-        ProcessExperimentResults(ex, false);
+        ProcessExperimentResults(ex, summary, false);
     }
+
+    DisplayPE1Summary(summary.eval1Summary);
 }
 
 

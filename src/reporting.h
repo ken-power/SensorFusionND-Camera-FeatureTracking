@@ -25,11 +25,11 @@ struct KeypointCountResult
 struct KeypointMatchResult
 {
     KeypointMatchResult(){}
-    std::pair<unsigned int, unsigned int> matchedImagePair;
-    unsigned int totalMatches;
-    unsigned int knnMatches;
-    unsigned int removed;
-    double percentageRemoved;
+    std::pair<unsigned int, unsigned int> matchedImagePair = {0,0};
+    unsigned int totalMatches = 0;
+    unsigned int knnMatches = 0;
+    unsigned int removed = 0;
+    double percentageRemoved = 0.0;
 };
 
 struct ExperimentResult
@@ -40,7 +40,7 @@ struct ExperimentResult
 
     // Performance Evaluation 3
     // Log the time it takes for keypoint detection and descriptor extraction.
-    double descriptorExtractionTime;
+    double descriptorExtractionTime = 0.0;
 };
 
 struct Experiment
@@ -50,38 +50,58 @@ struct Experiment
     Hyperparameters hyperparameters;
 };
 
-struct PerfEval1Line
+struct TotalKeypoints
 {
-    string detector;
-    unsigned int totalKeypoints;
+    TotalKeypoints(){}
+    unsigned int SHI_TOMASI = 0;
+    unsigned int HARRIS = 0;
+    unsigned int FAST = 0;
+    unsigned int BRISK = 0;
+    unsigned int ORB = 0;
+    unsigned int AKAZE = 0;
+    unsigned int SIFT = 0;
 };
 
-struct PerfEval2Line
+struct TotalKeypointMatches
 {
+    TotalKeypointMatches(){}
     string detector;
-    unsigned int totalKeypointMatchesBRISK;
-    unsigned int totalKeypointMatchesBRIEF;
-    unsigned int totalKeypointMatchesORG;
-    unsigned int totalKeypointMatchesFREAK;
-    unsigned int totalKeypointMatchesAKAZE;
-    unsigned int totalKeypointMatchesSIFT;
+    unsigned int BRISK = 0;
+    unsigned int BRIEF = 0;
+    unsigned int ORG = 0;
+    unsigned int FREAK = 0;
+    unsigned int AKAZE = 0;
+    unsigned int SIFT = 0;
 };
 
-struct PerfEval3Line
+struct AverageProcessingTimes
 {
+    AverageProcessingTimes(){}
     string detector;
-    double averageProcessingTimeBRISK;
-    double averageProcessingTimeBRIEF;
-    double averageProcessingTimeORG;
-    double averageProcessingTimeFREAK;
-    double averageProcessingTimeAKAZE;
-    double averageProcessingTimeSIFT;
+    double BRISK = 0.0;
+    double BRIEF = 0.0;
+    double ORG = 0.0;
+    double FREAK = 0.0;
+    double AKAZE = 0.0;
+    double SIFT = 0.0;
 };
 
-void ProcessExperimentResults(Experiment &experiment, bool displayAllResults);
-void PerformanceEvaluation1(Experiment &experiment, std::vector<PerfEval1Line> &eval1Summary, const string &separator, bool displayAllResults);
+
+struct PerformanceEvaluationSummary
+{
+    PerformanceEvaluationSummary(){}
+    TotalKeypoints eval1Summary;
+    std::vector<TotalKeypointMatches> eval2Summary;
+    std::vector<AverageProcessingTimes> eval3Summary;
+};
+
+
+void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSummary &summary, bool displayAllResults);
+void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &eval1Summary, const string &separator, bool displayAllResults);
 void PerformanceEvaluation2(Experiment &experiment, const string &separator, bool displayAllResults);
 void PerformanceEvaluation3(Experiment &experiment, const string &separator, bool displayAllResults);
 string DetectorNameAsString(const KeypointDetector detector);
+
+void DisplayPE1Summary(const TotalKeypoints &data);
 
 #endif //CAMERA_FUSION_REPORTING_H

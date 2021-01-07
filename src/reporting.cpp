@@ -26,24 +26,37 @@ string DetectorNameAsString(const KeypointDetector detector)
             return "SIFT";
             break;
         default:
-            cout << "Not using a specified keypoint detector" << endl;
+            cerr << "Not using a specified keypoint detector" << endl;
     }
 }
 
-void ProcessExperimentResults(Experiment &experiment, bool displayAllResults)
+
+void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSummary &summary, bool displayAllResults)
 {
     const string separator = " | ";
 
-    std::vector<PerfEval1Line> eval1Summary;
-    PerformanceEvaluation1(experiment, eval1Summary, separator, displayAllResults);
-
-    cout << "HEEYYYY" << eval1Summary.size();
-
+    PerformanceEvaluation1(experiment, summary.eval1Summary, separator, displayAllResults);
     PerformanceEvaluation2(experiment, separator, displayAllResults);
     PerformanceEvaluation3(experiment, separator, displayAllResults);
 }
 
-void PerformanceEvaluation1(Experiment &experiment, std::vector<PerfEval1Line> &eval1Summary, const string &separator, bool displayAllResults)
+void DisplayPE1Summary(const TotalKeypoints &data)
+{
+    cout << "Performance Evaluation 1 Summary Table" << endl;
+
+    cout << " Detector | Keypoints" << endl;
+    cout << " :--- | ---:" << endl;
+
+    cout << "SHI_TOMASI" << " | " << data.SHI_TOMASI << endl;
+    cout << "HARRIS" << " | " << data.HARRIS << endl;
+    cout << "FAST" << " | " << data.FAST << endl;
+    cout << "BRISK" << " | " << data.BRISK << endl;
+    cout << "ORB" << " | " << data.ORB << endl;
+    cout << "AKAZE" << " | " << data.AKAZE << endl;
+    cout << "SIFT" << " | " << data.SIFT << endl;
+}
+
+void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &eval1Summary, const string &separator, bool displayAllResults)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------\n" << endl;
 
@@ -63,14 +76,40 @@ void PerformanceEvaluation1(Experiment &experiment, std::vector<PerfEval1Line> &
     {
         if(displayAllResults)
             cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.totalKeypoints << separator << result.keypointCount.descriptorMatchingTime << separator << result.keypointCount.precedingVehicleKeypoints << endl;
+
         totalKeypoints += result.keypointCount.totalKeypoints;
+
+        if(experiment.hyperparameters.keypointDetector == Shi_Tomasi)
+        {
+            eval1Summary.SHI_TOMASI = totalKeypoints;
+        }
+        else if(experiment.hyperparameters.keypointDetector == HARRIS)
+        {
+            eval1Summary.HARRIS = totalKeypoints;
+        }
+        else if(experiment.hyperparameters.keypointDetector == FAST)
+        {
+            eval1Summary.FAST = totalKeypoints;
+        }
+        else if(experiment.hyperparameters.keypointDetector == BRISK)
+        {
+            eval1Summary.BRISK = totalKeypoints;
+        }
+        else if(experiment.hyperparameters.keypointDetector == ORB)
+        {
+            eval1Summary.ORB = totalKeypoints;
+        }
+        else if(experiment.hyperparameters.keypointDetector == AKAZE)
+        {
+            eval1Summary.AKAZE = totalKeypoints;
+        }
+        else if(experiment.hyperparameters.keypointDetector == SIFT)
+        {
+            eval1Summary.SIFT = totalKeypoints;
+        }
+
         image++;
     }
-
-    PerfEval1Line line = PerfEval1Line();
-    line.totalKeypoints = totalKeypoints;
-    line.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
-    eval1Summary.push_back(line);
 }
 
 void PerformanceEvaluation2(Experiment &experiment, const string &separator, bool displayAllResults)

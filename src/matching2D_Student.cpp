@@ -231,7 +231,12 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
     }     // eof loop over rows
 
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "Harris detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+
+    double duration = 1000 * t / 1.0;
+    cout << "Harris detection with n=" << keypoints.size() << " keypoints in " << duration << " ms" << endl;
+
+    result.keypointCount.totalKeypoints = keypoints.size();
+    result.keypointCount.descriptorMatchingTime = duration;
 
     if (bVis)
     {
@@ -287,7 +292,12 @@ void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detecto
     double t = (double)cv::getTickCount();
     detector->detect(img, keypoints);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << detectorName << " with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+
+    double duration = 1000 * t / 1.0;
+    cout << detectorName << " with n= " << keypoints.size() << " keypoints in " << duration << " ms" << endl;
+
+    result.keypointCount.totalKeypoints = keypoints.size();
+    result.keypointCount.descriptorMatchingTime = duration;
 
     if (bVis)
     {
