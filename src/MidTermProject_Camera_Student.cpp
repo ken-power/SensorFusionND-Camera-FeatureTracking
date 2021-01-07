@@ -58,11 +58,14 @@ int main(int argc, const char *argv[])
                   visualizeImageMatches,
                   results);
 
-    cout << "\n\n\n ------------- RESULTS ----------------------" << endl;
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1----------------------" << endl;
+    cout << "Filename | Total Keypoints Detected | Time to detect all keypoints (ms) | Keypoints on Preceding Vehicle" << endl;
+    cout << ":--- | ---:| ---:| ---:" << endl;
     for(auto r:results.results)
     {
-        std::cout << r.keypointCount.imageName << " " << r.keypointCount.numberOfKeypoints << " " << r.keypointCount.matchTiming << endl;
+        std::cout << r.keypointCount.imageName << " " << r.keypointCount.totalKeypoints << " " << r.keypointCount.matchTiming << " " << r.keypointCount.precedingVehicleKeypoints << endl;
     }
+
     return 0;
 }
 
@@ -198,6 +201,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                     it++;
                 }
             }
+            resultLine.keypointCount.precedingVehicleKeypoints = keypoints.size();
         }
 
         //// EOF STUDENT ASSIGNMENT

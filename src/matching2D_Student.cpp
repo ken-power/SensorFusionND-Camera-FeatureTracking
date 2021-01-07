@@ -161,7 +161,7 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     double duration = 1000 * t / 1.0;
     cout << "Shi-Tomasi detection with n=" << keypoints.size() << " keypoints in " << duration << " ms" << endl;
 
-    results.keypointCount.numberOfKeypoints = keypoints.size();
+    results.keypointCount.totalKeypoints = keypoints.size();
     results.keypointCount.matchTiming = duration;
 
     if (bVis)

@@ -44,8 +44,9 @@ struct KeypointCountResult
 {
     KeypointCountResult(){}
     string imageName;
-    unsigned int numberOfKeypoints;
+    unsigned int totalKeypoints;
     double matchTiming;
+    unsigned int precedingVehicleKeypoints;
 };
 
 // Performance Evaluation 2
