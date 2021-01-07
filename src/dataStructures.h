@@ -67,8 +67,6 @@ struct KeypointMatchResult
 struct TimingResult
 {
     TimingResult(){}
-    std::pair<string, string> matchedImagePair;
-    double detectionTime;
     double descriptorExtractionTime;
 };
 
