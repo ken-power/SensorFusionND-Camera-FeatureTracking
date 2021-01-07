@@ -29,8 +29,6 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    bool visualizeImageMatches,
                    ExperimentResults &results);
 
-string DetectorNameAsString(KeypointDetector detector);
-
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
