@@ -83,7 +83,7 @@ struct ExperimentResultLine
 struct ExperimentResults
 {
     ExperimentResults(){}
-    std::vector<ExperimentResultLine> results;
+    std::vector<ExperimentResultLine> data;
     Hyperparameters hyperparameters;
 };
 

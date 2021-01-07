@@ -61,19 +61,21 @@ int main(int argc, const char *argv[])
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------" << endl;
     cout << "Filename | Total Keypoints Detected | Time to detect all keypoints (ms) | Keypoints on Preceding Vehicle" << endl;
     cout << ":--- | ---:| ---:| ---:" << endl;
-    for(auto r:results.results)
+    for(auto datum:results.data)
     {
-        std::cout << r.keypointCount.imageName << " " << r.keypointCount.totalKeypoints << " " << r.keypointCount.matchTiming << " " << r.keypointCount.precedingVehicleKeypoints << endl;
+        std::cout << datum.keypointCount.imageName << " " << datum.keypointCount.totalKeypoints << " " << datum.keypointCount.matchTiming << " " << datum.keypointCount.precedingVehicleKeypoints << endl;
     }
 
 
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------" << endl;
     cout << "Image Pair | Total Keypoints Matched | KNN Matches | Keypoints Removed | % Removed" << endl;
     cout << ":--- | ---:| ---:| ---:| --:" << endl;
-    for(auto r:results.results)
+    for(auto datum:results.data)
     {
-        std::cout << r.keypointMatch.matchedImagePair.second << " --> " << r.keypointMatch.matchedImagePair.first << " " <<  r.keypointMatch.totalMatches << " " << r.keypointMatch.knnMatches << " " << r.keypointMatch.removed << " " << r.keypointMatch.percentageRemoved << endl;
+        std::cout << datum.keypointMatch.matchedImagePair.second << " --> " << datum.keypointMatch.matchedImagePair.first << " " << datum.keypointMatch.totalMatches << " " << datum.keypointMatch.knnMatches << " " << datum.keypointMatch.removed << " " << datum.keypointMatch.percentageRemoved << endl;
     }
+
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 ----------------------" << endl;
 
     return 0;
 }
@@ -312,7 +314,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
             secondImage++;
         }
 
-        results.results.push_back(resultLine);
+        results.data.push_back(resultLine);
     } // eof loop over all images
 
 }
