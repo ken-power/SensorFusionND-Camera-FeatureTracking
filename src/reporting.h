@@ -32,34 +32,29 @@ struct KeypointMatchResult
     double percentageRemoved;
 };
 
-// Performance Evaluation 3
-// Log the time it takes for keypoint detection and descriptor extraction.
-struct TimingResult
+struct ExperimentResult
 {
-    TimingResult(){}
+    ExperimentResult(){}
+    KeypointCountResult keypointCount;
+    KeypointMatchResult keypointMatch;
+
+    // Performance Evaluation 3
+    // Log the time it takes for keypoint detection and descriptor extraction.
     double descriptorExtractionTime;
 };
 
-struct ExperimentResultLine
+struct Experiment
 {
-    ExperimentResultLine(){}
-    KeypointCountResult keypointCount;
-    KeypointMatchResult keypointMatch;
-    TimingResult timing;
-};
-
-struct ExperimentResults
-{
-    ExperimentResults(){}
-    std::vector<ExperimentResultLine> data;
+    Experiment(){}
+    std::vector<ExperimentResult> result;
     Hyperparameters hyperparameters;
 };
 
 
-void DisplayResults(ExperimentResults &results);
-void DisplayPerformanceEvaluation1(ExperimentResults &results, const string &separator);
-void DisplayPerformanceEvaluation2(ExperimentResults &results, const string &separator);
-void DisplayPerformanceEvaluation3(ExperimentResults &results, const string &separator);
+void DisplayResults(Experiment &experiment);
+void DisplayPerformanceEvaluation1(Experiment &experiment, const string &separator);
+void DisplayPerformanceEvaluation2(Experiment &experiment, const string &separator);
+void DisplayPerformanceEvaluation3(Experiment &experiment, const string &separator);
 string DetectorNameAsString(const KeypointDetector detector);
 
 #endif //CAMERA_FUSION_REPORTING_H

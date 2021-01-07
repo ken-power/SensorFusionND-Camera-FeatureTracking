@@ -20,14 +20,9 @@
 using namespace std;
 
 
-void RunExperiment(const KeypointDetector &keypointDetector,
-                   const string descriptor,
-                   const string matcherType,
-                   const string descriptorType,
-                   const string selectorType,
-                   const bool isFocusOnPrecedingVehicleOnly,
-                   bool visualizeImageMatches,
-                   ExperimentResults &results);
+void RunExperiment(Experiment &experiment);
+
+void RunExperimentSet(Hyperparameters hyperparameters);
 
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
@@ -43,39 +38,35 @@ int main(int argc, const char *argv[])
     // visualize matches between current and previous image
     bool visualizeImageMatches = false;
 
-    ExperimentResults results = ExperimentResults();
-    results.hyperparameters.keypointDetector = keypointDetector;
-    results.hyperparameters.descriptor = descriptor;
-    results.hyperparameters.matcherType = matcherType;
-    results.hyperparameters.descriptorType = descriptorType;
-    results.hyperparameters.selectorType = selectorType;
+    Experiment experiment = Experiment();
+    experiment.hyperparameters.keypointDetector = keypointDetector;
+    experiment.hyperparameters.descriptor = descriptor;
+    experiment.hyperparameters.matcherType = matcherType;
+    experiment.hyperparameters.descriptorType = descriptorType;
+    experiment.hyperparameters.selectorType = selectorType;
+    experiment.hyperparameters.visualizeImageMatches = false;
+    experiment.hyperparameters.isFocusOnPrecedingVehicleOnly = true;
 
-    RunExperiment(keypointDetector,
-                  descriptor,
-                  matcherType,
-                  descriptorType,
-                  selectorType,
-                  isFocusOnPrecedingVehicleOnly,
-                  visualizeImageMatches,
-                  results);
+    RunExperiment(experiment);
 
-    DisplayResults(results);
+    DisplayResults(experiment);
+
+    RunExperimentSet(experiment.hyperparameters);
 
     return 0;
 }
+
+void RunExperimentSet(Hyperparameters hyperparameters)
+{
+
+}
+
 
 /*
  * This function encapsulates running an experiment with a given combination of detector, descriptor, matcher,
  * descriptor type, and selector.
  */
-void RunExperiment(const KeypointDetector &keypointDetector,
-                   const string descriptor,
-                   const string matcherType,
-                   const string descriptorType,
-                   const string selectorType,
-                   const bool isFocusOnPrecedingVehicleOnly,
-                   bool visualizeImageMatches,
-                   ExperimentResults &results)
+void RunExperiment(Experiment &experiment)
 {
     /* INIT VARIABLES AND DATA STRUCTURES */
     unsigned int firstImage = 0;
@@ -98,11 +89,11 @@ void RunExperiment(const KeypointDetector &keypointDetector,
     //vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
 
     /* MAIN LOOP OVER ALL IMAGES */
-    ExperimentResultLine resultLine;
+    ExperimentResult resultLine;
 
     for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex++)
     {
-        resultLine = ExperimentResultLine();
+        resultLine = ExperimentResult();
         /* LOAD IMAGE INTO BUFFER */
 
         // assemble filenames for current index
@@ -138,35 +129,35 @@ void RunExperiment(const KeypointDetector &keypointDetector,
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
-        switch (keypointDetector)
+        switch (experiment.hyperparameters.keypointDetector)
         {
             case KeypointDetector::Shi_Tomasi:
                 cout << "*** Using Shi-Tomasi keypoint detector" << endl;
-                detKeypointsShiTomasi(keypoints, imgGray, visualizeImageMatches, resultLine);
+                detKeypointsShiTomasi(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::HARRIS:
                 cout << "*** Using HARRIS keypoint detector" << endl;
-                detKeypointsHarris(keypoints, imgGray, visualizeImageMatches, resultLine);
+                detKeypointsHarris(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::FAST:
                 cout << "*** Using FAST keypoint detector" << endl;
-                detKeypointsFAST(keypoints, imgGray, visualizeImageMatches, resultLine);
+                detKeypointsFAST(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::BRISK:
                 cout << "*** Using BRISK keypoint detector" << endl;
-                detKeypointsBRISK(keypoints, imgGray, visualizeImageMatches, resultLine);
+                detKeypointsBRISK(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::ORB:
                 cout << "*** Using ORB keypoint detector" << endl;
-                detKeypointsORB(keypoints, imgGray, visualizeImageMatches, resultLine);
+                detKeypointsORB(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::AKAZE:
                 cout << "*** Using AKAZE keypoint detector" << endl;
-                detKeypointsAKAZE(keypoints, imgGray, visualizeImageMatches, resultLine);
+                detKeypointsAKAZE(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::SIFT:
                 cout << "*** Using SIFT keypoint detector" << endl;
-                detKeypointsSIFT(keypoints, imgGray, visualizeImageMatches, resultLine);
+                detKeypointsSIFT(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             default:
                 cout << "*** Not using a specified keypoint detector" << endl;
@@ -181,7 +172,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
 
         // define a rectangle that encloses the preceding vehicle
         cv::Rect vehicleRect(535, 180, 180, 150);
-        if (isFocusOnPrecedingVehicleOnly)
+        if (experiment.hyperparameters.isFocusOnPrecedingVehicleOnly)
         {
             for(auto it = keypoints.begin(); it != keypoints.end();)
             {
@@ -209,7 +200,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
         {
             int maxKeypoints = 50;
 
-            if (keypointDetector != KeypointDetector::Shi_Tomasi)
+            if (experiment.hyperparameters.keypointDetector != KeypointDetector::Shi_Tomasi)
             { // there is no response info, so keep the first 50 as they are sorted in descending quality order
                 keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
             }
@@ -231,7 +222,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
         descKeypoints((dataBuffer.end() - 1)->keypoints,
                       (dataBuffer.end() - 1)->cameraImg,
                       descriptors,
-                      descriptor,
+                      experiment.hyperparameters.descriptor,
                       resultLine);
         //// EOF STUDENT ASSIGNMENT
 
@@ -259,9 +250,9 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                 matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
                                  (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
                                  matches,
-                                 descriptorType,
-                                 matcherType,
-                                 selectorType,
+                                 experiment.hyperparameters.descriptorType,
+                                 experiment.hyperparameters.matcherType,
+                                 experiment.hyperparameters.selectorType,
                                  resultLine);
             }
             catch (const std::exception &ex)
@@ -277,7 +268,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
 
             // visualize matches between current and previous image
-            if (visualizeImageMatches)
+            if (experiment.hyperparameters.visualizeImageMatches)
             {
                 cv::Mat matchImg = ((dataBuffer.end() - 1)->cameraImg).clone();
                 cv::drawMatches((dataBuffer.end() - 2)->cameraImg, (dataBuffer.end() - 2)->keypoints,
@@ -297,7 +288,7 @@ void RunExperiment(const KeypointDetector &keypointDetector,
             secondImage++;
         }
 
-        results.data.push_back(resultLine);
+        experiment.result.push_back(resultLine);
     } // eof loop over all images
 
 }

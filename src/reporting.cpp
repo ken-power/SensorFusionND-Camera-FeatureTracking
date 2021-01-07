@@ -30,16 +30,16 @@ string DetectorNameAsString(const KeypointDetector detector)
     }
 }
 
-void DisplayResults(ExperimentResults &results)
+void DisplayResults(Experiment &experiment)
 {
     const string separator = " | ";
 
-    DisplayPerformanceEvaluation1(results, separator);
-    DisplayPerformanceEvaluation2(results, separator);
-    DisplayPerformanceEvaluation3(results, separator);
+    DisplayPerformanceEvaluation1(experiment, separator);
+    DisplayPerformanceEvaluation2(experiment, separator);
+    DisplayPerformanceEvaluation3(experiment, separator);
 }
 
-void DisplayPerformanceEvaluation1(ExperimentResults &results, const string &separator)
+void DisplayPerformanceEvaluation1(Experiment &experiment, const string &separator)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------\n" << endl;
     cout << "Filename" << separator << "Total Keypoints Detected" << separator << "Time to detect all keypoints (ms)"
@@ -50,14 +50,14 @@ void DisplayPerformanceEvaluation1(ExperimentResults &results, const string &sep
         cout << ":--- | ---:| ---:| ---:|" << endl;
     }
     int image = 0;
-    for(auto datum:results.data)
+    for(auto result:experiment.result)
     {
-        cout << "[" << image << "](" << datum.keypointCount.imageName << ")" << separator << datum.keypointCount.totalKeypoints << separator << datum.keypointCount.descriptorMatchingTime << separator << datum.keypointCount.precedingVehicleKeypoints << endl;
+        cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.totalKeypoints << separator << result.keypointCount.descriptorMatchingTime << separator << result.keypointCount.precedingVehicleKeypoints << endl;
         image++;
     }
 }
 
-void DisplayPerformanceEvaluation2(ExperimentResults &results, const string &separator)
+void DisplayPerformanceEvaluation2(Experiment &experiment, const string &separator)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------\n" << endl;
     cout << "Image Pair" << separator << "Total Keypoints Matched" << separator << "KNN Matches" << separator << "Keypoints Removed" << separator << "% Removed" << endl;
@@ -65,31 +65,31 @@ void DisplayPerformanceEvaluation2(ExperimentResults &results, const string &sep
     {
         cout << ":--- | ---:| ---:| ---:| ---:|" << endl;
     }
-    for(auto datum:results.data)
+    for(auto result:experiment.result)
     {
-        cout << datum.keypointMatch.matchedImagePair.second << " --> " << datum.keypointMatch.matchedImagePair.first << separator << datum.keypointMatch.totalMatches << separator << datum.keypointMatch.knnMatches << separator << datum.keypointMatch.removed << separator << datum.keypointMatch.percentageRemoved << endl;
+        cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << separator << result.keypointMatch.knnMatches << separator << result.keypointMatch.removed << separator << result.keypointMatch.percentageRemoved << endl;
     }
 
     cout << "\nDisplay just the KNN Matches:\n" << endl;
-    cout << "Image Pair" << separator << results.hyperparameters.descriptor << endl;
+    cout << "Image Pair" << separator << experiment.hyperparameters.descriptor << endl;
     unsigned int total = 0;
 
     if (separator == " | ") // only needed for markdown table
     {
         cout << ":--- | ---:|" << endl;
     }
-    for(auto datum:results.data)
+    for(auto result:experiment.result)
     {
-        cout << datum.keypointMatch.matchedImagePair.second << " --> " << datum.keypointMatch.matchedImagePair.first << separator << datum.keypointMatch.totalMatches << endl;
-        total += datum.keypointMatch.totalMatches;
+        cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << endl;
+        total += result.keypointMatch.totalMatches;
     }
     cout << "Total: " << separator << total << endl;
 }
 
 
-void DisplayPerformanceEvaluation3(ExperimentResults &results, const string &separator)
+void DisplayPerformanceEvaluation3(Experiment &experiment, const string &separator)
 {
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 (" << DetectorNameAsString(results.hyperparameters.keypointDetector) << " + " << results.hyperparameters.descriptor << ")----------------------\n" << endl;
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")----------------------\n" << endl;
     cout << "Image" << separator << "Detection Time (ms)" << separator << "Descriptor Extraction Time (ms)" << endl;
     double totalExtractionTime = 0;
     double totalDetectionTime = 0;
@@ -99,11 +99,11 @@ void DisplayPerformanceEvaluation3(ExperimentResults &results, const string &sep
     {
         cout << ":--- | ---:| ---:|" << endl;
     }
-    for(auto datum:results.data)
+    for(auto result:experiment.result)
     {
-        cout << "[" << image << "](" << datum.keypointCount.imageName << ")" << separator << datum.keypointCount.descriptorMatchingTime << separator << datum.timing.descriptorExtractionTime << endl;
-        totalDetectionTime += datum.keypointCount.descriptorMatchingTime;
-        totalExtractionTime += datum.timing.descriptorExtractionTime;
+        cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.descriptorMatchingTime << separator << result.descriptorExtractionTime << endl;
+        totalDetectionTime += result.keypointCount.descriptorMatchingTime;
+        totalExtractionTime += result.descriptorExtractionTime;
         image++;
     }
     cout << "Totals (ms): " << separator << totalDetectionTime << separator << totalExtractionTime << endl;

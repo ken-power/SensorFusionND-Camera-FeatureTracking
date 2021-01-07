@@ -12,7 +12,7 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
                       string descriptorType,
                       string matcherType,
                       string selectorType,
-                      ExperimentResultLine &results)
+                      ExperimentResult &result)
 {
     // configure matcher
     bool crossCheck = false;
@@ -76,15 +76,15 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
 
         cout << " => keypoints removed = " << keypointsRemoved << " (" << percentageKeypointsRemoved << "%)" << endl;
 
-        results.keypointMatch.totalMatches = matches.size();
-        results.keypointMatch.knnMatches = knn_matches.size();
-        results.keypointMatch.removed = keypointsRemoved;
-        results.keypointMatch.percentageRemoved = percentageKeypointsRemoved;
+        result.keypointMatch.totalMatches = matches.size();
+        result.keypointMatch.knnMatches = knn_matches.size();
+        result.keypointMatch.removed = keypointsRemoved;
+        result.keypointMatch.percentageRemoved = percentageKeypointsRemoved;
     }
 }
 
 // Use one of several types of state-of-art descriptors to uniquely identify keypoints
-void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, string descriptorType, ExperimentResultLine &results)
+void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, string descriptorType, ExperimentResult &result)
 {
     // select appropriate descriptor
     cv::Ptr<cv::DescriptorExtractor> extractor;
@@ -129,11 +129,11 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
     double extractionTime = 1000 * t / 1.0;
     cout << descriptorType << " descriptor extraction in " << extractionTime << " ms" << endl;
-    results.timing.descriptorExtractionTime = extractionTime;
+    result.descriptorExtractionTime = extractionTime;
 }
 
 // Detect keypoints in image using the traditional Shi-Thomasi detector
-void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     // compute detector parameters based on image size
     int blockSize = 4;       //  size of an average block for computing a derivative covariation matrix over each pixel neighborhood
@@ -162,16 +162,16 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     double duration = 1000 * t / 1.0;
     cout << "Shi-Tomasi detection with n=" << keypoints.size() << " keypoints in " << duration << " ms" << endl;
 
-    results.keypointCount.totalKeypoints = keypoints.size();
-    results.keypointCount.descriptorMatchingTime = duration;
+    result.keypointCount.totalKeypoints = keypoints.size();
+    result.keypointCount.descriptorMatchingTime = duration;
 
     if (bVis)
     {
-        visualizeKeypoints(keypoints, img, "Shi-Tomasi Corner Detection Results", results);
+        visualizeKeypoints(keypoints, img, "Shi-Tomasi Corner Detection Results", result);
     }
 }
 
-void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     // Detector parameters
     int blockSize = 2;     // for every pixel, a blockSize × blockSize neighborhood is considered
@@ -235,12 +235,12 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
 
     if (bVis)
     {
-        visualizeKeypoints(keypoints, img, "Harris Corner Detection Results", results);
+        visualizeKeypoints(keypoints, img, "Harris Corner Detection Results", result);
     }
 }
 
 
-void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     // difference between intensity of the central pixel and pixels of a circle around this pixel
     int threshold = 30;
@@ -251,38 +251,38 @@ void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     cv::FastFeatureDetector::DetectorType type = cv::FastFeatureDetector::TYPE_9_16; // TYPE_9_16, TYPE_7_12, TYPE_5_8
     cv::Ptr<cv::FeatureDetector> detector = cv::FastFeatureDetector::create(threshold, bNMS, type);
 
-    detectKeypoints(detector, "FAST", keypoints, img, bVis, results);
+    detectKeypoints(detector, "FAST", keypoints, img, bVis, result);
 }
 
-void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::BRISK::create();
 
-    detectKeypoints(detector, "BRISK", keypoints, img, bVis, results);
+    detectKeypoints(detector, "BRISK", keypoints, img, bVis, result);
 }
 
-void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::ORB::create();
 
-    detectKeypoints(detector, "ORB", keypoints, img, bVis, results);
+    detectKeypoints(detector, "ORB", keypoints, img, bVis, result);
 }
 
-void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::AKAZE::create();
 
-    detectKeypoints(detector, "AKAZE", keypoints, img, bVis, results);
+    detectKeypoints(detector, "AKAZE", keypoints, img, bVis, result);
 }
 
-void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::SIFT::create();
 
-    detectKeypoints(detector, "SIFT", keypoints, img, bVis, results);
+    detectKeypoints(detector, "SIFT", keypoints, img, bVis, result);
 }
 
-void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResultLine &results)
+void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     double t = (double)cv::getTickCount();
     detector->detect(img, keypoints);
@@ -292,11 +292,11 @@ void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detecto
     if (bVis)
     {
         string windowName = detectorName + " Corner Detection Results";
-        visualizeKeypoints(keypoints, img, windowName, results);
+        visualizeKeypoints(keypoints, img, windowName, result);
     }
 }
 
-void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string windowName, ExperimentResultLine &results)
+void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string windowName, ExperimentResult &result)
 {
     cv::Mat visImage = img.clone();
     cv::drawKeypoints(img,

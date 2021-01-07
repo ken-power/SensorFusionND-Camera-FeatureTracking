@@ -35,6 +35,8 @@ struct Hyperparameters
     string matcherType;
     string descriptorType;
     string selectorType;
+    bool visualizeImageMatches = false;
+    bool isFocusOnPrecedingVehicleOnly = false;
 };
 
 
