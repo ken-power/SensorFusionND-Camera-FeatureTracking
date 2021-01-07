@@ -62,7 +62,7 @@ void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results)
 
     cout << "PE2: Result size = " << results.size() << endl;
 
-    cout << " Detector \\ Keypoints|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
+    cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
     for(auto data:results)
