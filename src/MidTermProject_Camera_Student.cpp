@@ -69,7 +69,7 @@ void DisplayResults(ExperimentResults &results)
 {
     const string separator = " | ";
 
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------" << endl;
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------\n" << endl;
     cout << "Filename" << separator << "Total Keypoints Detected" << separator << "Time to detect all keypoints (ms)"
          << separator << "Keypoints on Preceding Vehicle" << endl;
 
@@ -85,18 +85,33 @@ void DisplayResults(ExperimentResults &results)
     }
 
 
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------" << endl;
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------\n" << endl;
     cout << "Image Pair" << separator << "Total Keypoints Matched" << separator << "KNN Matches" << separator << "Keypoints Removed" << separator << "% Removed" << endl;
     if (separator == " | ") // only needed for markdown table
     {
-        cout << ":--- | ---:| ---:| ---:| --:|" << endl;
+        cout << ":--- | ---:| ---:| ---:| ---:|" << endl;
     }
     for(auto datum:results.data)
     {
         cout << datum.keypointMatch.matchedImagePair.second << " --> " << datum.keypointMatch.matchedImagePair.first << separator << datum.keypointMatch.totalMatches << separator << datum.keypointMatch.knnMatches << separator << datum.keypointMatch.removed << separator << datum.keypointMatch.percentageRemoved << endl;
     }
 
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 ----------------------" << endl;
+
+    cout << "\nDisplay just the KNN Matches:\n" << endl;
+    cout << "Image Pair" << separator << results.hyperparameters.descriptor << endl;
+    unsigned int total = 0;
+    if (separator == " | ") // only needed for markdown table
+    {
+        cout << ":--- | ---:|" << endl;
+    }
+    for(auto datum:results.data)
+    {
+        cout << datum.keypointMatch.matchedImagePair.second << " --> " << datum.keypointMatch.matchedImagePair.first << separator << datum.keypointMatch.totalMatches << endl;
+        total += datum.keypointMatch.totalMatches;
+    }
+    cout << "Total: " << separator << total << endl;
+
+    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 ----------------------\n" << endl;
 }
 
 
