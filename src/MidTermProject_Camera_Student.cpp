@@ -28,6 +28,8 @@ void RunExperiment(const KeypointDetector &keypointDetector,
                    bool visualizeImageMatches,
                    ExperimentResults &results);
 
+void DisplayResults(ExperimentResults &results);
+
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
@@ -58,26 +60,43 @@ int main(int argc, const char *argv[])
                   visualizeImageMatches,
                   results);
 
+    DisplayResults(results);
+
+    return 0;
+}
+
+void DisplayResults(ExperimentResults &results)
+{
+    const string separator = " | ";
+
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------" << endl;
-    cout << "Filename | Total Keypoints Detected | Time to detect all keypoints (ms) | Keypoints on Preceding Vehicle" << endl;
-    cout << ":--- | ---:| ---:| ---:" << endl;
+    cout << "Filename" << separator << "Total Keypoints Detected" << separator << "Time to detect all keypoints (ms)"
+         << separator << "Keypoints on Preceding Vehicle" << endl;
+
+    if (separator == " | ") // only needed for markdown table
+    {
+    cout << ":--- | ---:| ---:| ---:|" << endl;
+    }
+    int image = 0;
     for(auto datum:results.data)
     {
-        std::cout << datum.keypointCount.imageName << " " << datum.keypointCount.totalKeypoints << " " << datum.keypointCount.matchTiming << " " << datum.keypointCount.precedingVehicleKeypoints << endl;
+        cout << "["<< image << "](" << datum.keypointCount.imageName << ")" << separator << datum.keypointCount.totalKeypoints << separator << datum.keypointCount.matchTiming << separator << datum.keypointCount.precedingVehicleKeypoints << endl;
+        image++;
     }
 
 
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------" << endl;
-    cout << "Image Pair | Total Keypoints Matched | KNN Matches | Keypoints Removed | % Removed" << endl;
-    cout << ":--- | ---:| ---:| ---:| --:" << endl;
+    cout << "Image Pair" << separator << "Total Keypoints Matched" << separator << "KNN Matches" << separator << "Keypoints Removed" << separator << "% Removed" << endl;
+    if (separator == " | ") // only needed for markdown table
+    {
+        cout << ":--- | ---:| ---:| ---:| --:|" << endl;
+    }
     for(auto datum:results.data)
     {
-        std::cout << datum.keypointMatch.matchedImagePair.second << " --> " << datum.keypointMatch.matchedImagePair.first << " " << datum.keypointMatch.totalMatches << " " << datum.keypointMatch.knnMatches << " " << datum.keypointMatch.removed << " " << datum.keypointMatch.percentageRemoved << endl;
+        cout << datum.keypointMatch.matchedImagePair.second << " --> " << datum.keypointMatch.matchedImagePair.first << separator << datum.keypointMatch.totalMatches << separator << datum.keypointMatch.knnMatches << separator << datum.keypointMatch.removed << separator << datum.keypointMatch.percentageRemoved << endl;
     }
 
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 ----------------------" << endl;
-
-    return 0;
 }
 
 
