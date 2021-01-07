@@ -30,44 +30,65 @@ string DetectorNameAsString(const KeypointDetector detector)
     }
 }
 
-void DisplayResults(Experiment &experiment)
+void ProcessExperimentResults(Experiment &experiment, bool displayAllResults)
 {
     const string separator = " | ";
 
-    DisplayPerformanceEvaluation1(experiment, separator);
-    DisplayPerformanceEvaluation2(experiment, separator);
-    DisplayPerformanceEvaluation3(experiment, separator);
+    std::vector<PerfEval1Line> eval1Summary;
+    PerformanceEvaluation1(experiment, eval1Summary, separator, displayAllResults);
+
+    cout << "HEEYYYY" << eval1Summary.size();
+
+    PerformanceEvaluation2(experiment, separator, displayAllResults);
+    PerformanceEvaluation3(experiment, separator, displayAllResults);
 }
 
-void DisplayPerformanceEvaluation1(Experiment &experiment, const string &separator)
+void PerformanceEvaluation1(Experiment &experiment, std::vector<PerfEval1Line> &eval1Summary, const string &separator, bool displayAllResults)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------\n" << endl;
-    cout << "Filename" << separator << "Total Keypoints Detected" << separator << "Time to detect all keypoints (ms)"
-         << separator << "Keypoints on Preceding Vehicle" << endl;
+
+    if(displayAllResults)
+        cout << "Filename" << separator << "Total Keypoints Detected" << separator << "Time to detect all keypoints (ms)"
+             << separator << "Keypoints on Preceding Vehicle" << endl;
 
     if (separator == " | ") // only needed for markdown table
     {
-        cout << ":--- | ---:| ---:| ---:|" << endl;
+        if(displayAllResults)
+            cout << ":--- | ---:| ---:| ---:|" << endl;
     }
-    int image = 0;
+    unsigned int image = 0;
+    unsigned int totalKeypoints = 0;
+
     for(auto result:experiment.result)
     {
-        cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.totalKeypoints << separator << result.keypointCount.descriptorMatchingTime << separator << result.keypointCount.precedingVehicleKeypoints << endl;
+        if(displayAllResults)
+            cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.totalKeypoints << separator << result.keypointCount.descriptorMatchingTime << separator << result.keypointCount.precedingVehicleKeypoints << endl;
+        totalKeypoints += result.keypointCount.totalKeypoints;
         image++;
     }
+
+    PerfEval1Line line = PerfEval1Line();
+    line.totalKeypoints = totalKeypoints;
+    line.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
+    eval1Summary.push_back(line);
 }
 
-void DisplayPerformanceEvaluation2(Experiment &experiment, const string &separator)
+void PerformanceEvaluation2(Experiment &experiment, const string &separator, bool displayAllResults)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------\n" << endl;
-    cout << "Image Pair" << separator << "Total Keypoints Matched" << separator << "KNN Matches" << separator << "Keypoints Removed" << separator << "% Removed" << endl;
+
+    if(displayAllResults)
+        cout << "Image Pair" << separator << "Total Keypoints Matched" << separator << "KNN Matches" << separator << "Keypoints Removed" << separator << "% Removed" << endl;
+
     if (separator == " | ") // only needed for markdown table
     {
-        cout << ":--- | ---:| ---:| ---:| ---:|" << endl;
+        if(displayAllResults)
+            cout << ":--- | ---:| ---:| ---:| ---:|" << endl;
     }
     for(auto result:experiment.result)
     {
-        cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << separator << result.keypointMatch.knnMatches << separator << result.keypointMatch.removed << separator << result.keypointMatch.percentageRemoved << endl;
+        if(displayAllResults)
+            cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << separator << result.keypointMatch.knnMatches << separator << result.keypointMatch.removed << separator << result.keypointMatch.percentageRemoved << endl;
     }
 
     cout << "\nDisplay just the KNN Matches:\n" << endl;
@@ -87,24 +108,30 @@ void DisplayPerformanceEvaluation2(Experiment &experiment, const string &separat
 }
 
 
-void DisplayPerformanceEvaluation3(Experiment &experiment, const string &separator)
+void PerformanceEvaluation3(Experiment &experiment, const string &separator, bool displayAllResults)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")----------------------\n" << endl;
-    cout << "Image" << separator << "Detection Time (ms)" << separator << "Descriptor Extraction Time (ms)" << endl;
+
+    if(displayAllResults)
+        cout << "Image" << separator << "Detection Time (ms)" << separator << "Descriptor Extraction Time (ms)" << endl;
+
     double totalExtractionTime = 0;
     double totalDetectionTime = 0;
     int image = 0;
 
     if (separator == " | ") // only needed for markdown table
     {
-        cout << ":--- | ---:| ---:|" << endl;
+        if(displayAllResults)
+            cout << ":--- | ---:| ---:|" << endl;
     }
     for(auto result:experiment.result)
     {
-        cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.descriptorMatchingTime << separator << result.descriptorExtractionTime << endl;
+        if(displayAllResults)
+            cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.descriptorMatchingTime << separator << result.descriptorExtractionTime << endl;
         totalDetectionTime += result.keypointCount.descriptorMatchingTime;
         totalExtractionTime += result.descriptorExtractionTime;
         image++;
     }
-    cout << "Totals (ms): " << separator << totalDetectionTime << separator << totalExtractionTime << endl;
+    if(displayAllResults)
+        cout << "Totals (ms): " << separator << totalDetectionTime << separator << totalExtractionTime << endl;
 }

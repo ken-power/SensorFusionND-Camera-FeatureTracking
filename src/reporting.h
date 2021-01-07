@@ -50,11 +50,38 @@ struct Experiment
     Hyperparameters hyperparameters;
 };
 
+struct PerfEval1Line
+{
+    string detector;
+    unsigned int totalKeypoints;
+};
 
-void DisplayResults(Experiment &experiment);
-void DisplayPerformanceEvaluation1(Experiment &experiment, const string &separator);
-void DisplayPerformanceEvaluation2(Experiment &experiment, const string &separator);
-void DisplayPerformanceEvaluation3(Experiment &experiment, const string &separator);
+struct PerfEval2Line
+{
+    string detector;
+    unsigned int totalKeypointMatchesBRISK;
+    unsigned int totalKeypointMatchesBRIEF;
+    unsigned int totalKeypointMatchesORG;
+    unsigned int totalKeypointMatchesFREAK;
+    unsigned int totalKeypointMatchesAKAZE;
+    unsigned int totalKeypointMatchesSIFT;
+};
+
+struct PerfEval3Line
+{
+    string detector;
+    double averageProcessingTimeBRISK;
+    double averageProcessingTimeBRIEF;
+    double averageProcessingTimeORG;
+    double averageProcessingTimeFREAK;
+    double averageProcessingTimeAKAZE;
+    double averageProcessingTimeSIFT;
+};
+
+void ProcessExperimentResults(Experiment &experiment, bool displayAllResults);
+void PerformanceEvaluation1(Experiment &experiment, std::vector<PerfEval1Line> &eval1Summary, const string &separator, bool displayAllResults);
+void PerformanceEvaluation2(Experiment &experiment, const string &separator, bool displayAllResults);
+void PerformanceEvaluation3(Experiment &experiment, const string &separator, bool displayAllResults);
 string DetectorNameAsString(const KeypointDetector detector);
 
 #endif //CAMERA_FUSION_REPORTING_H

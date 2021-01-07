@@ -22,43 +22,53 @@ using namespace std;
 
 void RunExperiment(Experiment &experiment);
 
-void RunExperimentSet(Hyperparameters hyperparameters);
+void RunExperimentSet(std::vector<KeypointDetector> detectors, Hyperparameters hyperparameters);
 
 /* MAIN PROGRAM */
 int main(int argc, const char *argv[])
 {
-    KeypointDetector keypointDetector = KeypointDetector::Shi_Tomasi;
-    string descriptor = "BRIEF"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
-    string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
-    string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
-    string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
+    Hyperparameters hyperparameters = Hyperparameters();
+    hyperparameters.keypointDetector = KeypointDetector::Shi_Tomasi;
+    hyperparameters.descriptor = "BRIEF";                   // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+    hyperparameters.matcherType = "MAT_BF";                 // MAT_BF, MAT_FLANN
+    hyperparameters.descriptorType = "DES_BINARY";          // DES_BINARY, DES_HOG
+    hyperparameters.selectorType = "SEL_KNN";               // SEL_NN, SEL_KNN
+    hyperparameters.visualizeImageMatches = false;          // visualize matches between current and previous image?
+    hyperparameters.isFocusOnPrecedingVehicleOnly = true;   // only keep keypoints on the preceding vehicle?
 
-    // only keep keypoints on the preceding vehicle
-    bool isFocusOnPrecedingVehicleOnly = true;
-    // visualize matches between current and previous image
-    bool visualizeImageMatches = false;
 
+    // Run experiment for one specified detector
     Experiment experiment = Experiment();
-    experiment.hyperparameters.keypointDetector = keypointDetector;
-    experiment.hyperparameters.descriptor = descriptor;
-    experiment.hyperparameters.matcherType = matcherType;
-    experiment.hyperparameters.descriptorType = descriptorType;
-    experiment.hyperparameters.selectorType = selectorType;
-    experiment.hyperparameters.visualizeImageMatches = false;
-    experiment.hyperparameters.isFocusOnPrecedingVehicleOnly = true;
-
+    experiment.hyperparameters = hyperparameters;
     RunExperiment(experiment);
+    ProcessExperimentResults(experiment, false);
 
-    DisplayResults(experiment);
+    // Run experiments for all detectors
+    std::vector<KeypointDetector> detectors = {KeypointDetector::Shi_Tomasi,
+                                    KeypointDetector::HARRIS,
+                                    KeypointDetector::FAST,
+                                    KeypointDetector::SIFT,
+                                    KeypointDetector::AKAZE,
+                                    KeypointDetector::ORB,
+                                    KeypointDetector::BRISK};
 
-    RunExperimentSet(experiment.hyperparameters);
+    RunExperimentSet(detectors, experiment.hyperparameters);
 
     return 0;
 }
 
-void RunExperimentSet(Hyperparameters hyperparameters)
+void RunExperimentSet(std::vector<KeypointDetector> detectors, Hyperparameters hyperparameters)
 {
+    for(auto detector:detectors)
+    {
+        cout << "RUNNING EXPERIMENT ON " << DetectorNameAsString(detector) << "  detector" << endl;
+        hyperparameters.keypointDetector = detector;
+        Experiment ex = Experiment();
+        ex.hyperparameters = hyperparameters;
 
+        RunExperiment(ex);
+        ProcessExperimentResults(ex, false);
+    }
 }
 
 
