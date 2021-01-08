@@ -423,6 +423,10 @@ ORB | 5000
 AKAZE | 13430
 SIFT | 13861
 
+The following chart shows the number of keypoints detected by each detector on the preceding vehicle:
+
+![Keypoints detected on preceding vehicle](results/1.KeypointsOnPrecedingVehicle.png)
+
 
 ## Performance Evaluation 2: Number of Matched Keypoints
 
@@ -430,13 +434,13 @@ Count the number of matched keypoints for all 10 images using all possible combi
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 767 | 944 | 1814 | 766 | 0 | 926
-HARRIS | 142 | 173 | 320 | 146 | 0 | 163
-FAST | 899 | 1099 | 2162 | 881 | 0 | 1048
-BRISK | 1570 | 1704 | 3020 | 1526 | 0 | 1662
-ORB | 751 | 545 | 1522 | 421 | 0 | 765
+Shi-Tomasi | 767 | 944 | 1814 | 766 |  | 926
+HARRIS | 142 | 173 | 320 | 146 |  | 163
+FAST | 899 | 1099 | 2162 | 881 |  | 1048
+BRISK | 1570 | 1704 | 3020 | 1526 |  | 1662
+ORB | 751 | 545 | 1522 | 421 | | 765
 AKAZE | 1215 | 1266 | 2372 | 1188 | 2518 | 1273
-SIFT | 304 | 338 | 0 | 274 | 0 | 801
+SIFT | 304 | 338 | | 274 |  | 801
 
 The number of matches per detector-descriptor pair are shown visually in the following graph:
 
@@ -451,13 +455,13 @@ Log the time it takes for keypoint detection and descriptor extraction.
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 113.961 | 103.281 | 182.746 | 88.6761 | 0 | 88.6581
-HARRIS | 117.739 | 115.977 | 224.026 | 114.519 | 0 | 120.658
-FAST | 2.75996 | 2.84834 | 5.50425 | 2.74408 | 0 | 2.74581
-BRISK | 49.2949 | 49.3449 | 103.928 | 51.1041 | 0 | 49.9847
-ORB | 17.722 | 13.3629 | 20.6844 | 11.4591 | 0 | 12.4044
+Shi-Tomasi | 113.961 | 103.281 | 182.746 | 88.6761 |  | 88.6581
+HARRIS | 117.739 | 115.977 | 224.026 | 114.519 |  | 120.658
+FAST | 2.75996 | 2.84834 | 5.50425 | 2.74408 |  | 2.74581
+BRISK | 49.2949 | 49.3449 | 103.928 | 51.1041 |  | 49.9847
+ORB | 17.722 | 13.3629 | 20.6844 | 11.4591 |  | 12.4044
 AKAZE | 170.732 | 174.562 | 340.939 | 175.438 | 368.825 | 183.47
-SIFT | 251.051 | 247.2 | 0 | 244.247 | 0 | 260.259
+SIFT | 251.051 | 247.2 |  | 244.247 |  | 260.259
 
 These keypoint detection times are plotted for comparison in this graph:
 
@@ -468,20 +472,58 @@ These keypoint detection times are plotted for comparison in this graph:
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 16.0448 | 8.91525 | 40.1351 | 164.883 | 0 | 108.667
-HARRIS | 9.76207 | 5.42603 | 41.2102 | 155.613 | 0 | 123.167
-FAST | 8.54358 | 3.68155 | 18.1524 | 80.7901 | 0 | 57.0617
-BRISK | 4.30439 | 2.03225 | 21.3602 | 27.7593 | 0 | 31.6481
-ORB | 3.00601 | 2.8468 | 25.0946 | 31.4454 | 0 | 59.4137
+Shi-Tomasi | 16.0448 | 8.91525 | 40.1351 | 164.883 |  | 108.667
+HARRIS | 9.76207 | 5.42603 | 41.2102 | 155.613 |  | 123.167
+FAST | 8.54358 | 3.68155 | 18.1524 | 80.7901 |  | 57.0617
+BRISK | 4.30439 | 2.03225 | 21.3602 | 27.7593 |  | 31.6481
+ORB | 3.00601 | 2.8468 | 25.0946 | 31.4454 |  | 59.4137
 AKAZE | 8.55506 | 4.42716 | 32.1053 | 43.9621 | 311.096 | 67.973
-SIFT | 6.2278 | 5.26704 | 0 | 55.5796 | 0 | 197.059
+SIFT | 6.2278 | 5.26704 |  | 55.5796 |  | 197.059
 
 These descriptor extraction times are plotted for comparison in this graph:
 
 ![](results/3b.DescriptorExtractionTimes.png)
 
+## Observations
 
-#### Recommendation for Detecting Keypoints on Vehicles
+Detectors that detect the highest number of keypoints on the preceding vehicle over 10 images:
+1. BRISK (27,116 keypoints)
+2. FAST (17,874 keypoints)
+3. SIFT (13,861keypoints)
+
+Pairs that detect the highest number of matched keypoints between successive image pairs on the preceding vehicle:
+1. BRISK + ORB (3020 keypoints)
+2. AKAZE + AKAZE (2518 keypoints)   
+3. AKAZE + ORB (2372 keypoints)
+
+Fastest keypoint detection:
+1. FAST + FREAK (2.7441 ms) 
+2. FAST + SIFT (2.7458 ms)
+3. FAST + BRISK (2.76 ms)
+
+The FAST detector, in combination with the five descriptors that it works with (all except AKAZE), are the five fastest pairs. The FAST detector, with any of hte supported descriptors, provides the fastest keypoint detection times.
+
+Fastest descriptor extraction:
+1. BRISK + BRIEF (2.0323 ms)
+2. ORB + BRIEF (2.8468 ms)
+3. FAST + BRIEF (3.6816 ms)
+
+
+## Recommendation for Detecting Keypoints on Vehicles
+
+Based on the performance evaluation above, these are the top 3 detector / descriptor combinations that are the best choices for our purpose of detecting keypoints on vehicles:
+1. 
+2. 
+3. 
+
+
+FAST + BRIEF
+Number of keypoints detected: 1099
+Keypoint detection time: 2.8483 ms
+Descriptor extraction time: 3.6816 ms
+
+
+
 
 # Building and Running the Project
 ## Dependencies
