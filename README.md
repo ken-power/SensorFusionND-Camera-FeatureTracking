@@ -1,6 +1,26 @@
 # 2D Feature Tracking
 
+This document contains the following sections:
 
+* [Project Specification](#Project Specification)
+* [Project Report](#Project Report)
+  * [1. Data Buffer Implementation](#1-data-buffer)
+  * [2. Keypoints](#2-keypoints)
+    * [Keypoint Detection](#Keypoint-Detection)
+    * [Keypoint Removal](#Keypoint-Removal)
+  * [3. Descriptors](#3-descriptors)
+    * [Keypoint Descriptors](#Keypoint-Descriptors)
+    * [Descriptor Matching](#Descriptor-Matching)
+    * [Descriptor Distance Ratio](#Descriptor-Distance-Ratio)
+  * [4. Performance Evaluation](#4-performance-evaluation)
+    * [Performance Evaluation 1: Number of Detected Keypoints](#Performance Evaluation 1)
+    * [Performance Evaluation 2: Number of Matched Keypoints](#Performance Evaluation 2)
+    * [Performance Evaluation 3: Keypoint Detection and Descriptor Extraction Times](#Performance Evaluation 3)
+    * [Observations](#Observations)
+    * [Recommendations for Detecting Keypoints on Vehicles](#Recommendations)
+* [Building and Running the Project](#Building and Running the Project)
+* [References](#References)
+  
 # Project Specification
 
 #### Report
@@ -409,7 +429,7 @@ This is implemented in the `matchDescriptors()` function in [matching2D_Student.
 
 These results are recorded from running a total of 35 experiments based on combinations of 7 detectors and 6 descriptors.
 
-## Performance Evaluation 1: Number of Keypoints
+### Performance Evaluation 1: Number of Keypoints
 
 Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.
 
@@ -433,7 +453,7 @@ For a more detailed analysis of what is happening image-by-image, the following 
 
 ![](results/NumberOfKeypointsPerImage.png)
 
-## Performance Evaluation 2: Number of Matched Keypoints
+### Performance Evaluation 2: Number of Matched Keypoints
 
 Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.
 
@@ -452,11 +472,11 @@ The number of matches per detector-descriptor pair are shown visually in the fol
 ![](results/2.MatchedKeypointsPerPair.png)
 
 
-## Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
+### Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
 
 Log the time it takes for keypoint detection and descriptor extraction.
 
-### Keypoint Detection Times
+#### Keypoint Detection Times
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
@@ -473,7 +493,7 @@ These keypoint detection times are plotted for comparison in this graph:
 ![](results/3a.KeypointDetectionTimes.png)
 
 
-### Descriptor Extraction Times
+#### Descriptor Extraction Times
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
@@ -489,7 +509,7 @@ These descriptor extraction times are plotted for comparison in this graph:
 
 ![](results/3b.DescriptorExtractionTimes.png)
 
-## Observations
+### Observations
 
 Detectors that detect the highest number of keypoints on the preceding vehicle over 10 images:
 1. BRISK (Total 27,116 keypoints;  Average 2,711 per image)
@@ -514,7 +534,7 @@ Fastest descriptor extraction:
 3. FAST + BRIEF (3.6816 ms)
 
 
-## Recommendation for Detecting Keypoints on Vehicles
+### Recommendation for Detecting Keypoints on Vehicles
 
 Based on the performance evaluation above, these are the top 3 detector / descriptor combinations that are the best choices for our purpose of detecting keypoints on vehicles:
 
