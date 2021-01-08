@@ -77,6 +77,7 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
             Experiment ex = Experiment();
             ex.hyperparameters = hyperparameters;
 
+            // There are some combinations of detector and descriptor that do not work together:
             if(descriptor == "AKAZE")
             {
                 // AKAZE detectors work only with AKAZE descriptors.
@@ -90,6 +91,22 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
                     continue;
                 }
             }
+
+            if(descriptor == "ORB")
+            {
+                // ORB detectors do not work with SIFT descriptors.
+                if (detector != SIFT)
+                {
+                    RunExperiment(ex);
+                }
+                else
+                {
+                    cerr << "Can't use ORB descriptor with SIFT detector." << endl;
+                    continue;
+                }
+            }
+
+            // All other detector-descriptor combinations are assumed to be valid
             RunExperiment(ex);
 
             ProcessExperimentResults(ex, performanceData, false);

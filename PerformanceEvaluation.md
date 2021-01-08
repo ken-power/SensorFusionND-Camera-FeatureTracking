@@ -1,5 +1,5 @@
 # Performance Evaluation
-These results are recorded from running a total of 36 experiments based on combinations of 7 detectors and 6 descriptors.
+These results are recorded from running a total of 35 experiments based on combinations of 7 detectors and 6 descriptors.
 
 ## Performance Evaluation 1: Number of Keypoints
 
@@ -22,13 +22,13 @@ Count the number of matched keypoints for all 10 images using all possible combi
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 767 | 944 | 907 | 766 | 0 | 926
-HARRIS | 142 | 173 | 160 | 146 | 0 | 163
-FAST | 899 | 1099 | 1081 | 881 | 0 | 1048
+Shi-Tomasi | 767 | 944 | 1814 | 766 | 0 | 926
+HARRIS | 142 | 173 | 320 | 146 | 0 | 163
+FAST | 899 | 1099 | 2162 | 881 | 0 | 1048
 SIFT | 304 | 338 | 0 | 274 | 0 | 801
-AKAZE | 1215 | 1266 | 1186 | 1188 | 2518 | 1273
-ORB | 751 | 545 | 761 | 421 | 0 | 765
-BRISK | 1570 | 1704 | 1510 | 1526 | 0 | 1662
+AKAZE | 1215 | 1266 | 2372 | 1188 | 2518 | 1273
+ORB | 751 | 545 | 1522 | 421 | 0 | 765
+BRISK | 1570 | 1704 | 3020 | 1526 | 0 | 1662
 
 ## Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
 
@@ -40,23 +40,23 @@ Log the time it takes for keypoint detection and descriptor extraction.
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 115.937 | 106.124 | 96.2781 | 93.8342 | 0 | 89.0843
-HARRIS | 137.489 | 117.456 | 126.131 | 118.226 | 0 | 176.392
-FAST | 3.75413 | 3.05952 | 2.80523 | 2.95257 | 0 | 3.04919
-SIFT | 271.027 | 276.062 | 270.931 | 253.453 | 0 | 238.296
-AKAZE | 162.557 | 164.013 | 166.528 | 166.955 | 358.845 | 178.23
-ORB | 16.917 | 12.3794 | 10.242 | 9.58655 | 0 | 11.884
-BRISK | 52.2162 | 52.499 | 51.9826 | 50.8715 | 0 | 49.5557
+Shi-Tomasi | 120.312 | 88.3276 | 183.283 | 89.9165 | 0 | 92.0328
+HARRIS | 114.282 | 115.166 | 232.401 | 115.835 | 0 | 122.046
+FAST | 2.76322 | 2.78845 | 5.4921 | 2.75225 | 0 | 2.73192
+SIFT | 252.117 | 244.78 | 0 | 254.475 | 0 | 246.391
+AKAZE | 175.605 | 182.519 | 348.497 | 175.502 | 344.059 | 171.631
+ORB | 17.1022 | 12.6855 | 22.2721 | 10.1853 | 0 | 9.35287
+BRISK | 49.6706 | 48.6664 | 100.244 | 48.5396 | 0 | 48.492
 
 
 ### Descriptor Extraction Times
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 17.9958 | 7.00061 | 18.4831 | 166.194 | 0 | 121.971
-HARRIS | 8.75284 | 8.5545 | 22.1412 | 159.713 | 0 | 169.908
-FAST | 11.1683 | 3.78494 | 8.84676 | 85.7475 | 0 | 64.7644
-SIFT | 7.94469 | 5.2617 | 1350.53 | 59.9803 | 0 | 198.556
-AKAZE | 8.21356 | 5.27437 | 20.9913 | 44.4833 | 316.359 | 64.9904
-ORB | 4.25512 | 2.1176 | 15.4601 | 32.2332 | 0 | 59.6432
-BRISK | 5.02928 | 1.45964 | 13.6441 | 28.4404 | 0 | 36.8251
+Shi-Tomasi | 15.7014 | 7.7325 | 40.1788 | 165.593 | 0 | 108.507
+HARRIS | 7.96803 | 8.90339 | 35.8579 | 159.361 | 0 | 115.151
+FAST | 8.29369 | 3.7715 | 17.3768 | 80.0531 | 0 | 53.8869
+SIFT | 10.1943 | 5.15596 | 0 | 56.9944 | 0 | 202.481
+AKAZE | 6.03055 | 4.84432 | 38.1401 | 46.952 | 315.446 | 65.7151
+ORB | 4.77365 | 3.72201 | 31.8176 | 32.3734 | 0 | 62.0946
+BRISK | 4.37057 | 1.38459 | 22.7182 | 28.3053 | 0 | 33.9675
