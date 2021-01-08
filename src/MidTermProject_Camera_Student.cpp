@@ -27,14 +27,6 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
 int main(int argc, const char *argv[])
 {
     Hyperparameters hyperparameters = Hyperparameters();
-    hyperparameters.keypointDetector = KeypointDetector::Shi_Tomasi;
-    hyperparameters.descriptor = "BRIEF";                   // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
-    hyperparameters.matcherType = "MAT_BF";                 // MAT_BF, MAT_FLANN
-    hyperparameters.descriptorType = "DES_BINARY";          // DES_BINARY, DES_HOG
-    hyperparameters.selectorType = "SEL_KNN";               // SEL_NN, SEL_KNN
-    hyperparameters.visualizeImageMatches = false;          // visualize matches between current and previous image?
-    hyperparameters.isFocusOnPrecedingVehicleOnly = true;   // only keep keypoints on the preceding vehicle?
-
 
     // Run experiment for one specified detector
     Experiment experiment = Experiment();
@@ -285,6 +277,18 @@ void RunExperiment(Experiment &experiment)
             {
                 resultLine.keypointMatch.matchedImagePair.first = firstImage;
                 resultLine.keypointMatch.matchedImagePair.second = secondImage;
+
+                if(experiment.hyperparameters.keypointDetector == SIFT || experiment.hyperparameters.descriptor == "SIFT")
+                {
+                    cout << "DEBUG: Setting matcher for SIFT to FLANN" << endl;
+                    experiment.hyperparameters.matcherType = "MAT_FLANN";
+                    experiment.hyperparameters.descriptorType = "DES_HOG";
+                }
+                else
+                {
+                    experiment.hyperparameters.matcherType = "MAT_BF";
+                    experiment.hyperparameters.descriptorType = "DES_BINARY";
+                }
 
                 matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
                                  (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
