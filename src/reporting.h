@@ -104,13 +104,13 @@ struct PerformanceEvaluationSummary
 
 
 void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSummary &summary, bool displayAllResults);
-void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &eval1Summary, const string &separator, bool displayAllResults);
-void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMatches> &eval2Summary, const string &separator, bool displayAllResults);
-void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessingTimes> &eval3Summary, const string &separator, bool displayAllResults);
+void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &keypointsData, const string &separator, bool displayAllResults);
+void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMatches> &keypointsMatches, const string &separator, bool displayAllResults);
+void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessingTimes> &processingTimes, const string &separator, bool displayAllResults);
 string DetectorNameAsString(const KeypointDetector detector);
 
-void DisplayKeypointDetectionSummary(const TotalKeypoints &data);
-void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &results);
-void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &data);
+void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData);
+void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches);
+void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &processingTimes);
 
 #endif //CAMERA_FUSION_REPORTING_H
