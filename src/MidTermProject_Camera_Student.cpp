@@ -28,17 +28,6 @@ int main(int argc, const char *argv[])
 {
     Hyperparameters hyperparameters = Hyperparameters();
 
-    // Run experiment for one specified detector
-    Experiment experiment = Experiment();
-    experiment.hyperparameters = hyperparameters;
-    RunExperiment(experiment);
-
-    PerformanceEvaluationSummary summary = PerformanceEvaluationSummary();
-    TotalKeypoints eval1Summary;
-    summary.eval1Summary = eval1Summary;
-    ProcessExperimentResults(experiment, summary, false);
-
-    // Run experiments for all detectors
     std::vector<KeypointDetector> detectors = {
             KeypointDetector::Shi_Tomasi,
             KeypointDetector::HARRIS,
@@ -58,7 +47,8 @@ int main(int argc, const char *argv[])
             "SIFT"
     };
 
-    RunExperimentSet(experiment.hyperparameters, detectors, descriptors);
+    // Run experiments for all combinations of detectors and descriptors
+    RunExperimentSet(hyperparameters, detectors, descriptors);
 
     return 0;
 }
@@ -71,6 +61,9 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
 
     std::vector<TotalKeypointMatches> eval2Summary;
     summary.eval2Summary = eval2Summary;
+
+    std::vector<AverageProcessingTimes> eval3Summary;
+    summary.eval3Summary = eval3Summary;
 
     for(auto detector:detectors)
     {
@@ -90,6 +83,7 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
 
     DisplayPE1Summary(summary.eval1Summary);
     DisplayPE2Summary(summary.eval2Summary);
+    DisplayPE3Summary(summary.eval3Summary);
 }
 
 

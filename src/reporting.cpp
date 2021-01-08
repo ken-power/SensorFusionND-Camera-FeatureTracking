@@ -37,12 +37,14 @@ void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSumma
 
     PerformanceEvaluation1(experiment, summary.eval1Summary, separator, displayAllResults);
     PerformanceEvaluation2(experiment, summary.eval2Summary, separator, displayAllResults);
-    PerformanceEvaluation3(experiment, separator, displayAllResults);
+    PerformanceEvaluation3(experiment, summary.eval3Summary, separator, displayAllResults);
 }
 
 void DisplayPE1Summary(const TotalKeypoints &data)
 {
-    cout << "\nPerformance Evaluation 1 Summary Table\n\n" << endl;
+    cout << "\n##Performance Evaluation 1: Number of Keypoints\n\n" << endl;
+
+    cout << "Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.\n" << endl;
 
     cout << " Detector | Keypoints" << endl;
     cout << " :--- | ---:" << endl;
@@ -58,9 +60,9 @@ void DisplayPE1Summary(const TotalKeypoints &data)
 
 void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results)
 {
-    cout << "\nPerformance Evaluation 2 Summary Table\n\n" << endl;
+    cout << "\n## Performance Evaluation 2: Number of Matched Keypoints\n" << endl;
 
-    cout << "PE2: Result size = " << results.size() << endl;
+    cout << "Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.\n" << endl;
 
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
@@ -70,6 +72,35 @@ void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results)
         cout << data.detector << " | " << data.BRISK << " | " << data.BRIEF << " | " << data.ORB << " | " << data.FREAK << " | " << data.AKAZE << " | " << data.SIFT << endl;
     }
 }
+
+
+void DisplayPE3Summary(const std::vector<AverageProcessingTimes> &data)
+{
+    cout << "\n##Performance Evaluation 3: Keypoint Detection and Descriptor Extraction\n" << endl;
+
+    cout << "Log the time it takes for keypoint detection and descriptor extraction.\n" << endl;
+
+    cout << "\n\n### Detection Times\n" << endl;
+    cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
+    cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
+
+    for(auto data:data)
+    {
+        cout << data.detector << " | " << data.detectionTimeBRISK << " | " << data.detectionTimeBRIEF << " | " << data.detectionTimeORB << " | " << data.detectionTimeFREAK << " | " << data.detectionTimeAKAZE << " | " << data.detectionTimeSIFT << endl;
+    }
+
+
+    cout << "\n\n### Extraction Times\n" << endl;
+    cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
+    cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
+
+    for(auto data:data)
+    {
+        cout << data.detector << " | " << data.extractionTimeBRISK << " | " << data.extractionTimeBRIEF << " | " << data.extractionTimeORB << " | " << data.extractionTimeFREAK << " | " << data.extractionTimeAKAZE << " | " << data.extractionTimeSIFT << endl;
+    }
+
+}
+
 
 void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &eval1Summary, const string &separator, bool displayAllResults)
 {
@@ -167,12 +198,9 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
     {
         for (auto elememnt:eval2Summary)
         {
-            cout << "DEBUG HELLO" << endl;
             if (elememnt.detector == DetectorNameAsString(experiment.hyperparameters.keypointDetector))
             {
                 m = elememnt;
-                cout << "DEBUG: Getting TotalKeypointMatches from vector for " << elememnt.detector << " INDEX= "
-                     << index << endl;
                 eval2Summary.erase(eval2Summary.begin()+index);
                 break;
             }
@@ -182,7 +210,6 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
     else
     {
         m = TotalKeypointMatches();
-        cout << "DEBUG NEW TotalKeypointMatches()" << endl;
     }
 
     if(experiment.hyperparameters.descriptor == "BRISK")
@@ -211,12 +238,11 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
     }
 
     m.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
-    cout << "DEBUG UPDATING  m" << endl;
     eval2Summary.push_back(m);
 }
 
 
-void PerformanceEvaluation3(Experiment &experiment, const string &separator, bool displayAllResults)
+void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessingTimes> &eval3Summary, const string &separator, bool displayAllResults)
 {
     cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")----------------------\n" << endl;
 
@@ -242,4 +268,65 @@ void PerformanceEvaluation3(Experiment &experiment, const string &separator, boo
     }
     if(displayAllResults)
         cout << "Totals (ms): " << separator << totalDetectionTime << separator << totalExtractionTime << endl;
+
+
+    AverageProcessingTimes processingTimes;
+
+    int index = 0;
+
+    if (eval3Summary.size() > 0)
+    {
+        for (auto elememnt:eval3Summary)
+        {
+            if (elememnt.detector == DetectorNameAsString(experiment.hyperparameters.keypointDetector))
+            {
+                processingTimes = elememnt;
+                eval3Summary.erase(eval3Summary.begin()+index);
+                break;
+            }
+            index++;
+        }
+    }
+    else
+    {
+        processingTimes = AverageProcessingTimes();
+    }
+
+
+
+    int divisor = eval3Summary.size() > 0 ? eval3Summary.size() : 1;
+
+    if(experiment.hyperparameters.descriptor == "BRISK")
+    {
+        processingTimes.detectionTimeBRISK = totalDetectionTime / divisor;
+        processingTimes.extractionTimeBRISK = totalExtractionTime / divisor;
+    }
+    else if(experiment.hyperparameters.descriptor == "BRIEF")
+    {
+        processingTimes.detectionTimeBRIEF = totalDetectionTime / divisor;
+        processingTimes.extractionTimeBRIEF = totalExtractionTime / divisor;
+    }
+    else if(experiment.hyperparameters.descriptor == "ORB")
+    {
+        processingTimes.detectionTimeORB = totalDetectionTime / divisor;
+        processingTimes.extractionTimeORB = totalExtractionTime / divisor;
+    }
+    else if(experiment.hyperparameters.descriptor == "FREAK")
+    {
+        processingTimes.detectionTimeFREAK = totalDetectionTime / divisor;
+        processingTimes.extractionTimeFREAK = totalExtractionTime / divisor;
+    }
+    else if(experiment.hyperparameters.descriptor == "AKAZE")
+    {
+        processingTimes.detectionTimeAKAZE = totalDetectionTime / divisor;
+        processingTimes.extractionTimeAKAZE = totalExtractionTime / divisor;
+    }
+    else if(experiment.hyperparameters.descriptor == "SIFT")
+    {
+        processingTimes.detectionTimeSIFT = totalDetectionTime / divisor;
+        processingTimes.extractionTimeSIFT = totalExtractionTime / divisor;
+    }
+
+    processingTimes.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
+    eval3Summary.push_back(processingTimes);
 }
