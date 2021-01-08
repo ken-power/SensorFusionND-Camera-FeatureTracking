@@ -30,13 +30,13 @@ struct Hyperparameters
 {
     Hyperparameters(){}
 
-    KeypointDetector keypointDetector;
-    string descriptor;
-    string matcherType;
-    string descriptorType;
-    string selectorType;
-    bool visualizeImageMatches = false;
-    bool isFocusOnPrecedingVehicleOnly = false;
+    KeypointDetector keypointDetector = Shi_Tomasi;
+    string descriptor = "BRIEF";                    // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+    string matcherType = "MAT_BF";                  // MAT_BF, MAT_FLANN
+    string descriptorType = "DES_BINARY";           // DES_BINARY, DES_HOG
+    string selectorType = "SEL_KNN";                // SEL_NN, SEL_KNN
+    bool visualizeImageMatches = false;             // visualize matches between current and previous image?
+    bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
 };
 
 
