@@ -42,20 +42,22 @@ void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSumma
 
 void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData)
 {
+    const unsigned int numberOfImages = 10;
+
     cout << "\n## Performance Evaluation 1: Number of Keypoints\n\n" << endl;
 
     cout << "Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.\n" << endl;
 
-    cout << " Detector | Keypoints on Preceding Vehicle | Total (neighborhood) size" << endl;
+    cout << " Detector | Total keypoints on preceding vehicle from all " << numberOfImages <<  " images | Average number of keypoints detected per image" << endl;
     cout << " :--- | ---: | ---:" << endl;
 
-    cout << DetectorNameAsString(Shi_Tomasi) << " | " << keypointsData.SHI_TOMASI << endl;
-    cout << DetectorNameAsString(HARRIS) << " | " << keypointsData.HARRIS << endl;
-    cout << DetectorNameAsString(FAST) << " | " << keypointsData.FAST << endl;
-    cout << DetectorNameAsString(BRISK) << " | " << keypointsData.BRISK << endl;
-    cout << DetectorNameAsString(ORB) << " | " << keypointsData.ORB << endl;
-    cout << DetectorNameAsString(AKAZE) << " | " << keypointsData.AKAZE << endl;
-    cout << DetectorNameAsString(SIFT) << " | " << keypointsData.SIFT << endl;
+    cout << DetectorNameAsString(Shi_Tomasi) << " | " << keypointsData.SHI_TOMASI << " | " << keypointsData.SHI_TOMASI / numberOfImages << endl;
+    cout << DetectorNameAsString(HARRIS) << " | " << keypointsData.HARRIS << " | " << keypointsData.HARRIS / numberOfImages << endl;
+    cout << DetectorNameAsString(FAST) << " | " << keypointsData.FAST << " | " << keypointsData.FAST / numberOfImages << endl;
+    cout << DetectorNameAsString(BRISK) << " | " << keypointsData.BRISK << " | " << keypointsData.BRISK / numberOfImages << endl;
+    cout << DetectorNameAsString(ORB) << " | " << keypointsData.ORB << " | " << keypointsData.ORB / numberOfImages << endl;
+    cout << DetectorNameAsString(AKAZE) << " | " << keypointsData.AKAZE <<  " | " << keypointsData.AKAZE / numberOfImages << endl;
+    cout << DetectorNameAsString(SIFT) << " | " << keypointsData.SIFT << " | " << keypointsData.SIFT / numberOfImages << endl;
 }
 
 void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches)

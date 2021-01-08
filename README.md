@@ -413,15 +413,16 @@ These results are recorded from running a total of 35 experiments based on combi
 
 Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.
 
-Detector | Keypoints on Preceding Vehicle | Total (neighborhood) size
+Detector | Total keypoints on preceding vehicle from all 10 images | Average number of keypoints detected per image
  :--- | ---: | ---:
-Shi-Tomasi | 13423
-HARRIS | 1737
-FAST | 17874
-BRISK | 27116
-ORB | 5000
-AKAZE | 13430
-SIFT | 13861
+Shi-Tomasi | 13423 | 1342
+HARRIS | 1737 | 173
+FAST | 17874 | 1787
+BRISK | 27116 | 2711
+ORB | 5000 | 500
+AKAZE | 13430 | 1343
+SIFT | 13861 | 1386
+
 
 The following chart shows the number of keypoints detected by each detector on the preceding vehicle:
 
