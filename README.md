@@ -431,6 +431,8 @@ This is implemented in the `matchDescriptors()` function in [matching2D_Student.
 
 These results are recorded from running a total of 35 experiments based on combinations of 7 detectors and 6 descriptors.
 
+The spreadsheet I created to analyse the results and generate the graphs and charts is [in this file](results/results.xlsx).
+
 ### Performance Evaluation 1: Number of Keypoints
 
 Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.
@@ -577,3 +579,4 @@ Based on the performance evaluation above, these are the top 3 detector / descri
 * Jan Gaspar. [_Chapter 7. Boost.Circular Buffer_](https://www.boost.org/doc/libs/1_61_0/doc/html/circular_buffer.html). [Boost C++ Libraries](https://www.boost.org/).
 * Phillip Johnston. [_Creating a Circular Buffer in C and C++_](https://embeddedartistry.com/blog/2017/05/17/creating-a-circular-buffer-in-c-and-c/). [Embedded Artistry](https://embeddedartistry.com/), May 17, 2017.
 * StackOverflow. [_How to link C++ program with Boost using CMake_](https://stackoverflow.com/questions/3897839/how-to-link-c-program-with-boost-using-cmake).
+* The spreadsheet I created to analyse the results and generate the graphs and charts is [in this file](results/results.xlsx).
