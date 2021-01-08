@@ -512,15 +512,11 @@ Fastest descriptor extraction:
 ## Recommendation for Detecting Keypoints on Vehicles
 
 Based on the performance evaluation above, these are the top 3 detector / descriptor combinations that are the best choices for our purpose of detecting keypoints on vehicles:
-1. 
-2. 
-3. 
 
-
-FAST + BRIEF
-Number of keypoints detected: 1099
-Keypoint detection time: 2.8483 ms
-Descriptor extraction time: 3.6816 ms
+1. FAST + BRIEF
+    * Number of keypoints detected: 1099
+    * Keypoint detection time: 2.8483 ms
+    * Descriptor extraction time: 3.6816 ms
 
 
 
