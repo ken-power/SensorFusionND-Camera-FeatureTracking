@@ -80,7 +80,7 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
             // There are some combinations of detector and descriptor that do not work together:
             if(descriptor == "AKAZE")
             {
-                // AKAZE detectors work only with AKAZE descriptors.
+                // AKAZE descriptors work only with AKAZE detectors.
                 if (detector == AKAZE)
                 {
                     RunExperiment(ex);
