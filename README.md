@@ -405,249 +405,81 @@ This is implemented in the `matchDescriptors()` function in [matching2D_Student.
 
 ```
 
-## 4. Performance
+## 4. Performance Evaluation
 
-### Performance Evaluation 1: Number of Keypoints
+These results are recorded from running a total of 35 experiments based on combinations of 7 detectors and 6 descriptors.
+
+## Performance Evaluation 1: Number of Keypoints
+
 Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.
 
-Keypoint Detector|Image 1|Image 2|Image 3|Image 4|Image 5|Image 6|Image 7|Image 8|Image 9|Image 10|Total 
---- | ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:| ---:
-Shi-Tomasi|1370|1301|1361|1358|1333|1284|1322|1366|1389|1339|13423
-HARRIS|115|98|113|121|160|383|85|210|171|281|1737
-FAST|1824|1832|1810|1817|1793|1796|1788|1695|1749|1770|17874
-BRISK|2757|2777|2741|2735|2757|2695|2715|2628|2639|2672|27116
-ORB|500|500|500|500|500|500|500|500|500|500|5000
-AKAZE|1351|1327|1311|1351|1360|1347|1363|1331|1358|1331|13430
-SIFT|1438|1371|1380|1335|1305|1369|1396|1382|1463|1422|13861
+Detector | Keypoints on Preceding Vehicle | Total (neighborhood) size
+ :--- | ---: | ---:
+Shi-Tomasi | 13423
+HARRIS | 1737
+FAST | 17874
+BRISK | 27116
+ORB | 5000
+AKAZE | 13430
+SIFT | 13861
 
-Note, HARRIS detects a comparatively small number of keypoints compared to the other detectors. More critically, for the images in this dataset, none of the keypoints detected by HARRIS are in the preceding vehicle. Hence, this immediately rules out HARRIS as a suitable detector for detecting keypoints on vehicles. 
 
-### Performance Evaluation 2: Number of Matched Keypoints
+## Performance Evaluation 2: Number of Matched Keypoints
+
 Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.
 
-#### Shi-Tomasi
+Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+ :--- | ---: | ---: | ---: | ---: | ---: | ---:
+Shi-Tomasi | 767 | 944 | 1814 | 766 | 0 | 926
+HARRIS | 142 | 173 | 320 | 146 | 0 | 163
+FAST | 899 | 1099 | 2162 | 881 | 0 | 1048
+BRISK | 1570 | 1704 | 3020 | 1526 | 0 | 1662
+ORB | 751 | 545 | 1522 | 421 | 0 | 765
+AKAZE | 1215 | 1266 | 2372 | 1188 | 2518 | 1273
+SIFT | 304 | 338 | 0 | 274 | 0 | 801
 
-* CONTINUE FROM HERE - I HAD FORGOTTEN TO IMPLEMENT THE BRIEF DESCRIPTOR
-* I HAVE THE NUMBERS NOW - NEXT STEP IS ADD THEM TO THE TABLE
-* I AM TIRED NOW
+The number of matches per detector-descriptor pair are shown visually in the following graph:
 
-Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-1 --> 0|125|||||
-2 --> 1|118|||||
-3 --> 2|123|||||
-4 --> 3|120|||||
-5 --> 4|120|||||
-6 --> 5|113|||||
-7 --> 6|114|||||
-8 --> 7|123|||||
-9 --> 8|111|||||
-Totals||||||
+![](results/2.MatchedKeypointsPerPair.png)
 
-#### Harris
 
-Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-1 --> 0||||||
-2 --> 1||||||
-3 --> 2||||||
-4 --> 3||||||
-5 --> 4||||||
-6 --> 5||||||
-7 --> 6||||||
-8 --> 7||||||
-9 --> 8||||||
-Totals||||||
+## Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
 
-#### FAST
+Log the time it takes for keypoint detection and descriptor extraction.
 
-Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-1 --> 0||||||
-2 --> 1||||||
-3 --> 2||||||
-4 --> 3||||||
-5 --> 4||||||
-6 --> 5||||||
-7 --> 6||||||
-8 --> 7||||||
-9 --> 8||||||
-Totals||||||
+### Keypoint Detection Times
 
-#### BRISK
+Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+ :--- | ---: | ---: | ---: | ---: | ---: | ---:
+Shi-Tomasi | 113.961 | 103.281 | 182.746 | 88.6761 | 0 | 88.6581
+HARRIS | 117.739 | 115.977 | 224.026 | 114.519 | 0 | 120.658
+FAST | 2.75996 | 2.84834 | 5.50425 | 2.74408 | 0 | 2.74581
+BRISK | 49.2949 | 49.3449 | 103.928 | 51.1041 | 0 | 49.9847
+ORB | 17.722 | 13.3629 | 20.6844 | 11.4591 | 0 | 12.4044
+AKAZE | 170.732 | 174.562 | 340.939 | 175.438 | 368.825 | 183.47
+SIFT | 251.051 | 247.2 | 0 | 244.247 | 0 | 260.259
 
-Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-1 --> 0||||||
-2 --> 1||||||
-3 --> 2||||||
-4 --> 3||||||
-5 --> 4||||||
-6 --> 5||||||
-7 --> 6||||||
-8 --> 7||||||
-9 --> 8||||||
-Totals||||||
+These keypoint detection times are plotted for comparison in this graph:
 
-#### ORB
+![](results/3a.KeypointDetectionTimes.png)
 
-Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-1 --> 0||||||
-2 --> 1||||||
-3 --> 2||||||
-4 --> 3||||||
-5 --> 4||||||
-6 --> 5||||||
-7 --> 6||||||
-8 --> 7||||||
-9 --> 8||||||
-Totals||||||
 
-#### AKAZE
+### Descriptor Extraction Times
 
-Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-1 --> 0||||||
-2 --> 1||||||
-3 --> 2||||||
-4 --> 3||||||
-5 --> 4||||||
-6 --> 5||||||
-7 --> 6||||||
-8 --> 7||||||
-9 --> 8||||||
-Totals||||||
+Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+ :--- | ---: | ---: | ---: | ---: | ---: | ---:
+Shi-Tomasi | 16.0448 | 8.91525 | 40.1351 | 164.883 | 0 | 108.667
+HARRIS | 9.76207 | 5.42603 | 41.2102 | 155.613 | 0 | 123.167
+FAST | 8.54358 | 3.68155 | 18.1524 | 80.7901 | 0 | 57.0617
+BRISK | 4.30439 | 2.03225 | 21.3602 | 27.7593 | 0 | 31.6481
+ORB | 3.00601 | 2.8468 | 25.0946 | 31.4454 | 0 | 59.4137
+AKAZE | 8.55506 | 4.42716 | 32.1053 | 43.9621 | 311.096 | 67.973
+SIFT | 6.2278 | 5.26704 | 0 | 55.5796 | 0 | 197.059
 
-#### SIFT
+These descriptor extraction times are plotted for comparison in this graph:
 
-Image Pair|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-1 --> 0||||||
-2 --> 1||||||
-3 --> 2||||||
-4 --> 3||||||
-5 --> 4||||||
-6 --> 5||||||
-7 --> 6||||||
-8 --> 7||||||
-9 --> 8||||||
-Totals||||||
+![](results/3b.DescriptorExtractionTimes.png)
 
-### Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
-Log the time it takes for keypoint detection and descriptor extraction. The results must be entered into a spreadsheet and based on this data, the TOP3 detector / descriptor combinations must be recommended as the best choice for our purpose of detecting keypoints on vehicles.
-
-#### Shi-Tomasi
-
-Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-0|1.98759|||||
-1|1.43586|||||
-2|2.0864|||||
-3|1.50354|||||
-4|2.35249|||||
-5|1.39628|||||
-6|1.46287|||||
-7|1.37681|||||
-8|1.35603|||||
-9|1.36793|||||
-Totals||||||
-
-#### Harris
-
-Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-0||||||
-1||||||
-2||||||
-3||||||
-4||||||
-5||||||
-6||||||
-7||||||
-8||||||
-9||||||
-Totals||||||
-
-#### FAST
-
-Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-0||||||
-1||||||
-2||||||
-3||||||
-4||||||
-5||||||
-6||||||
-7||||||
-8||||||
-9||||||
-Totals||||||
-
-#### BRISK
-
-Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-0||||||
-1||||||
-2||||||
-3||||||
-4||||||
-5||||||
-6||||||
-7||||||
-8||||||
-9||||||
-Totals||||||
-
-#### ORB
-
-Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-0||||||
-1||||||
-2||||||
-3||||||
-4||||||
-5||||||
-6||||||
-7||||||
-8||||||
-9||||||
-Totals||||||
-
-#### AKAZE
-
-Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-0||||||
-1||||||
-2||||||
-3||||||
-4||||||
-5||||||
-6||||||
-7||||||
-8||||||
-9||||||
-Totals||||||
-
-#### SIFT
-
-Image|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
---- | ---:| ---:| ---:| ---:| ---:| ---:| 
-0||||||
-1||||||
-2||||||
-3||||||
-4||||||
-5||||||
-6||||||
-7||||||
-8||||||
-9||||||
-Totals||||||
 
 #### Recommendation for Detecting Keypoints on Vehicles
 
