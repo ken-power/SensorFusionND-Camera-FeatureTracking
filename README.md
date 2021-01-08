@@ -2,8 +2,8 @@
 
 This document contains the following sections:
 
-* [Project Specification](#Project Specification)
-* [Project Report](#Project Report)
+* [Project Specification](#Project-Specification)
+* [Project Report](#Project-Report)
   * [1. Data Buffer Implementation](#1-data-buffer)
   * [2. Keypoints](#2-keypoints)
     * [Keypoint Detection](#Keypoint-Detection)
@@ -13,12 +13,12 @@ This document contains the following sections:
     * [Descriptor Matching](#Descriptor-Matching)
     * [Descriptor Distance Ratio](#Descriptor-Distance-Ratio)
   * [4. Performance Evaluation](#4-performance-evaluation)
-    * [Performance Evaluation 1: Number of Detected Keypoints](#Performance Evaluation 1)
-    * [Performance Evaluation 2: Number of Matched Keypoints](#Performance Evaluation 2)
-    * [Performance Evaluation 3: Keypoint Detection and Descriptor Extraction Times](#Performance Evaluation 3)
+    * [Performance Evaluation 1: Number of Detected Keypoints](#Performance-Evaluation-1)
+    * [Performance Evaluation 2: Number of Matched Keypoints](#Performance-Evaluation-2)
+    * [Performance Evaluation 3: Keypoint Detection and Descriptor Extraction Times](#Performance-Evaluation-3)
     * [Observations](#Observations)
     * [Recommendations for Detecting Keypoints on Vehicles](#Recommendations)
-* [Building and Running the Project](#Building and Running the Project)
+* [Building and Running the Project](#Building-and-Running-the-Project)
 * [References](#References)
   
 # Project Specification
