@@ -492,9 +492,9 @@ These descriptor extraction times are plotted for comparison in this graph:
 ## Observations
 
 Detectors that detect the highest number of keypoints on the preceding vehicle over 10 images:
-1. BRISK (27,116 keypoints)
-2. FAST (17,874 keypoints)
-3. SIFT (13,861keypoints)
+1. BRISK (Total 27,116 keypoints;  Average 2,711 per image)
+2. FAST (Total 17,874 keypoints; Average 1,787 per image)
+3. SIFT (Total 13,861 keypoints; Average 1,343 per image)
 
 Pairs that detect the highest number of matched keypoints between successive image pairs on the preceding vehicle:
 1. BRISK + ORB (3020 keypoints)
