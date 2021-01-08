@@ -49,13 +49,13 @@ void DisplayKeypointDetectionSummary(const TotalKeypoints &data)
     cout << " Detector | Keypoints" << endl;
     cout << " :--- | ---:" << endl;
 
-    cout << "SHI_TOMASI" << " | " << data.SHI_TOMASI << endl;
-    cout << "HARRIS" << " | " << data.HARRIS << endl;
-    cout << "FAST" << " | " << data.FAST << endl;
-    cout << "BRISK" << " | " << data.BRISK << endl;
-    cout << "ORB" << " | " << data.ORB << endl;
-    cout << "AKAZE" << " | " << data.AKAZE << endl;
-    cout << "SIFT" << " | " << data.SIFT << endl;
+    cout << DetectorNameAsString(Shi_Tomasi) << " | " << data.SHI_TOMASI << endl;
+    cout << DetectorNameAsString(HARRIS) << " | " << data.HARRIS << endl;
+    cout << DetectorNameAsString(FAST) << " | " << data.FAST << endl;
+    cout << DetectorNameAsString(BRISK) << " | " << data.BRISK << endl;
+    cout << DetectorNameAsString(ORB) << " | " << data.ORB << endl;
+    cout << DetectorNameAsString(AKAZE) << " | " << data.AKAZE << endl;
+    cout << DetectorNameAsString(SIFT) << " | " << data.SIFT << endl;
 }
 
 void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &results)
