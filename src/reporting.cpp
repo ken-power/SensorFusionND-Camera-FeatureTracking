@@ -26,7 +26,7 @@ string DetectorNameAsString(const KeypointDetector detector)
             return "SIFT";
             break;
         default:
-            cerr << "Not using a specified keypoint detector" << endl;
+            cerr << "Not using a supported keypoint detector" << endl;
     }
 }
 
@@ -35,12 +35,12 @@ void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSumma
 {
     const string separator = " | ";
 
-    PerformanceEvaluation1(experiment, summary.eval1Summary, separator, displayAllResults);
-    PerformanceEvaluation2(experiment, summary.eval2Summary, separator, displayAllResults);
-    PerformanceEvaluation3(experiment, summary.eval3Summary, separator, displayAllResults);
+    PerformanceEvaluation1(experiment, summary.keypoints, separator, displayAllResults);
+    PerformanceEvaluation2(experiment, summary.keypointMatches, separator, displayAllResults);
+    PerformanceEvaluation3(experiment, summary.processingTimes, separator, displayAllResults);
 }
 
-void DisplayPE1Summary(const TotalKeypoints &data)
+void DisplayKeypointDetectionSummary(const TotalKeypoints &data)
 {
     cout << "\n##Performance Evaluation 1: Number of Keypoints\n\n" << endl;
 
@@ -58,7 +58,7 @@ void DisplayPE1Summary(const TotalKeypoints &data)
     cout << "SIFT" << " | " << data.SIFT << endl;
 }
 
-void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results)
+void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &results)
 {
     cout << "\n## Performance Evaluation 2: Number of Matched Keypoints\n" << endl;
 
@@ -74,13 +74,13 @@ void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results)
 }
 
 
-void DisplayPE3Summary(const std::vector<AverageProcessingTimes> &data)
+void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &data)
 {
     cout << "\n##Performance Evaluation 3: Keypoint Detection and Descriptor Extraction\n" << endl;
 
     cout << "Log the time it takes for keypoint detection and descriptor extraction.\n" << endl;
 
-    cout << "\n\n### Detection Times\n" << endl;
+    cout << "\n\n### Keypoint Detection Times\n" << endl;
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
@@ -90,7 +90,7 @@ void DisplayPE3Summary(const std::vector<AverageProcessingTimes> &data)
     }
 
 
-    cout << "\n\n### Extraction Times\n" << endl;
+    cout << "\n\n### Descriptor Extraction Times\n" << endl;
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 

@@ -55,21 +55,22 @@ int main(int argc, const char *argv[])
 
 void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<KeypointDetector> detectors, const std::vector<string> descriptors)
 {
-    TotalKeypoints eval1Summary;
-    PerformanceEvaluationSummary summary = PerformanceEvaluationSummary();
-    summary.eval1Summary = eval1Summary;
+    TotalKeypoints keypoints;
+    PerformanceEvaluationSummary performanceData = PerformanceEvaluationSummary();
+    performanceData.keypoints = keypoints;
 
-    std::vector<TotalKeypointMatches> eval2Summary;
-    summary.eval2Summary = eval2Summary;
+    std::vector<TotalKeypointMatches> keypointMatches;
+    performanceData.keypointMatches = keypointMatches;
 
-    std::vector<AverageProcessingTimes> eval3Summary;
-    summary.eval3Summary = eval3Summary;
+    std::vector<AverageProcessingTimes> processingTimes;
+    performanceData.processingTimes = processingTimes;
 
+    unsigned int experimentCount = 0;
     for(auto detector:detectors)
     {
         for(auto descriptor:descriptors)
         {
-            cout << "RUNNING EXPERIMENT WITH detector = " << DetectorNameAsString(detector) << "  and descriptor = " << descriptor << endl;
+            cout << "RUNNING EXPERIMENT " << experimentCount << " WITH detector = " << DetectorNameAsString(detector) << "  and descriptor = " << descriptor << endl;
             hyperparameters.keypointDetector = detector;
             hyperparameters.descriptor = descriptor;
 
@@ -77,13 +78,17 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
             ex.hyperparameters = hyperparameters;
 
             RunExperiment(ex);
-            ProcessExperimentResults(ex, summary, false);
+            ProcessExperimentResults(ex, performanceData, false);
+
+            experimentCount++;
         }
     }
 
-    DisplayPE1Summary(summary.eval1Summary);
-    DisplayPE2Summary(summary.eval2Summary);
-    DisplayPE3Summary(summary.eval3Summary);
+    cout << "Ran a total of " << experimentCount << " experiments for " << detectors.size() << " detectors and " << descriptors.size() << " descriptors" << endl;
+
+    DisplayKeypointDetectionSummary(performanceData.keypoints);
+    DisplayKeypointMatchingSummary(performanceData.keypointMatches);
+    DisplayProcessingTimesSummary(performanceData.processingTimes);
 }
 
 
@@ -142,7 +147,6 @@ void RunExperiment(Experiment &experiment)
         dataBuffer.push_back(frame); // push the dataframe onto the data buffer
 
         //// EOF STUDENT ASSIGNMENT
-        cout << "------>>>> Data Buffer Size = " << dataBuffer.size() << "    <<<<------" << endl;
         cout << "#1 : LOAD IMAGE INTO BUFFER done" << endl;
 
         /* DETECT IMAGE KEYPOINTS */
@@ -157,35 +161,28 @@ void RunExperiment(Experiment &experiment)
         switch (experiment.hyperparameters.keypointDetector)
         {
             case KeypointDetector::Shi_Tomasi:
-                cout << "*** Using Shi-Tomasi keypoint detector" << endl;
                 detKeypointsShiTomasi(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::HARRIS:
-                cout << "*** Using HARRIS keypoint detector" << endl;
                 detKeypointsHarris(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::FAST:
-                cout << "*** Using FAST keypoint detector" << endl;
                 detKeypointsFAST(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::BRISK:
-                cout << "*** Using BRISK keypoint detector" << endl;
                 detKeypointsBRISK(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::ORB:
-                cout << "*** Using ORB keypoint detector" << endl;
                 detKeypointsORB(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::AKAZE:
-                cout << "*** Using AKAZE keypoint detector" << endl;
                 detKeypointsAKAZE(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             case KeypointDetector::SIFT:
-                cout << "*** Using SIFT keypoint detector" << endl;
                 detKeypointsSIFT(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             default:
-                cout << "*** Not using a specified keypoint detector" << endl;
+                cerr << "*** Not using a specified keypoint detector" << endl;
         }
 
         //// EOF STUDENT ASSIGNMENT
@@ -204,12 +201,10 @@ void RunExperiment(Experiment &experiment)
                 // remove the keypoint if it is not contained within the rectangle of interest
                 if(!vehicleRect.contains(it->pt))
                 {
-                    //cout << "||| Removing keypoint " << it->pt << " not contained in rectangle of interest" << endl;
                     keypoints.erase(it);
                 }
                 else
                 {
-                    //cout << "/// Keeping keypoint " << it->pt << " contained in rectangle of interest" << endl;
                     it++;
                 }
             }
@@ -230,7 +225,6 @@ void RunExperiment(Experiment &experiment)
                 keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
             }
             cv::KeyPointsFilter::retainBest(keypoints, maxKeypoints);
-            cout << " NOTE: Keypoints have been limited!" << endl;
         }
 
         // push keypoints and descriptor for current frame to end of data buffer
@@ -274,7 +268,6 @@ void RunExperiment(Experiment &experiment)
 
                 if(experiment.hyperparameters.keypointDetector == SIFT || experiment.hyperparameters.descriptor == "SIFT")
                 {
-                    cout << "DEBUG: Setting matcher for SIFT to FLANN" << endl;
                     experiment.hyperparameters.matcherType = "MAT_FLANN";
                     experiment.hyperparameters.descriptorType = "DES_HOG";
                 }

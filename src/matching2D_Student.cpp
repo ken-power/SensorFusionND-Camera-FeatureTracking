@@ -18,8 +18,6 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
     bool crossCheck = false;
     cv::Ptr<cv::DescriptorMatcher> matcher;
 
-    cout << ">>> Using " << matcherType << " Matcher Type" << endl;
-
     if (matcherType == "MAT_BF")  // Brute Force matching
     {
         int normType = cv::NORM_HAMMING;
@@ -88,7 +86,6 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
 {
     // select appropriate descriptor
     cv::Ptr<cv::DescriptorExtractor> extractor;
-    cout << "Using " << descriptorType << " descriptor to identify keypoints" << endl;
 
     if (descriptorType == "BRISK")
     {

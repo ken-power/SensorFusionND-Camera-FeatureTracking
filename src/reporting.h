@@ -97,9 +97,9 @@ struct AverageProcessingTimes
 struct PerformanceEvaluationSummary
 {
     PerformanceEvaluationSummary(){}
-    TotalKeypoints eval1Summary;
-    std::vector<TotalKeypointMatches> eval2Summary;
-    std::vector<AverageProcessingTimes> eval3Summary;
+    TotalKeypoints keypoints;
+    std::vector<TotalKeypointMatches> keypointMatches;
+    std::vector<AverageProcessingTimes> processingTimes;
 };
 
 
@@ -109,8 +109,8 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
 void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessingTimes> &eval3Summary, const string &separator, bool displayAllResults);
 string DetectorNameAsString(const KeypointDetector detector);
 
-void DisplayPE1Summary(const TotalKeypoints &data);
-void DisplayPE2Summary(const std::vector<TotalKeypointMatches> &results);
-void DisplayPE3Summary(const std::vector<AverageProcessingTimes> &data);
+void DisplayKeypointDetectionSummary(const TotalKeypoints &data);
+void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &results);
+void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &data);
 
 #endif //CAMERA_FUSION_REPORTING_H
