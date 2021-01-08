@@ -428,6 +428,10 @@ The following chart shows the number of keypoints detected by each detector on t
 ![Keypoints detected on preceding vehicle](results/1.KeypointsOnPrecedingVehicle.png)
 
 
+For a more detailed analysis of what is happening image-by-image, the following graph shows the number of keypoints detected on each image by each of the detectors:
+
+![](results/NumberOfKeypointsPerImage.png)
+
 ## Performance Evaluation 2: Number of Matched Keypoints
 
 Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.
