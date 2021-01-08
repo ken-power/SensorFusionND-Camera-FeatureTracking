@@ -5,6 +5,8 @@ This document contains the following sections:
 * [Project Specification](#Project-Specification)
 * [Project Report](#Project-Report)
   * [1. Data Buffer Implementation](#1-data-buffer)
+    * [Results with vector implementation](#Results-with-vector-implementation)
+    * [Results with ring buffer implementation](#Results-with-ring-buffer-implementation)
   * [2. Keypoints](#2-keypoints)
     * [Keypoint Detection](#Keypoint-Detection)
     * [Keypoint Removal](#Keypoint-Removal)
@@ -73,7 +75,7 @@ with this line (and use the defined variable ```dataBufferSize``` to set the rin
 
 The following results show that with the vector implementation, the size of the buffer keeps rising each time a new image is processed. With the ring buffer implementation, the size of the buffer is constrained to the desired data buffer size, in this case 2.
 
-#### Results with vector implementation:
+#### Results with vector implementation
 ```shell
 ------>>>> Data Buffer Size = 1    <<<<------
 #1 : LOAD IMAGE INTO BUFFER done
@@ -163,7 +165,7 @@ BRISK descriptor extraction in 1.145 ms
 #3 : EXTRACT DESCRIPTORS done
 #4 : MATCH KEYPOINT DESCRIPTORS done
 ```
-#### Results with ring buffer implementation:
+#### Results with ring buffer implementation
 ```shell
 ------>>>> Data Buffer Size = 1    <<<<------
 #1 : LOAD IMAGE INTO BUFFER done
