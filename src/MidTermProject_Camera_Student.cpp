@@ -84,7 +84,8 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
         }
     }
 
-    cout << "Ran a total of " << experimentCount << " experiments for " << detectors.size() << " detectors and " << descriptors.size() << " descriptors" << endl;
+    cout << "# Performance Evaluation" << endl;
+    cout << "These results are recorded from running a total of " << experimentCount << " experiments: one for each combination of " << detectors.size() << " detectors and " << descriptors.size() << " descriptors." << endl;
 
     DisplayKeypointDetectionSummary(performanceData.keypoints);
     DisplayKeypointMatchingSummary(performanceData.keypointMatches);

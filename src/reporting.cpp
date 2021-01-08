@@ -42,7 +42,7 @@ void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSumma
 
 void DisplayKeypointDetectionSummary(const TotalKeypoints &data)
 {
-    cout << "\n##Performance Evaluation 1: Number of Keypoints\n\n" << endl;
+    cout << "\n## Performance Evaluation 1: Number of Keypoints\n\n" << endl;
 
     cout << "Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.\n" << endl;
 
@@ -76,7 +76,7 @@ void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &res
 
 void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &data)
 {
-    cout << "\n##Performance Evaluation 3: Keypoint Detection and Descriptor Extraction\n" << endl;
+    cout << "\n## Performance Evaluation 3: Keypoint Detection and Descriptor Extraction\n" << endl;
 
     cout << "Log the time it takes for keypoint detection and descriptor extraction.\n" << endl;
 
