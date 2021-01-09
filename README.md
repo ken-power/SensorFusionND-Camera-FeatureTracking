@@ -298,39 +298,32 @@ Instantiate the `keypointDetectorType` variable specifying the desired `Keypoint
 
 The `switch` statement then calls the appropriate function based on which detector type is chosen.
 ```c++
-        switch (keypointDetectorType)
-        {
-            case KeypointDetector::Shi_Tomasi:
-                cout << "*** Using Shi-Tomasi keypoint detector" << endl;
-                detKeypointsShiTomasi(keypoints, imgGray, false);
-                break;
-            case KeypointDetector::HARRIS:
-                cout << "*** Using HARRIS keypoint detector" << endl;
-                detKeypointsHarris(keypoints, imgGray, false);
-                break;
-            case KeypointDetector::FAST:
-                cout << "*** Using FAST keypoint detector" << endl;
-                detKeypointsFAST(keypoints, imgGray, false);
-                break;
-            case KeypointDetector::BRISK:
-                cout << "*** Using BRISK keypoint detector" << endl;
-                detKeypointsBRISK(keypoints, imgGray, false);
-                break;
-            case KeypointDetector::ORB:
-                cout << "*** Using ORB keypoint detector" << endl;
-                detKeypointsORB(keypoints, imgGray, false);
-                break;
-            case KeypointDetector::AKAZE:
-                cout << "*** Using AKAZE keypoint detector" << endl;
-                detKeypointsAKAZE(keypoints, imgGray, false);
-                break;
-            case KeypointDetector::SIFT:
-                cout << "*** Using SIFT keypoint detector" << endl;
-                detKeypointsSIFT(keypoints, imgGray, false);
-                break;
-            default:
-                cout << "*** Not using a specified keypoint detector" << endl;
-        }
+switch (experiment.hyperparameters.keypointDetector)
+{
+  case KeypointDetector::Shi_Tomasi:
+    detKeypointsShiTomasi(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    break;
+  case KeypointDetector::HARRIS:
+    detKeypointsHarris(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    break;
+  case KeypointDetector::FAST:
+    detKeypointsFAST(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    break;
+  case KeypointDetector::BRISK:
+    detKeypointsBRISK(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    break;
+  case KeypointDetector::ORB:
+    detKeypointsORB(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    break;
+  case KeypointDetector::AKAZE:
+    detKeypointsAKAZE(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    break;
+  case KeypointDetector::SIFT:
+    detKeypointsSIFT(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    break;
+  default:
+      cerr << "*** Not using a specified keypoint detector" << endl;
+}
 ```
 
 ### Keypoint Removal
