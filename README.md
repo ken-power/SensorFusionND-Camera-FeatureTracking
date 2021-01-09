@@ -1,5 +1,7 @@
 # 2D Feature Tracking
 
+The goal of this project is to build the feature tracking part of a collision detection system, and test various detector / descriptor combinations to see which ones perform best.
+
 This document contains the following sections:
 
 * [Project Specification](#Project-Specification)
@@ -21,6 +23,9 @@ This document contains the following sections:
     * [Observations](#Observations)
     * [Recommendations for Detecting Keypoints on Vehicles](#Recommendations)
 * [Building and Running the Project](#Building-and-Running-the-Project)
+  * [Dependencies](#Dependencies)
+  * [Basic Build Instructions](#Basic-Build-Instructions)
+  * [Notes on the Code](#Notes-on-the-Code)
 * [References](#References)
   
 # Project Specification
@@ -584,9 +589,116 @@ If more matches were a higher priority, then I would swap ORB + BRIEF with ORB +
 2. Compile: `cmake .. && make`
 3. Run it: `./2D_feature_tracking`.
 
+## Notes on the Code
+
+* The file [MidTermProject_Camera_Student.cpp](src/MidTermProject_Camera_Student.cpp) contains the `main()` function, and is the starting point for the program.
+* The file [dataStructures.h](src/dataStructures.h) contains data structures used throughout the proejct code, including `DataFrame`, `KeypointDetector`, and `Hyperparameters`.
+* The files [matching2D.hpp](src/matching2D.hpp) and [matching2D_Student.cpp](src/matching2D_Student.cpp) define the functions that perform keypoint detection and matching.
+* The files [](src/reporting.h) and [](src/reporting.cpp) define structures and functions used to auto-generate the results in markdown format. I use these to easily generate all the performance evaluation tables, and then insert them into this README document, and into the [results spreadsheet](results/results.xlsx).  
+
+### The `main()` funciton
+
+Rather than re-run the program manually for each detector-descriptor pair, and then manually gather the results from the console, I run the program once for all detector-descriptor pairs. The project is structured around the model of an `Experiment`. Each `Experiment` runs one detector-descriptor pair, and gathers the results. The `main()` function invokes a function called `RunExperimentSet`, which runs a set of experiments - one for each valid detector-descriptor combination.
+
+
+The `main()` function defines three variables - the hyperparameters, the set of detectors to use, and the set of descriptors to use in the experiments.
+
+```c++
+int main(int argc, const char *argv[])
+{
+    Hyperparameters hyperparameters = Hyperparameters();
+
+    std::vector<KeypointDetector> detectors = {
+            KeypointDetector::Shi_Tomasi,
+            KeypointDetector::HARRIS,
+            KeypointDetector::FAST,
+            KeypointDetector::SIFT,
+            KeypointDetector::AKAZE,
+            KeypointDetector::ORB,
+            KeypointDetector::BRISK
+    };
+
+    std::vector<string> descriptors = {
+            "BRISK",
+            "BRIEF",
+            "ORB",
+            "FREAK",
+            "AKAZE",
+            "SIFT"
+    };
+
+    // Run experiments for all combinations of detectors and descriptors
+    RunExperimentSet(hyperparameters, detectors, descriptors);
+
+    return 0;
+}
+```
+
+The `Hyperparameters` are implemented as a `struct` in [dataStructures.h](src/dataStructures.h):
+
+```c++
+struct Hyperparameters
+{
+    Hyperparameters(){}
+
+    KeypointDetector keypointDetector = Shi_Tomasi;
+    string descriptor = "BRIEF";                    // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+    string matcherType = "MAT_BF";                  // MAT_BF, MAT_FLANN
+    string descriptorType = "DES_BINARY";           // DES_BINARY, DES_HOG
+    string selectorType = "SEL_KNN";                // SEL_NN, SEL_KNN
+    bool visualizeImageMatches = false;             // visualize matches between current and previous image?
+    bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
+};
+```
+
+The `RunExperimentSet()` function calls the `RunExperiment()` function one time for each valid detector-descriptor combination. The `RunExperiment()` function is where you will find much of the student assignment code.
+
+```c++
+/*
+ * This function encapsulates running an experiment with a given combination of detector, descriptor, matcher,
+ * descriptor type, and selector.
+ */
+void RunExperiment(Experiment &experiment)
+{
+    ...
+    ...
+}
+
+```
+
+The files [matching2D.hpp](src/matching2D.hpp) and [matching2D_Student.cpp](src/matching2D_Student.cpp) are where I have implemented the detection and matching functions. They contain the following function definitions:
+
+```c++
+void visualizeKeypoints(const std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const std::string windowName, ExperimentResult &result);
+void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::string detectorType, bool bVis, ExperimentResult &result);
+void descKeypoints(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, std::string descriptorType, ExperimentResult &result);
+void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
+                      vector<cv::KeyPoint> &kPtsRef,
+                      cv::Mat &descSource,
+                      cv::Mat &descRef,
+                      vector<cv::DMatch> &matches,
+                      string descriptorType,
+                      string matcherType,
+                      string selectorType,
+                      ExperimentResult &result);
+
+```
+
 
 # References
 * Jan Gaspar. [_Chapter 7. Boost.Circular Buffer_](https://www.boost.org/doc/libs/1_61_0/doc/html/circular_buffer.html). [Boost C++ Libraries](https://www.boost.org/).
 * Phillip Johnston. [_Creating a Circular Buffer in C and C++_](https://embeddedartistry.com/blog/2017/05/17/creating-a-circular-buffer-in-c-and-c/). [Embedded Artistry](https://embeddedartistry.com/), May 17, 2017.
 * StackOverflow. [_How to link C++ program with Boost using CMake_](https://stackoverflow.com/questions/3897839/how-to-link-c-program-with-boost-using-cmake).
 * The spreadsheet I created to analyse the results and generate the graphs and charts is [in this file](results/results.xlsx).
+* Işık, Ş. and Özkan, K., 2014. [A comparative evaluation of well-known feature detectors and descriptors](https://www.researchgate.net/profile/Sahin_Isik/publication/279278472_A_Comparative_Evaluation_of_Well-known_Feature_Detectors_and_Descriptors/links/56a1532e08ae27f7de266583.pdf). International Journal of Applied Mathematics, Electronics and Computers, 3(1), pp.1-6.
+* Trzcinski, T. and Lepetit, V., 2012, October. [Efficient discriminative projections for compact binary descriptors](https://link.springer.com/content/pdf/10.1007/978-3-642-33718-5_17.pdf). In European Conference on Computer Vision (pp. 228-242). Springer, Berlin, Heidelberg.
+* Bay, H., Tuytelaars, T. and Van Gool, L., 2006, May. [Surf: Speeded up robust features](https://link.springer.com/chapter/10.1007/11744023_32). In European conference on computer vision (pp. 404-417). Springer, Berlin, Heidelberg.
+
