@@ -293,7 +293,7 @@ enum KeypointDetector
 Instantiate the `keypointDetectorType` variable specifying the desired `KeypointDetector`, e.g. in [MidTermProject_Camera_Student.cpp](src/MidTermProject_Camera_Student.cpp):
 
 ```c++
-        KeypointDetector keypointDetectorType = KeypointDetector::SIFT;
+        KeypointDetector detector = KeypointDetector::SIFT;
 ```
 
 The `switch` statement then calls the appropriate function based on which detector type is chosen.
