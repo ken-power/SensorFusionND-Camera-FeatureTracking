@@ -214,7 +214,7 @@ void RunExperiment(Experiment &experiment)
                 detKeypointsSIFT(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
                 break;
             default:
-                cerr << "*** Not using a specified keypoint detector" << endl;
+                cerr << "Attempting to use an unsupported keypoint detector" << endl;
         }
 
         //// EOF STUDENT ASSIGNMENT
