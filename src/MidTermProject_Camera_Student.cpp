@@ -1,11 +1,8 @@
 /* INCLUDES FOR THIS PROJECT */
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <iomanip>
 #include <vector>
 #include <cmath>
-#include <limits>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
