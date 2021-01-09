@@ -534,7 +534,7 @@ Fastest keypoint detection:
 2. FAST + SIFT (2.7458 ms)
 3. FAST + BRISK (2.76 ms)
 
-The FAST detector, in combination with the five descriptors that it works with (all except AKAZE), are the five fastest pairs. The FAST detector, with any of hte supported descriptors, provides the fastest keypoint detection times.
+The FAST detector, in combination with the five descriptors that it works with (all except AKAZE), are the five fastest pairs. The FAST detector, with any of the supported descriptors, provides the fastest keypoint detection times.
 
 Fastest descriptor extraction:
 1. BRISK + BRIEF (2.0323 ms)
