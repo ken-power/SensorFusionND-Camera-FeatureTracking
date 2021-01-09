@@ -106,7 +106,7 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
             // All other detector-descriptor combinations are assumed to be valid
             RunExperiment(ex);
 
-            ProcessExperimentResults(ex, performanceData, false);
+            ProcessExperimentResults(ex, performanceData);
 
             experimentCount++;
         }

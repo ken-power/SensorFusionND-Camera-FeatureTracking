@@ -31,13 +31,13 @@ string DetectorNameAsString(const KeypointDetector detector)
 }
 
 
-void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSummary &summary, bool displayAllResults)
+void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSummary &summary)
 {
     const string separator = " | ";
 
-    PerformanceEvaluation1(experiment, summary.keypoints, separator, displayAllResults);
-    PerformanceEvaluation2(experiment, summary.keypointMatches, separator, displayAllResults);
-    PerformanceEvaluation3(experiment, summary.processingTimes, separator, displayAllResults);
+    PerformanceEvaluation1(experiment, summary.keypoints, separator);
+    PerformanceEvaluation2(experiment, summary.keypointMatches, separator);
+    PerformanceEvaluation3(experiment, summary.processingTimes, separator);
 }
 
 void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData)
@@ -71,7 +71,7 @@ void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &key
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
-    for(auto data:keypointMatches)
+    for(const auto& data:keypointMatches)
     {
         cout << data.detector << " | " << data.BRISK << " | " << data.BRIEF << " | " << data.ORB << " | " << data.FREAK << " | " << data.AKAZE << " | " << data.SIFT << endl;
     }
@@ -81,7 +81,7 @@ void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &key
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
-    for(auto data:keypointMatches)
+    for(const auto& data:keypointMatches)
     {
         cout << data.detector << " | " << data.BRISK / numberOfImages << " | " << data.BRIEF / numberOfImages << " | " << data.ORB / numberOfImages << " | " << data.FREAK / numberOfImages << " | " << data.AKAZE / numberOfImages << " | " << data.SIFT / numberOfImages << endl;
     }
@@ -98,7 +98,7 @@ void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &pr
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
-    for(auto data:processingTimes)
+    for(const auto& data:processingTimes)
     {
         cout << data.detector << " | " << data.detectionTimeBRISK << " | " << data.detectionTimeBRIEF << " | " << data.detectionTimeORB << " | " << data.detectionTimeFREAK << " | " << data.detectionTimeAKAZE << " | " << data.detectionTimeSIFT << endl;
     }
@@ -108,7 +108,7 @@ void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &pr
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
-    for(auto data:processingTimes)
+    for(const auto& data:processingTimes)
     {
         cout << data.detector << " | " << data.extractionTimeBRISK << " | " << data.extractionTimeBRIEF << " | " << data.extractionTimeORB << " | " << data.extractionTimeFREAK << " | " << data.extractionTimeAKAZE << " | " << data.extractionTimeSIFT << endl;
     }
@@ -116,7 +116,7 @@ void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &pr
 }
 
 
-void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &keypointsData, const string &separator, bool displayAllResults)
+void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &keypointsData, const string &separator)
 {
     cout << "---- Processing Performance Evaluation 1: Keypoint count data (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")" << endl;
 
@@ -124,7 +124,7 @@ void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &keypointsDat
     unsigned int totalKeypointsInImage = 0;
     unsigned int totalKeypointsOnPrecedingVehicle = 0;
 
-    for(auto result:experiment.result)
+    for(const auto& result:experiment.result)
     {
         totalKeypointsInImage += result.keypointCount.totalKeypoints;
         totalKeypointsOnPrecedingVehicle += result.keypointCount.precedingVehicleKeypoints;
@@ -176,13 +176,15 @@ void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &keypointsDat
     }
 }
 
-void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMatches> &keypointsMatches, const string &separator, bool displayAllResults)
+void PerformanceEvaluation2(Experiment &experiment,
+                            std::vector<TotalKeypointMatches> &keypointsMatches,
+                            const string &separator)
 {
     cout << "---- Processing Performance Evaluation 2: Keypoints matches data (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")" << endl;
 
     unsigned int totalMatches = 0;
 
-    for(auto result:experiment.result)
+    for(const auto& result:experiment.result)
     {
         totalMatches += result.keypointMatch.totalMatches;
     }
@@ -190,9 +192,9 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
     TotalKeypointMatches keypointMatches;
     int index = 0;
 
-    if (keypointsMatches.size() > 0)
+    if (!keypointsMatches.empty())
     {
-        for (auto element:keypointsMatches)
+        for (const auto& element:keypointsMatches)
         {
             if (element.detector == DetectorNameAsString(experiment.hyperparameters.keypointDetector))
             {
@@ -238,7 +240,9 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
 }
 
 
-void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessingTimes> &processingTimes, const string &separator, bool displayAllResults)
+void PerformanceEvaluation3(Experiment &experiment,
+                            std::vector<AverageProcessingTimes> &processingTimes,
+                            const string &separator)
 {
     cout << "---- Processing Performance Evaluation 3: processing times for descriptor matching and extraction (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")" << endl;
 
@@ -246,7 +250,7 @@ void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessin
     double totalDetectionTime = 0;
     int image = 0;
 
-    for(auto result:experiment.result)
+    for(const auto& result:experiment.result)
     {
         totalDetectionTime += result.keypointCount.descriptorMatchingTime;
         totalExtractionTime += result.descriptorExtractionTime;
@@ -257,9 +261,9 @@ void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessin
 
     int index = 0;
 
-    if (processingTimes.size() > 0)
+    if (!processingTimes.empty())
     {
-        for (auto element:processingTimes)
+        for (const auto& element:processingTimes)
         {
             if (element.detector == DetectorNameAsString(experiment.hyperparameters.keypointDetector))
             {
@@ -276,7 +280,7 @@ void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessin
     }
 
 
-    int divisor = processingTimes.size() > 0 ? processingTimes.size() : 1;
+    int divisor = !processingTimes.empty() ? processingTimes.size() : 1;
 
     if(experiment.hyperparameters.descriptor == "BRISK")
     {
