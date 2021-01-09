@@ -548,7 +548,7 @@ The recommendations here are based on a overall analysis of the overall performa
 
 Based on the performance evaluation and observations above, these are the top 3 detector / descriptor combinations that are the best choices for our purpose of detecting keypoints on vehicles:
 
-|Recommendation | Detector + Descriptor pair | Number of matched keypoints | Keypoint detection time| Descriptor extraction time | Total time | 
+| | Detector + Descriptor pair | Number of matched keypoints | Keypoint detection time| Descriptor extraction time | Total time | 
 |:--- | :--- | ---: | ---: | ---: | ---: |
 |1. | FAST + BRIEF | 1099 | 2.8483 ms | 3.6816 ms | 6.53 ms |
 |2. | FAST + BRISK | 1099 | 5.5043 ms | 18.1524 ms | 11.30 ms |
