@@ -312,24 +312,3 @@ void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessin
     times.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
     processingTimes.push_back(times);
 }
-
-
-
-void DisplayImagePairsData(Experiment &experiment, std::vector<TotalKeypointMatches> &keypointsMatches, const string &separator)
-{
-    cout << "\n ------------- Matching Between Successive Image Pairs ----------------------\n" << endl;
-
-    cout << "Image Pair" << separator << experiment.hyperparameters.descriptor << endl;
-    unsigned int total = 0;
-
-    if (separator == " | ") // only needed for markdown table
-    {
-        cout << ":--- | ---:|" << endl;
-    }
-    for(auto result:experiment.result)
-    {
-        cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << endl;
-        total += result.keypointMatch.totalMatches;
-    }
-    cout << "Total: " << separator << total << endl;
-}

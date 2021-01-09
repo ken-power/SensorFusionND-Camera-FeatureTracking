@@ -128,6 +128,5 @@ string DetectorNameAsString(const KeypointDetector detector);
 void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData);
 void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches);
 void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &processingTimes);
-void DisplayImagePairsData(Experiment &experiment, std::vector<TotalKeypointMatches> &keypointsMatches, const string &separator);
 
 #endif //CAMERA_FUSION_REPORTING_H
