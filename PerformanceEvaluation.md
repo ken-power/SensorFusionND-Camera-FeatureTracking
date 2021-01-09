@@ -3,7 +3,6 @@ These results are recorded from running a total of 35 experiments based on combi
 
 ## Performance Evaluation 1: Number of Keypoints
 
-
 Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.
 
 Detector  | Total keypoints from all 10 images  | Total keypoints in scene (average per image) | Keypoints detected on preceding vehicle (average per image) | % keypoints removed from scene to focus on preceding vehicle
@@ -30,6 +29,7 @@ SIFT | 304 | 338 | 0 | 274 | 0 | 801
 AKAZE | 1215 | 1266 | 2372 | 1188 | 2518 | 1273
 ORB | 751 | 545 | 1522 | 421 | 0 | 765
 BRISK | 1570 | 1704 | 3020 | 1526 | 0 | 1662
+
 ### Average number of matched keypoints per image pair
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
@@ -44,8 +44,6 @@ BRISK | 157 | 170 | 302 | 152 | 0 | 166
 ## Performance Evaluation 3: Keypoint Detection and Descriptor Extraction
 
 Log the time it takes for keypoint detection and descriptor extraction.
-
-
 
 ### Keypoint Detection Times (milliseconds)
 

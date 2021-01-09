@@ -229,6 +229,10 @@ void RunExperiment(Experiment &experiment)
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (experiment.hyperparameters.isFocusOnPrecedingVehicleOnly)
         {
+            cout << "Focusing just on the preceding vehicle " << endl;
+            cout << "Total Keypoints detected in the image = " << keypoints.size() << endl;
+            experimentResult.keypointCount.totalKeypoints = keypoints.size();
+
             for(auto it = keypoints.begin(); it != keypoints.end();)
             {
                 // remove the keypoint if it is not contained within the rectangle of interest
@@ -242,6 +246,12 @@ void RunExperiment(Experiment &experiment)
                 }
             }
             experimentResult.keypointCount.precedingVehicleKeypoints = keypoints.size();
+            double percentageKeypointsRemoved = 100 -
+                                                (static_cast<double>(experimentResult.keypointCount.precedingVehicleKeypoints) /
+                                                 static_cast<double>(experimentResult.keypointCount.totalKeypoints) *
+                                                 100);
+            cout << "Keypoints detected on the preceding vehicle = " << experimentResult.keypointCount.precedingVehicleKeypoints << "; hence " << percentageKeypointsRemoved
+                 << "% of keypoints removed" << endl;
         }
 
         //// EOF STUDENT ASSIGNMENT

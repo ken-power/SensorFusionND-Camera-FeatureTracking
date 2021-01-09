@@ -53,13 +53,29 @@ struct Experiment
 struct TotalKeypoints
 {
     TotalKeypoints()= default;
-    unsigned int SHI_TOMASI = 0;
-    unsigned int HARRIS = 0;
-    unsigned int FAST = 0;
-    unsigned int BRISK = 0;
-    unsigned int ORB = 0;
-    unsigned int AKAZE = 0;
-    unsigned int SIFT = 0;
+    unsigned int SHI_TOMASI_totalKeypointsInImage = 0;
+    unsigned int HARRIS_totalKeypointsInImage = 0;
+    unsigned int FAST_totalKeypointsInImage = 0;
+    unsigned int BRISK_totalKeypointsInImage = 0;
+    unsigned int ORB_totalKeypointsInImage = 0;
+    unsigned int AKAZE_totalKeypointsInImage = 0;
+    unsigned int SIFT_totalKeypointsInImage = 0;
+
+    unsigned int SHI_TOMASI_totalKeypointsOnPrecedingVehicle = 0;
+    unsigned int HARRIS_totalKeypointsOnPrecedingVehicle = 0;
+    unsigned int FAST_totalKeypointsOnPrecedingVehicle = 0;
+    unsigned int BRISK_totalKeypointsOnPrecedingVehicle = 0;
+    unsigned int ORB_totalKeypointsOnPrecedingVehicle = 0;
+    unsigned int AKAZE_totalKeypointsOnPrecedingVehicle = 0;
+    unsigned int SIFT_totalKeypointsOnPrecedingVehicle = 0;
+
+    double SHI_TOMASI_percentageRepresentedByVehicleKeypoints = 0.0;
+    double HARRIS_percentageRepresentedByVehicleKeypoints = 0.0;
+    double FAST_percentageRepresentedByVehicleKeypoints = 0.0;
+    double BRISK_percentageRepresentedByVehicleKeypoints = 0.0;
+    double ORB_percentageRepresentedByVehicleKeypoints = 0.0;
+    double AKAZE_percentageRepresentedByVehicleKeypoints = 0.0;
+    double SIFT_percentageRepresentedByVehicleKeypoints = 0.0;
 };
 
 struct TotalKeypointMatches
@@ -112,5 +128,6 @@ string DetectorNameAsString(const KeypointDetector detector);
 void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData);
 void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches);
 void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &processingTimes);
+void DisplayImagePairsData(Experiment &experiment, std::vector<TotalKeypointMatches> &keypointsMatches, const string &separator);
 
 #endif //CAMERA_FUSION_REPORTING_H

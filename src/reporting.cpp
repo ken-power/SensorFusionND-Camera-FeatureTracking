@@ -43,21 +43,22 @@ void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSumma
 void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData)
 {
     const unsigned int numberOfImages = 10;
+    const string separator = " | ";
 
     cout << "\n## Performance Evaluation 1: Number of Keypoints\n\n" << endl;
 
     cout << "Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.\n" << endl;
 
-    cout << " Detector | Total keypoints on preceding vehicle from all " << numberOfImages <<  " images | Average number of keypoints detected per image" << endl;
-    cout << " :--- | ---: | ---:" << endl;
+    cout << " Detector " << separator << "Total keypoints from all " << numberOfImages <<  " images " << separator << "Total keypoints in scene (average per image)" << separator << "Keypoints detected on preceding vehicle (average per image)" << separator << "% keypoints removed from scene to focus on preceding vehicle" << endl;
+    cout << " :--- | ---: | ---: | ---: | ---: " << endl;
 
-    cout << DetectorNameAsString(Shi_Tomasi) << " | " << keypointsData.SHI_TOMASI << " | " << keypointsData.SHI_TOMASI / numberOfImages << endl;
-    cout << DetectorNameAsString(HARRIS) << " | " << keypointsData.HARRIS << " | " << keypointsData.HARRIS / numberOfImages << endl;
-    cout << DetectorNameAsString(FAST) << " | " << keypointsData.FAST << " | " << keypointsData.FAST / numberOfImages << endl;
-    cout << DetectorNameAsString(BRISK) << " | " << keypointsData.BRISK << " | " << keypointsData.BRISK / numberOfImages << endl;
-    cout << DetectorNameAsString(ORB) << " | " << keypointsData.ORB << " | " << keypointsData.ORB / numberOfImages << endl;
-    cout << DetectorNameAsString(AKAZE) << " | " << keypointsData.AKAZE <<  " | " << keypointsData.AKAZE / numberOfImages << endl;
-    cout << DetectorNameAsString(SIFT) << " | " << keypointsData.SIFT << " | " << keypointsData.SIFT / numberOfImages << endl;
+    cout << DetectorNameAsString(Shi_Tomasi) << separator << keypointsData.SHI_TOMASI_totalKeypointsInImage << separator << keypointsData.SHI_TOMASI_totalKeypointsInImage / numberOfImages << separator << keypointsData.SHI_TOMASI_totalKeypointsOnPrecedingVehicle / numberOfImages << separator  << 100 - keypointsData.SHI_TOMASI_percentageRepresentedByVehicleKeypoints << endl;
+    cout << DetectorNameAsString(HARRIS) << separator << keypointsData.HARRIS_totalKeypointsInImage << separator << keypointsData.HARRIS_totalKeypointsInImage / numberOfImages << separator << keypointsData.HARRIS_totalKeypointsOnPrecedingVehicle / numberOfImages << separator  << 100 - keypointsData.HARRIS_percentageRepresentedByVehicleKeypoints << endl;
+    cout << DetectorNameAsString(FAST) << separator << keypointsData.FAST_totalKeypointsInImage << separator << keypointsData.FAST_totalKeypointsInImage / numberOfImages << separator << keypointsData.FAST_totalKeypointsOnPrecedingVehicle / numberOfImages << separator <<  100 - keypointsData.FAST_percentageRepresentedByVehicleKeypoints << endl;
+    cout << DetectorNameAsString(BRISK) << separator << keypointsData.BRISK_totalKeypointsInImage << separator << keypointsData.BRISK_totalKeypointsInImage / numberOfImages << separator << keypointsData.BRISK_totalKeypointsOnPrecedingVehicle / numberOfImages << separator  << 100 - keypointsData.BRISK_percentageRepresentedByVehicleKeypoints << endl;
+    cout << DetectorNameAsString(ORB) << separator << keypointsData.ORB_totalKeypointsInImage << separator << keypointsData.ORB_totalKeypointsInImage / numberOfImages << separator << keypointsData.ORB_totalKeypointsOnPrecedingVehicle / numberOfImages << separator  << 100 - keypointsData.ORB_percentageRepresentedByVehicleKeypoints << endl;
+    cout << DetectorNameAsString(AKAZE) << separator << keypointsData.AKAZE_totalKeypointsInImage << separator << keypointsData.AKAZE_totalKeypointsInImage / numberOfImages << separator << keypointsData.AKAZE_totalKeypointsOnPrecedingVehicle / numberOfImages << separator << 100 - keypointsData.AKAZE_percentageRepresentedByVehicleKeypoints << endl;
+    cout << DetectorNameAsString(SIFT) << separator << keypointsData.SIFT_totalKeypointsInImage << separator << keypointsData.SIFT_totalKeypointsInImage / numberOfImages << separator << keypointsData.SIFT_totalKeypointsOnPrecedingVehicle / numberOfImages << separator  << 100 - keypointsData.SIFT_percentageRepresentedByVehicleKeypoints << endl;
 }
 
 void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches)
@@ -66,12 +67,23 @@ void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &key
 
     cout << "Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.\n" << endl;
 
+    cout << "### Total number of matched keypoints over 10 images" << endl;
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
     for(auto data:keypointMatches)
     {
         cout << data.detector << " | " << data.BRISK << " | " << data.BRIEF << " | " << data.ORB << " | " << data.FREAK << " | " << data.AKAZE << " | " << data.SIFT << endl;
+    }
+
+    const int numberOfImages = 10;
+    cout << "### Average number of matched keypoints per image pair" << endl;
+    cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
+    cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
+
+    for(auto data:keypointMatches)
+    {
+        cout << data.detector << " | " << data.BRISK / numberOfImages << " | " << data.BRIEF / numberOfImages << " | " << data.ORB / numberOfImages << " | " << data.FREAK / numberOfImages << " | " << data.AKAZE / numberOfImages << " | " << data.SIFT / numberOfImages << endl;
     }
 }
 
@@ -82,7 +94,7 @@ void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &pr
 
     cout << "Log the time it takes for keypoint detection and descriptor extraction.\n" << endl;
 
-    cout << "\n\n### Keypoint Detection Times\n" << endl;
+    cout << "\n\n### Keypoint Detection Times (milliseconds)\n" << endl;
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
@@ -92,7 +104,7 @@ void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &pr
     }
 
 
-    cout << "\n\n### Descriptor Extraction Times\n" << endl;
+    cout << "\n\n### Descriptor Extraction Times (milliseconds)\n" << endl;
     cout << " Detector - Descriptor|" << "BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT" << endl;
     cout << " :--- | ---: | ---: | ---: | ---: | ---: | ---:" << endl;
 
@@ -106,54 +118,58 @@ void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &pr
 
 void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &keypointsData, const string &separator, bool displayAllResults)
 {
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 1 ----------------------\n" << endl;
+    cout << "---- Processing Performance Evaluation 1: Keypoint count data (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")" << endl;
 
-    if(displayAllResults)
-        cout << "Filename" << separator << "Total Keypoints Detected" << separator << "Time to detect all keypoints (ms)"
-             << separator << "Keypoints on Preceding Vehicle" << endl;
-
-    if (separator == " | ") // only needed for markdown table
-    {
-        if(displayAllResults)
-            cout << ":--- | ---:| ---:| ---:|" << endl;
-    }
     unsigned int image = 0;
-    unsigned int totalKeypoints = 0;
+    unsigned int totalKeypointsInImage = 0;
+    unsigned int totalKeypointsOnPrecedingVehicle = 0;
 
     for(auto result:experiment.result)
     {
-        if(displayAllResults)
-            cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.totalKeypoints << separator << result.keypointCount.descriptorMatchingTime << separator << result.keypointCount.precedingVehicleKeypoints << endl;
-
-        totalKeypoints += result.keypointCount.totalKeypoints;
+        totalKeypointsInImage += result.keypointCount.totalKeypoints;
+        totalKeypointsOnPrecedingVehicle += result.keypointCount.precedingVehicleKeypoints;
 
         if(experiment.hyperparameters.keypointDetector == Shi_Tomasi)
         {
-            keypointsData.SHI_TOMASI = totalKeypoints;
+            keypointsData.SHI_TOMASI_totalKeypointsInImage = totalKeypointsInImage;
+            keypointsData.SHI_TOMASI_totalKeypointsOnPrecedingVehicle = totalKeypointsOnPrecedingVehicle;
+            keypointsData.SHI_TOMASI_percentageRepresentedByVehicleKeypoints = (static_cast<double>(totalKeypointsOnPrecedingVehicle) / static_cast<double>(totalKeypointsInImage))*100;
         }
         else if(experiment.hyperparameters.keypointDetector == HARRIS)
         {
-            keypointsData.HARRIS = totalKeypoints;
+            keypointsData.HARRIS_totalKeypointsInImage = totalKeypointsInImage;
+            keypointsData.HARRIS_totalKeypointsOnPrecedingVehicle = totalKeypointsOnPrecedingVehicle;
+            keypointsData.HARRIS_percentageRepresentedByVehicleKeypoints = (static_cast<double>(totalKeypointsOnPrecedingVehicle) / static_cast<double>(totalKeypointsInImage))*100;
         }
         else if(experiment.hyperparameters.keypointDetector == FAST)
         {
-            keypointsData.FAST = totalKeypoints;
+            keypointsData.FAST_totalKeypointsInImage = totalKeypointsInImage;
+            keypointsData.FAST_totalKeypointsOnPrecedingVehicle = totalKeypointsOnPrecedingVehicle;
+            keypointsData.FAST_percentageRepresentedByVehicleKeypoints = (static_cast<double>(totalKeypointsOnPrecedingVehicle) / static_cast<double>(totalKeypointsInImage))*100;
         }
         else if(experiment.hyperparameters.keypointDetector == BRISK)
         {
-            keypointsData.BRISK = totalKeypoints;
+            keypointsData.BRISK_totalKeypointsInImage = totalKeypointsInImage;
+            keypointsData.BRISK_totalKeypointsOnPrecedingVehicle = totalKeypointsOnPrecedingVehicle;
+            keypointsData.BRISK_percentageRepresentedByVehicleKeypoints = (static_cast<double>(totalKeypointsOnPrecedingVehicle) / static_cast<double>(totalKeypointsInImage))*100;
         }
         else if(experiment.hyperparameters.keypointDetector == ORB)
         {
-            keypointsData.ORB = totalKeypoints;
+            keypointsData.ORB_totalKeypointsInImage = totalKeypointsInImage;
+            keypointsData.ORB_totalKeypointsOnPrecedingVehicle = totalKeypointsOnPrecedingVehicle;
+            keypointsData.ORB_percentageRepresentedByVehicleKeypoints = (static_cast<double>(totalKeypointsOnPrecedingVehicle) / static_cast<double>(totalKeypointsInImage))*100;
         }
         else if(experiment.hyperparameters.keypointDetector == AKAZE)
         {
-            keypointsData.AKAZE = totalKeypoints;
+            keypointsData.AKAZE_totalKeypointsInImage = totalKeypointsInImage;
+            keypointsData.AKAZE_totalKeypointsOnPrecedingVehicle = totalKeypointsOnPrecedingVehicle;
+            keypointsData.AKAZE_percentageRepresentedByVehicleKeypoints = (static_cast<double>(totalKeypointsOnPrecedingVehicle) / static_cast<double>(totalKeypointsInImage))*100;
         }
         else if(experiment.hyperparameters.keypointDetector == SIFT)
         {
-            keypointsData.SIFT = totalKeypoints;
+            keypointsData.SIFT_totalKeypointsInImage = totalKeypointsInImage;
+            keypointsData.SIFT_totalKeypointsOnPrecedingVehicle = totalKeypointsOnPrecedingVehicle;
+            keypointsData.SIFT_percentageRepresentedByVehicleKeypoints = (static_cast<double>(totalKeypointsOnPrecedingVehicle) / static_cast<double>(totalKeypointsInImage))*100;
         }
 
         image++;
@@ -162,38 +178,16 @@ void PerformanceEvaluation1(Experiment &experiment, TotalKeypoints &keypointsDat
 
 void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMatches> &keypointsMatches, const string &separator, bool displayAllResults)
 {
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 2 ----------------------\n" << endl;
+    cout << "---- Processing Performance Evaluation 2: Keypoints matches data (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")" << endl;
 
-    if(displayAllResults)
-        cout << "Image Pair" << separator << "Total Keypoints Matched" << separator << "KNN Matches" << separator << "Keypoints Removed" << separator << "% Removed" << endl;
+    unsigned int totalMatches = 0;
 
-    if (separator == " | ") // only needed for markdown table
-    {
-        if(displayAllResults)
-            cout << ":--- | ---:| ---:| ---:| ---:|" << endl;
-    }
     for(auto result:experiment.result)
     {
-        if(displayAllResults)
-            cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << separator << result.keypointMatch.knnMatches << separator << result.keypointMatch.removed << separator << result.keypointMatch.percentageRemoved << endl;
+        totalMatches += result.keypointMatch.totalMatches;
     }
 
-    cout << "\nDisplay just the KNN Matches:\n" << endl;
-    cout << "Image Pair" << separator << experiment.hyperparameters.descriptor << endl;
-    unsigned int total = 0;
-
-    if (separator == " | ") // only needed for markdown table
-    {
-        cout << ":--- | ---:|" << endl;
-    }
-    for(auto result:experiment.result)
-    {
-        cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << endl;
-        total += result.keypointMatch.totalMatches;
-    }
-    cout << "Total: " << separator << total << endl;
-
-    TotalKeypointMatches m;
+    TotalKeypointMatches keypointMatches;
     int index = 0;
 
     if (keypointsMatches.size() > 0)
@@ -202,7 +196,7 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
         {
             if (element.detector == DetectorNameAsString(experiment.hyperparameters.keypointDetector))
             {
-                m = element;
+                keypointMatches = element;
                 keypointsMatches.erase(keypointsMatches.begin() + index);
                 break;
             }
@@ -211,66 +205,53 @@ void PerformanceEvaluation2(Experiment &experiment, std::vector<TotalKeypointMat
     }
     else
     {
-        m = TotalKeypointMatches();
+        keypointMatches = TotalKeypointMatches();
     }
 
     if(experiment.hyperparameters.descriptor == "BRISK")
     {
-        m.BRISK = total;
+        keypointMatches.BRISK = totalMatches;
     }
     else if(experiment.hyperparameters.descriptor == "BRIEF")
     {
-        m.BRIEF = total;
+        keypointMatches.BRIEF = totalMatches;
     }
     else if(experiment.hyperparameters.descriptor == "ORB")
     {
-        m.ORB = total;
+        keypointMatches.ORB = totalMatches;
     }
     else if(experiment.hyperparameters.descriptor == "FREAK")
     {
-        m.FREAK = total;
+        keypointMatches.FREAK = totalMatches;
     }
     else if(experiment.hyperparameters.descriptor == "AKAZE")
     {
-        m.AKAZE = total;
+        keypointMatches.AKAZE = totalMatches;
     }
     else if(experiment.hyperparameters.descriptor == "SIFT")
     {
-        m.SIFT = total;
+        keypointMatches.SIFT = totalMatches;
     }
 
-    m.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
-    keypointsMatches.push_back(m);
+    keypointMatches.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
+    keypointsMatches.push_back(keypointMatches);
 }
 
 
 void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessingTimes> &processingTimes, const string &separator, bool displayAllResults)
 {
-    cout << "\n\n\n ------------- RESULTS: Performance Evaluation 3 (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")----------------------\n" << endl;
-
-    if(displayAllResults)
-        cout << "Image" << separator << "Detection Time (ms)" << separator << "Descriptor Extraction Time (ms)" << endl;
+    cout << "---- Processing Performance Evaluation 3: processing times for descriptor matching and extraction (" << DetectorNameAsString(experiment.hyperparameters.keypointDetector) << " + " << experiment.hyperparameters.descriptor << ")" << endl;
 
     double totalExtractionTime = 0;
     double totalDetectionTime = 0;
     int image = 0;
 
-    if (separator == " | ") // only needed for markdown table
-    {
-        if(displayAllResults)
-            cout << ":--- | ---:| ---:|" << endl;
-    }
     for(auto result:experiment.result)
     {
-        if(displayAllResults)
-            cout << "[" << image << "](" << result.keypointCount.imageName << ")" << separator << result.keypointCount.descriptorMatchingTime << separator << result.descriptorExtractionTime << endl;
         totalDetectionTime += result.keypointCount.descriptorMatchingTime;
         totalExtractionTime += result.descriptorExtractionTime;
         image++;
     }
-    if(displayAllResults)
-        cout << "Totals (ms): " << separator << totalDetectionTime << separator << totalExtractionTime << endl;
-
 
     AverageProcessingTimes times;
 
@@ -330,4 +311,25 @@ void PerformanceEvaluation3(Experiment &experiment, std::vector<AverageProcessin
 
     times.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
     processingTimes.push_back(times);
+}
+
+
+
+void DisplayImagePairsData(Experiment &experiment, std::vector<TotalKeypointMatches> &keypointsMatches, const string &separator)
+{
+    cout << "\n ------------- Matching Between Successive Image Pairs ----------------------\n" << endl;
+
+    cout << "Image Pair" << separator << experiment.hyperparameters.descriptor << endl;
+    unsigned int total = 0;
+
+    if (separator == " | ") // only needed for markdown table
+    {
+        cout << ":--- | ---:|" << endl;
+    }
+    for(auto result:experiment.result)
+    {
+        cout << result.keypointMatch.matchedImagePair.second << " --> " << result.keypointMatch.matchedImagePair.first << separator << result.keypointMatch.totalMatches << endl;
+        total += result.keypointMatch.totalMatches;
+    }
+    cout << "Total: " << separator << total << endl;
 }
