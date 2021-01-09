@@ -151,11 +151,12 @@ void RunExperiment(Experiment &experiment)
     //vector<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
 
     /* MAIN LOOP OVER ALL IMAGES */
-    ExperimentResult resultLine;
+    ExperimentResult experimentResult;
+    const bool visualizeImages = experiment.hyperparameters.visualizeImageMatches;
 
     for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex++)
     {
-        resultLine = ExperimentResult();
+        experimentResult = ExperimentResult();
         /* LOAD IMAGE INTO BUFFER */
 
         // assemble filenames for current index
@@ -168,7 +169,7 @@ void RunExperiment(Experiment &experiment)
         img = cv::imread(imgFullFilename);
         cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
-        resultLine.keypointCount.imageName = imgFullFilename;
+        experimentResult.keypointCount.imageName = imgFullFilename;
 
         //// STUDENT ASSIGNMENT
         //// TASK MP.1 -> replace the following code with ring buffer of size dataBufferSize
@@ -193,25 +194,25 @@ void RunExperiment(Experiment &experiment)
         switch (experiment.hyperparameters.keypointDetector)
         {
             case KeypointDetector::Shi_Tomasi:
-                detKeypointsShiTomasi(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+                detKeypointsShiTomasi(keypoints, imgGray, visualizeImages, experimentResult);
                 break;
             case KeypointDetector::HARRIS:
-                detKeypointsHarris(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+                detKeypointsHarris(keypoints, imgGray, visualizeImages, experimentResult);
                 break;
             case KeypointDetector::FAST:
-                detKeypointsFAST(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+                detKeypointsFAST(keypoints, imgGray, visualizeImages, experimentResult);
                 break;
             case KeypointDetector::BRISK:
-                detKeypointsBRISK(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+                detKeypointsBRISK(keypoints, imgGray, visualizeImages, experimentResult);
                 break;
             case KeypointDetector::ORB:
-                detKeypointsORB(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+                detKeypointsORB(keypoints, imgGray, visualizeImages, experimentResult);
                 break;
             case KeypointDetector::AKAZE:
-                detKeypointsAKAZE(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+                detKeypointsAKAZE(keypoints, imgGray, visualizeImages, experimentResult);
                 break;
             case KeypointDetector::SIFT:
-                detKeypointsSIFT(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+                detKeypointsSIFT(keypoints, imgGray, visualizeImages, experimentResult);
                 break;
             default:
                 cerr << "Attempting to use an unsupported keypoint detector" << endl;
@@ -240,7 +241,7 @@ void RunExperiment(Experiment &experiment)
                     it++;
                 }
             }
-            resultLine.keypointCount.precedingVehicleKeypoints = keypoints.size();
+            experimentResult.keypointCount.precedingVehicleKeypoints = keypoints.size();
         }
 
         //// EOF STUDENT ASSIGNMENT
@@ -274,7 +275,7 @@ void RunExperiment(Experiment &experiment)
                       (dataBuffer.end() - 1)->cameraImg,
                       descriptors,
                       experiment.hyperparameters.descriptor,
-                      resultLine);
+                      experimentResult);
         //// EOF STUDENT ASSIGNMENT
 
         // push descriptors for current frame to end of data buffer
@@ -295,8 +296,8 @@ void RunExperiment(Experiment &experiment)
 
             try
             {
-                resultLine.keypointMatch.matchedImagePair.first = firstImage;
-                resultLine.keypointMatch.matchedImagePair.second = secondImage;
+                experimentResult.keypointMatch.matchedImagePair.first = firstImage;
+                experimentResult.keypointMatch.matchedImagePair.second = secondImage;
 
                 if(experiment.hyperparameters.keypointDetector == SIFT || experiment.hyperparameters.descriptor == "SIFT")
                 {
@@ -315,7 +316,7 @@ void RunExperiment(Experiment &experiment)
                                  experiment.hyperparameters.descriptorType,
                                  experiment.hyperparameters.matcherType,
                                  experiment.hyperparameters.selectorType,
-                                 resultLine);
+                                 experimentResult);
             }
             catch (const std::exception &ex)
             {
@@ -330,7 +331,7 @@ void RunExperiment(Experiment &experiment)
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
 
             // visualize matches between current and previous image
-            if (experiment.hyperparameters.visualizeImageMatches)
+            if (visualizeImages)
             {
                 cv::Mat matchImg = ((dataBuffer.end() - 1)->cameraImg).clone();
                 cv::drawMatches((dataBuffer.end() - 2)->cameraImg, (dataBuffer.end() - 2)->keypoints,
@@ -350,7 +351,7 @@ void RunExperiment(Experiment &experiment)
             secondImage++;
         }
 
-        experiment.result.push_back(resultLine);
+        experiment.result.push_back(experimentResult);
     } // eof loop over all images
 
 }
