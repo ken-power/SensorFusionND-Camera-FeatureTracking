@@ -12,11 +12,11 @@ using namespace std;
 // of their neighborhood size. Do this for all the detectors you have implemented.
 struct KeypointCountResult
 {
-    KeypointCountResult(){}
-    string imageName;
-    unsigned int totalKeypoints;
-    double descriptorMatchingTime;
-    unsigned int precedingVehicleKeypoints;
+    KeypointCountResult()= default;
+    string imageName = "No image name specified";
+    unsigned int totalKeypoints = 0;
+    double descriptorMatchingTime = 0.0;
+    unsigned int precedingVehicleKeypoints = 0;
 };
 
 // Performance Evaluation 2
@@ -24,7 +24,7 @@ struct KeypointCountResult
 // combinations of detectors and descriptors.
 struct KeypointMatchResult
 {
-    KeypointMatchResult(){}
+    KeypointMatchResult()= default;
     std::pair<unsigned int, unsigned int> matchedImagePair = {0,0};
     unsigned int totalMatches = 0;
     unsigned int knnMatches = 0;
@@ -34,7 +34,7 @@ struct KeypointMatchResult
 
 struct ExperimentResult
 {
-    ExperimentResult(){}
+    ExperimentResult()= default;
     KeypointCountResult keypointCount;
     KeypointMatchResult keypointMatch;
 
@@ -45,14 +45,14 @@ struct ExperimentResult
 
 struct Experiment
 {
-    Experiment(){}
+    Experiment()= default;
     std::vector<ExperimentResult> result;
     Hyperparameters hyperparameters;
 };
 
 struct TotalKeypoints
 {
-    TotalKeypoints(){}
+    TotalKeypoints()= default;
     unsigned int SHI_TOMASI = 0;
     unsigned int HARRIS = 0;
     unsigned int FAST = 0;
@@ -64,7 +64,7 @@ struct TotalKeypoints
 
 struct TotalKeypointMatches
 {
-    TotalKeypointMatches(){}
+    TotalKeypointMatches()= default;
     string detector;
     unsigned int BRISK = 0;
     unsigned int BRIEF = 0;
@@ -76,7 +76,7 @@ struct TotalKeypointMatches
 
 struct AverageProcessingTimes
 {
-    AverageProcessingTimes(){}
+    AverageProcessingTimes()= default;
     string detector;
     double detectionTimeBRISK = 0.0;
     double detectionTimeBRIEF = 0.0;
@@ -96,7 +96,7 @@ struct AverageProcessingTimes
 
 struct PerformanceEvaluationSummary
 {
-    PerformanceEvaluationSummary(){}
+    PerformanceEvaluationSummary()= default;
     TotalKeypoints keypoints;
     std::vector<TotalKeypointMatches> keypointMatches;
     std::vector<AverageProcessingTimes> processingTimes;
