@@ -678,8 +678,8 @@ The `Hyperparameters` are implemented as a `struct` in [dataStructures.h](src/da
 struct Hyperparameters
 {
     Hyperparameters(){}
-
-    KeypointDetector keypointDetector = Shi_Tomasi;
+    
+    KeypointDetector keypointDetector = Shi_Tomasi; // Shi_Tomasi, HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
     string descriptor = "BRIEF";                    // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
     string matcherType = "MAT_BF";                  // MAT_BF, MAT_FLANN
     string descriptorType = "DES_BINARY";           // DES_BINARY, DES_HOG
