@@ -6,16 +6,15 @@ These results are recorded from running a total of 35 experiments based on combi
 
 Count the number of keypoints on the preceding vehicle for all 10 images and take note of the distribution of their neighborhood size. Do this for all the detectors you have implemented.
 
-Detector | Keypoints on Preceding Vehicle | Total (neighborhood) size
- :--- | ---: | ---:
-Shi-Tomasi | 13423
-HARRIS | 1737
-FAST | 17874
-BRISK | 27116
-ORB | 5000
-AKAZE | 13430
-SIFT | 13861
-
+Detector  | Total keypoints from all 10 images  | Total keypoints in scene (average per image) | Keypoints detected on preceding vehicle (average per image) | % keypoints removed from scene to focus on preceding vehicle
+ :--- | ---: | ---: | ---: | ---: 
+Shi-Tomasi | 13423 | 1342 | 117 | 91.2166
+HARRIS | 1737 | 173 | 24 | 85.7225
+FAST | 17874 | 1787 | 149 | 91.6583
+BRISK | 27116 | 2711 | 276 | 89.8141
+ORB | 5000 | 500 | 116 | 76.78
+AKAZE | 13430 | 1343 | 167 | 87.5652
+SIFT | 13861 | 1386 | 138 | 90.0007
 
 ## Performance Evaluation 2: Number of Matched Keypoints
 
@@ -41,23 +40,23 @@ Log the time it takes for keypoint detection and descriptor extraction.
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 113.961 | 103.281 | 182.746 | 88.6761 | 0 | 88.6581
-HARRIS | 117.739 | 115.977 | 224.026 | 114.519 | 0 | 120.658
-FAST | 2.75996 | 2.84834 | 5.50425 | 2.74408 | 0 | 2.74581
-SIFT | 251.051 | 247.2 | 0 | 244.247 | 0 | 260.259
-AKAZE | 170.732 | 174.562 | 340.939 | 175.438 | 368.825 | 183.47
-ORB | 17.722 | 13.3629 | 20.6844 | 11.4591 | 0 | 12.4044
-BRISK | 49.2949 | 49.3449 | 103.928 | 51.1041 | 0 | 49.9847
+Shi-Tomasi | 109.364 | 102.18 | 185.867 | 94.1761 | 0 | 88.345
+HARRIS | 114.897 | 118.228 | 222.378 | 112.235 | 0 | 115.549
+FAST | 2.7077 | 2.71652 | 5.54807 | 2.76621 | 0 | 2.75124
+SIFT | 296.14 | 284.862 | 0 | 285.346 | 0 | 280.37
+AKAZE | 207.72 | 182.869 | 394.39 | 193.163 | 397.368 | 208.516
+ORB | 15.6676 | 10.7483 | 21.9879 | 12.1309 | 0 | 12.7008
+BRISK | 49.3173 | 50.2333 | 99.3602 | 49.592 | 0 | 49.2176
 
 
 ### Descriptor Extraction Times
 
 Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
  :--- | ---: | ---: | ---: | ---: | ---: | ---:
-Shi-Tomasi | 16.0448 | 8.91525 | 40.1351 | 164.883 | 0 | 108.667
-HARRIS | 9.76207 | 5.42603 | 41.2102 | 155.613 | 0 | 123.167
-FAST | 8.54358 | 3.68155 | 18.1524 | 80.7901 | 0 | 57.0617
-SIFT | 6.2278 | 5.26704 | 0 | 55.5796 | 0 | 197.059
-AKAZE | 8.55506 | 4.42716 | 32.1053 | 43.9621 | 311.096 | 67.973
-ORB | 3.00601 | 2.8468 | 25.0946 | 31.4454 | 0 | 59.4137
-BRISK | 4.30439 | 2.03225 | 21.3602 | 27.7593 | 0 | 31.6481
+Shi-Tomasi | 18.8685 | 8.25273 | 41.7754 | 164.022 | 0 | 107.545
+HARRIS | 8.74428 | 6.85154 | 39.6794 | 155.657 | 0 | 105.817
+FAST | 7.6614 | 3.4313 | 17.0852 | 85.5186 | 0 | 53.9945
+SIFT | 8.9777 | 6.99016 | 0 | 54.0525 | 0 | 203.999
+AKAZE | 9.09969 | 8.53179 | 41.2887 | 50.1621 | 358.618 | 84.7348
+ORB | 3.99467 | 6.36938 | 28.2767 | 35.8993 | 0 | 72.1317
+BRISK | 4.48616 | 1.36667 | 24.6825 | 28.21 | 0 | 31.7754
