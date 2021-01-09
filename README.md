@@ -21,7 +21,7 @@ This document contains the following sections:
     * [Performance Evaluation 2: Number of Matched Keypoints](#performance-evaluation-2-number-of-matched-keypoints)
     * [Performance Evaluation 3: Keypoint Detection and Descriptor Extraction Times](#performance-evaluation-3-keypoint-detection-and-descriptor-extraction)
     * [Observations](#Observations)
-    * [Recommendations for Detecting Keypoints on Vehicles](#Recommendations)
+    * [Recommendations for Detecting Keypoints on Vehicles](#recommendation-for-detecting-keypoints-on-vehicles)
 * [Building and Running the Project](#Building-and-Running-the-Project)
   * [Dependencies](#Dependencies)
   * [Basic Build Instructions](#Basic-Build-Instructions)
