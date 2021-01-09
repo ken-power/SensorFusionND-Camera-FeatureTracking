@@ -627,6 +627,51 @@ int main(int argc, const char *argv[])
 }
 ```
 
+To run the project for a subset of the detectors and descriptors, simply comment out the ones you do not want to run, e.g.,:
+```c++
+    std::vector<KeypointDetector> detectors = {
+            KeypointDetector::Shi_Tomasi,
+//            KeypointDetector::HARRIS,
+//            KeypointDetector::FAST,
+//            KeypointDetector::SIFT,
+//            KeypointDetector::AKAZE,
+//            KeypointDetector::ORB,
+            KeypointDetector::BRISK
+    };
+
+    std::vector<string> descriptors = {
+            "BRISK",
+//            "BRIEF",
+//            "ORB",
+//            "FREAK",
+//            "AKAZE",
+            "SIFT"
+    };
+
+```
+This scenario results in running a total of 4 experiments based on combinations of 2 detectors and 2 descriptors. The following tables illustrate what the results would look like for this scenario:
+
+Detector | Total keypoints on preceding vehicle from all 10 images | Average number of keypoints detected per image
+ :--- | ---: | ---:
+Shi-Tomasi | 13423 | 1342
+HARRIS | 0 | 0
+FAST | 0 | 0
+BRISK | 27116 | 2711
+ORB | 0 | 0
+AKAZE | 0 | 0
+SIFT | 0 | 0
+
+Keypoint Detection Times
+
+Detector - Descriptor|BRISK|BRIEF|ORB|FREAK|AKAZE|SIFT
+ :--- | ---: | ---: | ---: | ---: | ---: | ---:
+Shi-Tomasi | 119.814 | 0 | 0 | 0 | 0 | 94.5848
+BRISK | 295.078 | 0 | 0 | 0 | 0 | 290.83
+
+This approach can be useful for debugging, or for exploring a particular detector-descriptor pair.
+
+### Hyperparameters
+
 The `Hyperparameters` are implemented as a `struct` in [dataStructures.h](src/dataStructures.h):
 
 ```c++
@@ -643,6 +688,7 @@ struct Hyperparameters
     bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
 };
 ```
+### Running experiments
 
 The `RunExperimentSet()` function calls the `RunExperiment()` function one time for each valid detector-descriptor combination. The `RunExperiment()` function is where you will find much of the student assignment code.
 
@@ -658,6 +704,8 @@ void RunExperiment(Experiment &experiment)
 }
 
 ```
+
+### Detection and Matching functions
 
 The files [matching2D.hpp](src/matching2D.hpp) and [matching2D_Student.cpp](src/matching2D_Student.cpp) are where I have implemented the detection and matching functions. They contain the following function definitions:
 
