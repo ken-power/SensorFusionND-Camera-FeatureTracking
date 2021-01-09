@@ -18,10 +18,10 @@ using namespace std;
 
 
 void RunExperiment(Experiment &experiment);
-void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<KeypointDetector> detectors, const std::vector<string> descriptors);
+void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<KeypointDetector> &detectors, const std::vector<string> &descriptors);
 
 /* MAIN PROGRAM */
-int main(int argc, const char *argv[])
+int main()
 {
     Hyperparameters hyperparameters = Hyperparameters();
 
@@ -50,7 +50,7 @@ int main(int argc, const char *argv[])
     return 0;
 }
 
-void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<KeypointDetector> detectors, const std::vector<string> descriptors)
+void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<KeypointDetector> &detectors, const std::vector<string> &descriptors)
 {
     TotalKeypoints keypoints;
     PerformanceEvaluationSummary performanceData = PerformanceEvaluationSummary();
@@ -65,7 +65,7 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
     unsigned int experimentCount = 0;
     for(auto detector:detectors)
     {
-        for(auto descriptor:descriptors)
+        for(const auto &descriptor:descriptors)
         {
             cout << "\n*** RUNNING EXPERIMENT " << experimentCount << " WITH detector = " << DetectorNameAsString(detector) << "  and descriptor = " << descriptor << " ***" << endl;
             hyperparameters.keypointDetector = detector;
