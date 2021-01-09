@@ -28,7 +28,7 @@ enum KeypointDetector
 
 struct Hyperparameters
 {
-    Hyperparameters(){}
+    Hyperparameters()= default;
 
     KeypointDetector keypointDetector = Shi_Tomasi; // Shi_Tomasi, HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
     string descriptor = "BRIEF";                    // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
