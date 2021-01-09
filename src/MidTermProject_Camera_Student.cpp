@@ -70,7 +70,7 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
     {
         for(auto descriptor:descriptors)
         {
-            cout << "RUNNING EXPERIMENT " << experimentCount << " WITH detector = " << DetectorNameAsString(detector) << "  and descriptor = " << descriptor << endl;
+            cout << "\n*** RUNNING EXPERIMENT " << experimentCount << " WITH detector = " << DetectorNameAsString(detector) << "  and descriptor = " << descriptor << " ***" << endl;
             hyperparameters.keypointDetector = detector;
             hyperparameters.descriptor = descriptor;
 
