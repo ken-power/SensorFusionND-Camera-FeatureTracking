@@ -550,8 +550,8 @@ Based on the performance evaluation and observations above, these are the top 3 
 
 | | Detector + Descriptor pair | Number of matched keypoints | Keypoint detection time| Descriptor extraction time | Total time | 
 |:--- | :--- | ---: | ---: | ---: | ---: |
-|1. | FAST + BRIEF | 1099 | 2.8483 ms | 3.6816 ms | 6.53 ms |
-|2. | FAST + BRISK | 1099 | 5.5043 ms | 18.1524 ms | 11.30 ms |
+|1. | FAST + BRIEF | 1099 | 2.85 ms | 3.68 ms | 6.53 ms |
+|2. | FAST + BRISK | 1099 | 2.76 ms | 8.54 ms | 11.30 ms |
 |3. | ORB + BRIEF  | 545 | 13.36 ms | 2.85 ms | 16.21 ms |
 
 This assumes that speed of execution is a higher priority than number of matched keypoints, as long as we have sufficient matched keypoints for accuracy.
