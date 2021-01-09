@@ -513,6 +513,12 @@ These descriptor extraction times are plotted for comparison in this graph:
 
 ![](results/3b.DescriptorExtractionTimes.png)
 
+The following table shows the total times:
+
+![Timing Results talbes](results/timing_results.png)
+
+The detector-descriptor combinations with the fastest times are highlighted in green. The slowest (AKAZE detector with AKAZE descriptor) is highlighted in red.
+
 ### Observations
 
 Detectors that detect the highest number of keypoints on the preceding vehicle over 10 images:
@@ -540,15 +546,19 @@ Fastest descriptor extraction:
 
 ### Recommendation for Detecting Keypoints on Vehicles
 
-Based on the performance evaluation above, these are the top 3 detector / descriptor combinations that are the best choices for our purpose of detecting keypoints on vehicles:
+The recommendations here are based on a overall analysis of the overall performance. E.g., although FAST + FREAK is the fastest combination at keypoint detection, FREAK results in the slowest performance of FAST for descriptor extraction.   
 
-1. FAST + BRIEF
-    * Number of keypoints detected: 1099
-    * Keypoint detection time: 2.8483 ms
-    * Descriptor extraction time: 3.6816 ms
+Based on the performance evaluation and observations above, these are the top 3 detector / descriptor combinations that are the best choices for our purpose of detecting keypoints on vehicles:
 
+Recommendation | Detector + Descriptor pair | Number of matched keypoints | Keypoint detection time| Descriptor extraction time | Total time 
+:--- | :--- | ---:| ---: | ---: | ---:
+1. | FAST + BRIEF | 1099 | 2.8483 ms| 3.6816 ms | 6.53 ms
+2. | FAST + BRISK | 1099 | 5.5043 ms| 18.1524 ms | 11.30 ms
+3. | ORB + BRIEF  | 545 | 13.36 ms| 2.85 ms | 16.21 ms
 
+This assumes that speed of execution is a higher priority than number of matched keypoints, as long as we have sufficient matched keypoints for accuracy.
 
+If more matches were a higher priority, then I would swap ORB + BRIEF with ORB + BRISK. ORB + BRIEF executes roughly 4.5 ms faster, but ORB + BRISK detects 206 keyopints more than ORB + BRIEF. 
 
 # Building and Running the Project
 ## Dependencies
