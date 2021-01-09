@@ -9,9 +9,9 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
                       cv::Mat &descSource,
                       cv::Mat &descRef,
                       vector<cv::DMatch> &matches,
-                      string descriptorType,
-                      string matcherType,
-                      string selectorType,
+                      const string &descriptorType,
+                      const string& matcherType,
+                      const string& selectorType,
                       ExperimentResult &result)
 {
     // configure matcher
@@ -82,7 +82,7 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
 }
 
 // Use one of several types of state-of-art descriptors to uniquely identify keypoints
-void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, string descriptorType, ExperimentResult &result)
+void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, const string& descriptorType, ExperimentResult &result)
 {
     // select appropriate descriptor
     cv::Ptr<cv::DescriptorExtractor> extractor;
@@ -121,7 +121,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     }
 
     // perform feature description
-    double t = (double)cv::getTickCount();
+    auto t = (double)cv::getTickCount();
 
     try
     {
@@ -138,11 +138,11 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     result.descriptorExtractionTime = extractionTime;
 }
 
-// Detect keypoints in image using the traditional Shi-Thomasi detector
+// Detect keypoints in image using the traditional Shi-Tomasi detector
 void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
 {
     // compute detector parameters based on image size
-    int blockSize = 4;       //  size of an average block for computing a derivative covariation matrix over each pixel neighborhood
+    int blockSize = 4;       //  size of an average block for computing a derivative co-variation matrix over each pixel neighborhood
     double maxOverlap = 0.0; // max. permissible overlap between two features in %
     double minDistance = (1.0 - maxOverlap) * blockSize;
     int maxCorners = img.rows * img.cols / max(1.0, minDistance); // max. num. of keypoints
@@ -151,16 +151,16 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     double k = 0.04;
 
     // Apply corner detection
-    double t = (double)cv::getTickCount();
+    auto t = (double)cv::getTickCount();
     vector<cv::Point2f> corners;
     cv::goodFeaturesToTrack(img, corners, maxCorners, qualityLevel, minDistance, cv::Mat(), blockSize, false, k);
 
     // add corners to result vector
-    for (auto it = corners.begin(); it != corners.end(); ++it)
+    for (auto & corner : corners)
     {
 
         cv::KeyPoint newKeyPoint;
-        newKeyPoint.pt = cv::Point2f((*it).x, (*it).y);
+        newKeyPoint.pt = cv::Point2f(corner.x, corner.y);
         newKeyPoint.size = blockSize;
         keypoints.push_back(newKeyPoint);
     }
@@ -185,7 +185,7 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
     int minResponse = 100; // minimum value for a corner in the 8bit scaled response matrix
     double k = 0.04;       // Harris parameter (see equation for details)
 
-    double t = (double)cv::getTickCount();
+    auto t = (double)cv::getTickCount();
     // Detect Harris corners and normalize output
     cv::Mat dst, dst_norm, dst_norm_scaled;
     dst = cv::Mat::zeros(img.size(), CV_32FC1);
@@ -215,15 +215,15 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
 
                 // perform non-maximum suppression (NMS) in local neighbourhood around new key point
                 bool bOverlap = false;
-                for (auto it = keypoints.begin(); it != keypoints.end(); ++it)
+                for (auto & keypoint : keypoints)
                 {
-                    double kptOverlap = cv::KeyPoint::overlap(newKeyPoint, *it);
+                    double kptOverlap = cv::KeyPoint::overlap(newKeyPoint, keypoint);
                     if (kptOverlap > maxOverlap)
                     {
                         bOverlap = true;
-                        if (newKeyPoint.response > (*it).response)
+                        if (newKeyPoint.response > keypoint.response)
                         {  // if overlap is >t AND response is higher for new kpt
-                            *it = newKeyPoint; // replace old key point with new one
+                            keypoint = newKeyPoint; // replace old key point with new one
                             break;             // quit loop over keypoints
                         }
                     }
@@ -293,9 +293,9 @@ void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     detectKeypoints(detector, "SIFT", keypoints, img, bVis, result);
 }
 
-void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResult &result)
+void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& detectorName, vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResult &result)
 {
-    double t = (double)cv::getTickCount();
+    auto t = (double)cv::getTickCount();
     detector->detect(img, keypoints);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
 
@@ -312,7 +312,7 @@ void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detecto
     }
 }
 
-void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string windowName, ExperimentResult &result)
+void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string& windowName, ExperimentResult &result)
 {
     cv::Mat visImage = img.clone();
     cv::drawKeypoints(img,
