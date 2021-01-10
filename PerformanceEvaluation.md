@@ -73,18 +73,34 @@ ORB | 6.03889 | 5.74562 | 33.7996 | 35.6146 | 0 | 75.6039
 BRISK | 5.28721 | 2.35414 | 24.7665 | 28.236 | 0 | 38.9537
 
 ### Keypoints detected by each detector
+
 #### Shi-Tomasi
+
 <img src="results/images/keypoint_detections/Shi-Tomasi Corner Detection Results.png" width="820" height="248" />
 
 #### Harris
+
 ![](results/images/keypoint_detections/Harris Corner Detection Results.png)
+
+
+<img src="results/images/keypoint_detections/Harris Corner Detection Results.png" width="820" height="248" />
+
 #### FAST
+
 ![](results/images/keypoint_detections/FAST Keypoint Detection Results.png)
+
 #### SIFT
+
 ![](results/images/keypoint_detections/SIFT Keypoint Detection Results.png)
+
 #### AKAZE
+
 ![](results/images/keypoint_detections/AKAZE Keypoint Detection Results.png)
+
 #### ORB
+
 ![](results/images/keypoint_detections/ORB Keypoint Detection Results.png)
+
 #### BRISK
+
 ![](results/images/keypoint_detections/BRISK Keypoint Detection Results.png)
