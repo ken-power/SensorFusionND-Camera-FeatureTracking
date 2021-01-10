@@ -316,3 +316,18 @@ void PerformanceEvaluation3(Experiment &experiment,
     times.detector = DetectorNameAsString(experiment.hyperparameters.keypointDetector);
     processingTimes.push_back(times);
 }
+
+
+void DisplayKeypointDetectionImages()
+{
+    string dir = "results/images/keypoint_detections/";
+
+    cout << "### Keypoints detected by each detector" << endl;
+    cout << "#### Shi-Tomasi" << endl << "![](" + dir + "Shi_Tomasi_Corner_Detection_Results.png)" << endl;
+    cout << "#### Harris" << endl << "![](" + dir + "Harris_Corner_Detection_Results.png)" << endl;
+    cout << "#### FAST" << endl << "![](" + dir + "FAST_Keypoint_Detection_Results.png)" << endl;
+    cout << "#### SIFT" << endl << "![](" + dir + "SIFT_Keypoint_Detection_Results.png)" << endl;
+    cout << "#### AKAZE" << endl << "![](" + dir + "AKAZE_Keypoint_Detection_Results.png)" << endl;
+    cout << "#### ORB" << endl << "![](" + dir + "ORB_Keypoint_Detection_Results.png)" << endl;
+    cout << "#### BRISK" << endl << "![](" + dir + "BRISK_Keypoint_Detection_Results.png)" << endl;
+}

@@ -171,10 +171,7 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool d
     result.keypointCount.totalKeypoints = keypoints.size();
     result.keypointCount.descriptorMatchingTime = duration;
 
-    if (displayImageWindows)
-    {
-        visualizeKeypoints(keypoints, img, "Shi-Tomasi Corner Detection Results", saveImageFiles, result);
-    }
+    visualizeKeypoints(keypoints, img, "Shi_Tomasi_Corner_Detection_Results", displayImageWindows, saveImageFiles, result);
 }
 
 void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
@@ -244,10 +241,7 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
     result.keypointCount.totalKeypoints = keypoints.size();
     result.keypointCount.descriptorMatchingTime = duration;
 
-    if (displayImageWindows)
-    {
-        visualizeKeypoints(keypoints, img, "Harris Corner Detection Results", saveImageFiles, result);
-    }
+    visualizeKeypoints(keypoints, img, "Harris_Corner_Detection_Results", displayImageWindows, saveImageFiles, result);
 }
 
 
@@ -305,14 +299,11 @@ void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& 
     result.keypointCount.totalKeypoints = keypoints.size();
     result.keypointCount.descriptorMatchingTime = duration;
 
-    if (displayImageWindows)
-    {
-        string windowName = detectorName + " Keypoint Detection Results";
-        visualizeKeypoints(keypoints, img, windowName, saveImageFiles, result);
-    }
+    string windowName = detectorName + "_Keypoint_Detection_Results";
+    visualizeKeypoints(keypoints, img, windowName, displayImageWindows, saveImageFiles, result);
 }
 
-void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string& windowName, bool saveImageFiles, ExperimentResult &result)
+void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string& windowName, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     cv::Mat visImage = img.clone();
     cv::drawKeypoints(img,
@@ -321,10 +312,12 @@ void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &im
                       cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
-    cv::namedWindow(windowName, 6);
-    imshow(windowName, visImage);
-    cv::waitKey(0);
-
+    if (displayImageWindows)
+    {
+        cv::namedWindow(windowName, 6);
+        imshow(windowName, visImage);
+        cv::waitKey(0);
+    }
 
     if(saveImageFiles)
     {
