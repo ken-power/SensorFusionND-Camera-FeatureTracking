@@ -52,8 +52,8 @@ struct Experiment
     // Visualization and image saving options
     bool displayImageWindows = false;               // visualize matches between current and previous image?
     bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
-    bool saveKeypointDetectionImagesToFile = true;  // save keypoint detection images to file
-    bool saveKeypointMatchImagesToFile = true;      // save keypoint matching images to file
+    bool saveKeypointDetectionImagesToFile = false;  // save keypoint detection images to file
+    bool saveKeypointMatchImagesToFile = false;      // save keypoint matching images to file
 };
 
 struct TotalKeypoints

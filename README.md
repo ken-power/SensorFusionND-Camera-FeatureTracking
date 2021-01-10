@@ -1,6 +1,6 @@
 # 2D Feature Tracking
 
-The goal of this project is to build the feature tracking part of a collision detection system, and test various detector / descriptor combinations to see which ones perform best.
+The goal of this project is to build the feature tracking part of a collision detection system, and test various combinations of keypoint detectors and descriptors to see which combinations perform best.
 
 ![](results/images/keypoint_matches/FAST_BRIEF_4.png)
 
@@ -31,7 +31,8 @@ This document contains the following sections:
   * [Basic Build Instructions](#Basic-Build-Instructions)
   * [Notes on the Code](#Notes-on-the-Code)
 * [References](#References)
-  
+* [Additional Project Files](#Additional-Project-Files)
+
 # Project Specification
 
 #### Report
@@ -597,9 +598,9 @@ The following images show how these detector-descriptor combinations produce key
 ![](results/images/keypoint_matches/ORB_BRIEF_4.png)
 
 
-If more matches were a higher priority, then I would swap ORB + BRIEF for ORB + BRISK. ORB + BRIEF executes roughly 4.5 ms faster, but ORB + BRISK detects 206 keyopints more than ORB + BRIEF.
+If more matches were a higher priority, then I would swap ORB + BRIEF for ORB + BRISK. ORB + BRIEF executes an average of approximately 4.5 ms faster, but ORB + BRISK detects 206 keyopints more than ORB + BRIEF.
 
-ORB + BRISK produces the following keyopint matches on the same image as those above. 
+ORB + BRISK produces the following keyopint matches on the same image pair as those above. 
 
 ![](results/images/keypoint_matches/ORB_BRISK_4.png)
 
@@ -812,3 +813,9 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
 * Trzcinski, T. and Lepetit, V., 2012, October. [Efficient discriminative projections for compact binary descriptors](https://link.springer.com/content/pdf/10.1007/978-3-642-33718-5_17.pdf). In European Conference on Computer Vision (pp. 228-242). Springer, Berlin, Heidelberg.
 * Bay, H., Tuytelaars, T. and Van Gool, L., 2006, May. [Surf: Speeded up robust features](https://link.springer.com/chapter/10.1007/11744023_32). In European conference on computer vision (pp. 404-417). Springer, Berlin, Heidelberg.
 
+# Additional Project Files
+This repository contains the following additional files:
+* [All of the image results detected keypoints and matches for all image pairs in this file](ImageExamples.md).
+* [Summary of the performance evaluation](PerformanceEvaluation.md)
+* [Spreadsheet with analysis of the performance results](results/results.xlsx)
+* [The console logs from building and running the program for all detector-descriptor pairs](ConsoleLogs.md) - but be warned, it is very long (4600+ lines.
