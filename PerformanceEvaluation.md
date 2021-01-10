@@ -93,7 +93,7 @@ BRISK | 5.28721 | 2.35414 | 24.7665 | 28.236 | 0 | 38.9537
 
 #### SIFT
 
-![SIFT](results/images/keypoint_detections/SIFT Keypoint Detection Results.png)
+![SIFT](/results/images/keypoint_detections/SIFT Keypoint Detection Results.png)
 
 #### AKAZE
 
@@ -101,7 +101,7 @@ BRISK | 5.28721 | 2.35414 | 24.7665 | 28.236 | 0 | 38.9537
 
 #### ORB
 
-![](results/images/keypoint_detections/ORB Keypoint Detection Results.png)
+![](/results/images/keypoint_detections/ORB Keypoint Detection Results.png)
 
 #### BRISK
 
