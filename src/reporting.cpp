@@ -341,12 +341,12 @@ void DisplayKeypointMatchImages(const std::vector<KeypointDetector> &detectors, 
 
     for(const auto &detector:detectors)
     {
-        cout << "###" << DetectorNameAsString(detector) << endl ;
+        cout << "### " << DetectorNameAsString(detector) << endl ;
 
         for(const auto &descriptor:descriptors)
         {
-            cout << "####" << DetectorNameAsString(detector) << " + " << descriptor << " showing matches between image " << to_string(imagePair-1) << " and image " << to_string(imagePair) << endl;
-            cout << "![](" + dir + DetectorNameAsString(detector) + "_" + descriptor + "_" + to_string(imagePair) + ".png)" << endl;
+            cout << "\n#### " << DetectorNameAsString(detector) << " + " << descriptor << " showing matches between image " << to_string(imagePair-1) << " and image " << to_string(imagePair) << endl;
+            cout << "\n![](" + dir + DetectorNameAsString(detector) + "_" + descriptor + "_" + to_string(imagePair) + ".png)" << endl;
         }
     }
 }
