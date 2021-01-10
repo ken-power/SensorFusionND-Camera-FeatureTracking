@@ -1,4 +1,24 @@
 # Image output examples
+
+## Keypoints detected by each detector
+The following diagrams show an example of each detector's results from detecting keypoints on the same image.
+
+### Shi-Tomasi
+![](results/images/keypoint_detections/Shi_Tomasi_Corner_Detection_Results.png)
+### Harris
+![](results/images/keypoint_detections/Harris_Corner_Detection_Results.png)
+### FAST
+![](results/images/keypoint_detections/FAST_Keypoint_Detection_Results.png)
+### BRISK
+![](results/images/keypoint_detections/BRISK_Keypoint_Detection_Results.png)
+### ORB
+![](results/images/keypoint_detections/ORB_Keypoint_Detection_Results.png)
+### AKAZE
+![](results/images/keypoint_detections/AKAZE_Keypoint_Detection_Results.png)
+### SIFT
+![](results/images/keypoint_detections/SIFT_Keypoint_Detection_Results.png)
+
+
 ## Examples of keypoint matches detected by each detector-descriptor pair
 ### Shi-Tomasi
 

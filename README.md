@@ -18,6 +18,7 @@ This document contains the following sections:
     * [Descriptor Distance Ratio](#Descriptor-Distance-Ratio)
   * [4. Performance Evaluation](#4-performance-evaluation)
     * [Performance Evaluation 1: Number of Detected Keypoints](#performance-evaluation-1-number-of-keypoints)
+      * [Image examples showing keypoints detected by each detector](#Image-examples-showing-keypoints-detected-by-each-detector)
     * [Performance Evaluation 2: Number of Matched Keypoints](#performance-evaluation-2-number-of-matched-keypoints)
     * [Performance Evaluation 3: Keypoint Detection and Descriptor Extraction Times](#performance-evaluation-3-keypoint-detection-and-descriptor-extraction)
     * [Observations](#Observations)
@@ -301,28 +302,28 @@ The `switch` statement then calls the appropriate function based on which detect
 switch (experiment.hyperparameters.keypointDetector)
 {
   case KeypointDetector::Shi_Tomasi:
-    detKeypointsShiTomasi(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    detKeypointsShiTomasi(keypoints, imgGray, visualizeImages, saveImagesToFile, experimentResult);
     break;
   case KeypointDetector::HARRIS:
-    detKeypointsHarris(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    detKeypointsHarris(keypoints, imgGray, visualizeImages, saveImagesToFile, experimentResult);
     break;
   case KeypointDetector::FAST:
-    detKeypointsFAST(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    detKeypointsFAST(keypoints, imgGray, visualizeImages, saveImagesToFile, experimentResult);
     break;
   case KeypointDetector::BRISK:
-    detKeypointsBRISK(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    detKeypointsBRISK(keypoints, imgGray, visualizeImages, saveImagesToFile, experimentResult);
     break;
   case KeypointDetector::ORB:
-    detKeypointsORB(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    detKeypointsORB(keypoints, imgGray, visualizeImages, saveImagesToFile, experimentResult);
     break;
   case KeypointDetector::AKAZE:
-    detKeypointsAKAZE(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
+    detKeypointsAKAZE(keypoints, imgGray, visualizeImages, saveImagesToFile, experimentResult);
     break;
   case KeypointDetector::SIFT:
-    detKeypointsSIFT(keypoints, imgGray, experiment.hyperparameters.visualizeImageMatches, resultLine);
-    break;
+    detKeypointsSIFT(keypoints, imgGray, visualizeImages, saveImagesToFile, experimentResult);
+      break;
   default:
-      cerr << "*** Not using a specified keypoint detector" << endl;
+      cerr << "Attempting to use an unsupported keypoint detector" << endl;
 }
 ```
 
@@ -455,6 +456,26 @@ For a more detailed analysis of what is happening image-by-image, the following 
 
 ![](results/NumberOfKeypointsPerImage.png)
 
+#### Image examples showing keypoints detected by each detector
+The following diagrams show an example of each detector's results from detecting keypoints on the same image.
+
+##### Shi-Tomasi
+![](results/images/keypoint_detections/Shi_Tomasi_Corner_Detection_Results.png)
+##### Harris
+![](results/images/keypoint_detections/Harris_Corner_Detection_Results.png)
+##### FAST
+![](results/images/keypoint_detections/FAST_Keypoint_Detection_Results.png)
+##### BRISK
+![](results/images/keypoint_detections/BRISK_Keypoint_Detection_Results.png)
+##### ORB
+![](results/images/keypoint_detections/ORB_Keypoint_Detection_Results.png)
+##### AKAZE
+![](results/images/keypoint_detections/AKAZE_Keypoint_Detection_Results.png)
+##### SIFT
+![](results/images/keypoint_detections/SIFT_Keypoint_Detection_Results.png)
+
+
+
 ### Performance Evaluation 2: Number of Matched Keypoints
 
 Count the number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8.
@@ -556,7 +577,26 @@ Based on the performance evaluation and observations above, these are the top 3 
 
 This assumes that speed of execution is a higher priority than number of matched keypoints, as long as we have sufficient matched keypoints for accuracy.
 
-If more matches were a higher priority, then I would swap ORB + BRIEF with ORB + BRISK. ORB + BRIEF executes roughly 4.5 ms faster, but ORB + BRISK detects 206 keyopints more than ORB + BRIEF. 
+
+The following images show how these detector-descriptor combinations produce keypoint matches on the preceding vehicle, using matches between image 3 and image 4 as the example in each case.
+#### FAST + BRIEF 
+
+![](results/images/keypoint_matches/FAST_BRIEF_4.png)
+
+#### FAST + BRISK
+
+![](results/images/keypoint_matches/FAST_BRISK_4.png)
+
+#### ORB + BRIEF
+
+![](results/images/keypoint_matches/ORB_BRIEF_4.png)
+
+
+If more matches were a higher priority, then I would swap ORB + BRIEF for ORB + BRISK. ORB + BRIEF executes roughly 4.5 ms faster, but ORB + BRISK detects 206 keyopints more than ORB + BRIEF.
+
+ORB + BRISK produces the following keyopint matches on the same image as those above. 
+
+![](results/images/keypoint_matches/ORB_BRISK_4.png)
 
 # Building and Running the Project
 ## Dependencies
