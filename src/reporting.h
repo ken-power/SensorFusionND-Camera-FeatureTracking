@@ -133,5 +133,6 @@ void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData);
 void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches);
 void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &processingTimes);
 void DisplayKeypointDetectionImages();
+void DisplayKeypointMatchImages(const std::vector<KeypointDetector> &detectors, const std::vector<string> &descriptors);
 
 #endif //CAMERA_FUSION_REPORTING_H

@@ -71,19 +71,3 @@ SIFT | 7.85048 | 3.81915 | 0 | 57.5693 | 0 | 219.924
 AKAZE | 8.49599 | 5.58923 | 43.1449 | 43.319 | 391.162 | 79.6987
 ORB | 6.03889 | 5.74562 | 33.7996 | 35.6146 | 0 | 75.6039
 BRISK | 5.28721 | 2.35414 | 24.7665 | 28.236 | 0 | 38.9537
-
-### Keypoints detected by each detector
-#### Shi-Tomasi
-![](results/images/keypoint_detections/Shi_Tomasi_Corner_Detection_Results.png)
-#### Harris
-![](results/images/keypoint_detections/Harris_Corner_Detection_Results.png)
-#### FAST
-![](results/images/keypoint_detections/FAST_Keypoint_Detection_Results.png)
-#### SIFT
-![](results/images/keypoint_detections/SIFT_Keypoint_Detection_Results.png)
-#### AKAZE
-![](results/images/keypoint_detections/AKAZE_Keypoint_Detection_Results.png)
-#### ORB
-![](results/images/keypoint_detections/ORB_Keypoint_Detection_Results.png)
-#### BRISK
-![](results/images/keypoint_detections/BRISK_Keypoint_Detection_Results.png)

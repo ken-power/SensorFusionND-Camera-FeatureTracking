@@ -47,6 +47,7 @@ int main()
     // Run experiments for all combinations of detectors and descriptors
     RunExperimentSet(hyperparameters, detectors, descriptors);
     DisplayKeypointDetectionImages();
+    DisplayKeypointMatchImages(detectors, descriptors);
 
     return 0;
 }

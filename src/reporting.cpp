@@ -331,3 +331,22 @@ void DisplayKeypointDetectionImages()
     cout << "#### ORB" << endl << "![](" + dir + "ORB_Keypoint_Detection_Results.png)" << endl;
     cout << "#### BRISK" << endl << "![](" + dir + "BRISK_Keypoint_Detection_Results.png)" << endl;
 }
+
+void DisplayKeypointMatchImages(const std::vector<KeypointDetector> &detectors, const std::vector<string> &descriptors)
+{
+    string dir = "results/images/keypoint_matches/";
+    unsigned int imagePair = 4;
+
+    cout << "## Examples of keypoint matches detected by each detector-descriptor pair" << endl;
+
+    for(const auto &detector:detectors)
+    {
+        cout << "###" << DetectorNameAsString(detector) << endl ;
+
+        for(const auto &descriptor:descriptors)
+        {
+            cout << "####" << DetectorNameAsString(detector) << " + " << descriptor << " showing matches between image " << to_string(imagePair-1) << " and image " << to_string(imagePair) << endl;
+            cout << "![](" + dir + DetectorNameAsString(detector) + "_" + descriptor + "_" + to_string(imagePair) + ".png)" << endl;
+        }
+    }
+}
