@@ -40,7 +40,7 @@ void ProcessExperimentResults(Experiment &experiment, PerformanceEvaluationSumma
     PerformanceEvaluation3(experiment, summary.processingTimes, separator);
 }
 
-void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData)
+void ReportKeypointDetectionSummary(const TotalKeypoints &keypointsData)
 {
     const unsigned int numberOfImages = 10;
     const string separator = " | ";
@@ -61,7 +61,7 @@ void DisplayKeypointDetectionSummary(const TotalKeypoints &keypointsData)
     cout << DetectorNameAsString(SIFT) << separator << keypointsData.SIFT_totalKeypointsInImage << separator << keypointsData.SIFT_totalKeypointsInImage / numberOfImages << separator << keypointsData.SIFT_totalKeypointsOnPrecedingVehicle / numberOfImages << separator  << 100 - keypointsData.SIFT_percentageRepresentedByVehicleKeypoints << endl;
 }
 
-void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches)
+void ReportKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &keypointMatches)
 {
     cout << "\n## Performance Evaluation 2: Number of Matched Keypoints\n" << endl;
 
@@ -88,7 +88,7 @@ void DisplayKeypointMatchingSummary(const std::vector<TotalKeypointMatches> &key
 }
 
 
-void DisplayProcessingTimesSummary(const std::vector<AverageProcessingTimes> &processingTimes)
+void ReportProcessingTimesSummary(const std::vector<AverageProcessingTimes> &processingTimes)
 {
     cout << "\n## Performance Evaluation 3: Keypoint Detection and Descriptor Extraction\n" << endl;
 
@@ -318,7 +318,7 @@ void PerformanceEvaluation3(Experiment &experiment,
 }
 
 
-void DisplayKeypointDetectionImages()
+void ReportKeypointDetectionImages()
 {
     string dir = "results/images/keypoint_detections/";
 
@@ -332,7 +332,7 @@ void DisplayKeypointDetectionImages()
     cout << "#### BRISK" << endl << "![](" + dir + "BRISK_Keypoint_Detection_Results.png)" << endl;
 }
 
-void DisplayKeypointMatchImages(const std::vector<KeypointDetector> &detectors, const std::vector<string> &descriptors)
+void ReportKeypointMatchImages(const std::vector<KeypointDetector> &detectors, const std::vector<string> &descriptors)
 {
     string dir = "results/images/keypoint_matches/";
     unsigned int imagePair = 4;

@@ -46,8 +46,8 @@ int main()
 
     // Run experiments for all combinations of detectors and descriptors
     RunExperimentSet(hyperparameters, detectors, descriptors);
-    DisplayKeypointDetectionImages();
-    DisplayKeypointMatchImages(detectors, descriptors);
+    ReportKeypointDetectionImages();
+    ReportKeypointMatchImages(detectors, descriptors);
 
     return 0;
 }
@@ -117,9 +117,9 @@ void RunExperimentSet(Hyperparameters hyperparameters, const std::vector<Keypoin
     cout << "# Performance Evaluation" << endl;
     cout << "These results are recorded from running a total of " << experimentCount << " experiments based on combinations of " << detectors.size() << " detectors and " << descriptors.size() << " descriptors." << endl;
 
-    DisplayKeypointDetectionSummary(performanceData.keypoints);
-    DisplayKeypointMatchingSummary(performanceData.keypointMatches);
-    DisplayProcessingTimesSummary(performanceData.processingTimes);
+    ReportKeypointDetectionSummary(performanceData.keypoints);
+    ReportKeypointMatchingSummary(performanceData.keypointMatches);
+    ReportProcessingTimesSummary(performanceData.processingTimes);
 }
 
 
