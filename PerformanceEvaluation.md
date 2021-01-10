@@ -74,7 +74,8 @@ BRISK | 5.28721 | 2.35414 | 24.7665 | 28.236 | 0 | 38.9537
 
 ### Keypoints detected by each detector
 #### Shi-Tomasi
-![](results/images/keypoint_detections/Shi-Tomasi Corner Detection Results.png)
+<img src="results/images/keypoint_detections/Shi-Tomasi Corner Detection Results.png" width="820" height="248" />
+
 #### Harris
 ![](results/images/keypoint_detections/Harris Corner Detection Results.png)
 #### FAST
