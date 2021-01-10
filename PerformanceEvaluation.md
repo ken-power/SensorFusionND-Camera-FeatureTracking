@@ -78,6 +78,8 @@ BRISK | 5.28721 | 2.35414 | 24.7665 | 28.236 | 0 | 38.9537
 
 <img src="results/images/keypoint_detections/Shi-Tomasi Corner Detection Results.png" width="820" height="248" />
 
+![](./results/images/keypoint_detections/Shi-Tomasi Corner Detection Results.png)
+
 #### Harris
 
 ![](results/images/keypoint_detections/Harris Corner Detection Results.png)
