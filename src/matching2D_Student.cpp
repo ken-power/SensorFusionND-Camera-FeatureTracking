@@ -139,7 +139,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
 }
 
 // Detect keypoints in image using the traditional Shi-Tomasi detector
-void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
+void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     // compute detector parameters based on image size
     int blockSize = 4;       //  size of an average block for computing a derivative co-variation matrix over each pixel neighborhood
@@ -171,13 +171,13 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     result.keypointCount.totalKeypoints = keypoints.size();
     result.keypointCount.descriptorMatchingTime = duration;
 
-    if (bVis)
+    if (displayImageWindows)
     {
-        visualizeKeypoints(keypoints, img, "Shi-Tomasi Corner Detection Results", result);
+        visualizeKeypoints(keypoints, img, "Shi-Tomasi Corner Detection Results", saveImageFiles, result);
     }
 }
 
-void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
+void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     // Detector parameters
     int blockSize = 2;     // for every pixel, a blockSize × blockSize neighborhood is considered
@@ -244,14 +244,14 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
     result.keypointCount.totalKeypoints = keypoints.size();
     result.keypointCount.descriptorMatchingTime = duration;
 
-    if (bVis)
+    if (displayImageWindows)
     {
-        visualizeKeypoints(keypoints, img, "Harris Corner Detection Results", result);
+        visualizeKeypoints(keypoints, img, "Harris Corner Detection Results", saveImageFiles, result);
     }
 }
 
 
-void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
+void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     // difference between intensity of the central pixel and pixels of a circle around this pixel
     int threshold = 30;
@@ -262,38 +262,38 @@ void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
     cv::FastFeatureDetector::DetectorType type = cv::FastFeatureDetector::TYPE_9_16; // TYPE_9_16, TYPE_7_12, TYPE_5_8
     cv::Ptr<cv::FeatureDetector> detector = cv::FastFeatureDetector::create(threshold, bNMS, type);
 
-    detectKeypoints(detector, "FAST", keypoints, img, bVis, result);
+    detectKeypoints(detector, "FAST", keypoints, img, displayImageWindows, saveImageFiles, result);
 }
 
-void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
+void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::BRISK::create();
 
-    detectKeypoints(detector, "BRISK", keypoints, img, bVis, result);
+    detectKeypoints(detector, "BRISK", keypoints, img, displayImageWindows, saveImageFiles, result);
 }
 
-void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
+void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::ORB::create();
 
-    detectKeypoints(detector, "ORB", keypoints, img, bVis, result);
+    detectKeypoints(detector, "ORB", keypoints, img, displayImageWindows, saveImageFiles, result);
 }
 
-void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
+void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::AKAZE::create();
 
-    detectKeypoints(detector, "AKAZE", keypoints, img, bVis, result);
+    detectKeypoints(detector, "AKAZE", keypoints, img, displayImageWindows, saveImageFiles, result);
 }
 
-void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result)
+void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     cv::Ptr<cv::FeatureDetector> detector = cv::SIFT::create();
 
-    detectKeypoints(detector, "SIFT", keypoints, img, bVis, result);
+    detectKeypoints(detector, "SIFT", keypoints, img, displayImageWindows, saveImageFiles, result);
 }
 
-void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& detectorName, vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResult &result)
+void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& detectorName, vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result)
 {
     auto t = (double)cv::getTickCount();
     detector->detect(img, keypoints);
@@ -305,14 +305,14 @@ void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& 
     result.keypointCount.totalKeypoints = keypoints.size();
     result.keypointCount.descriptorMatchingTime = duration;
 
-    if (bVis)
+    if (displayImageWindows)
     {
-        string windowName = detectorName + " Corner Detection Results";
-        visualizeKeypoints(keypoints, img, windowName, result);
+        string windowName = detectorName + " Keypoint Detection Results";
+        visualizeKeypoints(keypoints, img, windowName, saveImageFiles, result);
     }
 }
 
-void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string& windowName, ExperimentResult &result)
+void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string& windowName, bool saveImageFiles, ExperimentResult &result)
 {
     cv::Mat visImage = img.clone();
     cv::drawKeypoints(img,
@@ -320,7 +320,26 @@ void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &im
                       visImage,
                       cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+
     cv::namedWindow(windowName, 6);
     imshow(windowName, visImage);
     cv::waitKey(0);
+
+
+    if(saveImageFiles)
+    {
+        string dir_keypoint_detections = "../results/images/keypoint_detections/";
+        string imageFileNameDetections = dir_keypoint_detections + windowName + ".png";
+        try
+        {
+            cv::imwrite(imageFileNameDetections, visImage);
+        }
+        catch (const std::exception &ex)
+        {
+            std::cerr << "Image write exception: " << ex.what() << std::endl;
+        }
+    }
+
 }
+
+

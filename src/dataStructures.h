@@ -35,8 +35,10 @@ struct Hyperparameters
     string matcherType = "MAT_BF";                  // MAT_BF, MAT_FLANN
     string descriptorType = "DES_BINARY";           // DES_BINARY, DES_HOG
     string selectorType = "SEL_KNN";                // SEL_NN, SEL_KNN
-    bool visualizeImageMatches = false;             // visualize matches between current and previous image?
+    bool displayImageWindows = false;               // visualize matches between current and previous image?
     bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
+    bool saveKeypointDetectionImagesToFile = true;  // save keypoint detection images to file
+    bool saveKeypointMatchImagesToFile = true;      // save keypoint matching images to file
 };
 
 

@@ -18,15 +18,15 @@
 #include "dataStructures.h"
 #include "reporting.h"
 
-void visualizeKeypoints(const std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const std::string& windowName, ExperimentResult &result);
-void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& detectorName, std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
+void visualizeKeypoints(const std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const std::string& windowName, bool saveImageFiles, ExperimentResult &result);
+void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& detectorName, std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
 void descKeypoints(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, const std::string& descriptorType, ExperimentResult &result);
 void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
                       vector<cv::KeyPoint> &kPtsRef,
