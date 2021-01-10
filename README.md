@@ -2,6 +2,8 @@
 
 The goal of this project is to build the feature tracking part of a collision detection system, and test various detector / descriptor combinations to see which ones perform best.
 
+![](results/images/keypoint_matches/FAST_BRIEF_4.png)
+
 This document contains the following sections:
 
 * [Project Specification](#Project-Specification)
@@ -23,6 +25,7 @@ This document contains the following sections:
     * [Performance Evaluation 3: Keypoint Detection and Descriptor Extraction Times](#performance-evaluation-3-keypoint-detection-and-descriptor-extraction)
     * [Observations](#Observations)
     * [Recommendations for Detecting Keypoints on Vehicles](#recommendation-for-detecting-keypoints-on-vehicles)
+      * [Resulting image examples from the Top 3 detector-descriptor recommendations](#Resulting-image-examples-from-the-Top-3-detector-descriptor-recommendations)
 * [Building and Running the Project](#Building-and-Running-the-Project)
   * [Dependencies](#Dependencies)
   * [Basic Build Instructions](#Basic-Build-Instructions)
@@ -577,17 +580,19 @@ Based on the performance evaluation and observations above, these are the top 3 
 
 This assumes that speed of execution is a higher priority than number of matched keypoints, as long as we have sufficient matched keypoints for accuracy.
 
+#### Resulting image examples from the Top 3 detector-descriptor recommendations 
 
 The following images show how these detector-descriptor combinations produce keypoint matches on the preceding vehicle, using matches between image 3 and image 4 as the example in each case.
-#### FAST + BRIEF 
+
+##### FAST + BRIEF 
 
 ![](results/images/keypoint_matches/FAST_BRIEF_4.png)
 
-#### FAST + BRISK
+##### FAST + BRISK
 
 ![](results/images/keypoint_matches/FAST_BRISK_4.png)
 
-#### ORB + BRIEF
+##### ORB + BRIEF
 
 ![](results/images/keypoint_matches/ORB_BRIEF_4.png)
 
@@ -724,8 +729,6 @@ struct Hyperparameters
     string matcherType = "MAT_BF";                  // MAT_BF, MAT_FLANN
     string descriptorType = "DES_BINARY";           // DES_BINARY, DES_HOG
     string selectorType = "SEL_KNN";                // SEL_NN, SEL_KNN
-    bool visualizeImageMatches = false;             // visualize matches between current and previous image?
-    bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
 };
 ```
 ### Running experiments
@@ -745,32 +748,58 @@ void RunExperiment(Experiment &experiment)
 
 ```
 
+An `Experiment` uses the `Hyperparameters` described earlier, and stores the results. It also has some configuration options that can be set via the `Experiment` struct in [reporting.h](src/reporting.h):
+
+```c++
+struct Experiment
+{
+    Experiment()= default;
+    std::vector<ExperimentResult> result;
+    Hyperparameters hyperparameters;
+
+    // Visualization and image saving options
+    bool displayImageWindows = false;               // visualize matches between current and previous image?
+    bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
+    bool saveKeypointDetectionImagesToFile = true;  // save keypoint detection images to file
+    bool saveKeypointMatchImagesToFile = true;      // save keypoint matching images to file
+};
+```
+
+The confiuration shown above means that the image windows are not displayed when running the program. This allows a set of experiments to run quickly without needing any human intervention. If you want to see the images during an experiment run, then set the `displayImageWindows` variable to `true`: 
+```c++
+struct Experiment
+{
+...
+    bool displayImageWindows = true;               // visualize matches between current and previous image?
+...
+};
+```
+
+
 ### Detection and Matching functions
 
 The files [matching2D.hpp](src/matching2D.hpp) and [matching2D_Student.cpp](src/matching2D_Student.cpp) are where I have implemented the detection and matching functions. They contain the following function definitions:
 
 ```c++
-void visualizeKeypoints(const std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const std::string windowName, ExperimentResult &result);
-void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, std::string detectorName, std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis, ExperimentResult &result);
-void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::string detectorType, bool bVis, ExperimentResult &result);
-void descKeypoints(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, std::string descriptorType, ExperimentResult &result);
+void visualizeKeypoints(const vector<cv::KeyPoint> &keypoints, const cv::Mat &img, const string& windowName, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detectKeypoints(cv::Ptr<cv::FeatureDetector> &detector, const std::string& detectorName, std::vector<cv::KeyPoint> &keypoints, const cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsORB(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsBRISK(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsFAST(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool displayImageWindows, bool saveImageFiles, ExperimentResult &result);
+void descKeypoints(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, const std::string& descriptorType, ExperimentResult &result);
 void matchDescriptors(vector<cv::KeyPoint> &kPtsSource,
                       vector<cv::KeyPoint> &kPtsRef,
                       cv::Mat &descSource,
                       cv::Mat &descRef,
                       vector<cv::DMatch> &matches,
-                      string descriptorType,
-                      string matcherType,
-                      string selectorType,
+                      const string &descriptorType,
+                      const string& matcherType,
+                      const string& selectorType,
                       ExperimentResult &result);
-
 ```
 
 
