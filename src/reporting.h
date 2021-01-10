@@ -48,6 +48,12 @@ struct Experiment
     Experiment()= default;
     std::vector<ExperimentResult> result;
     Hyperparameters hyperparameters;
+
+    // Visualization and image saving options
+    bool displayImageWindows = false;               // visualize matches between current and previous image?
+    bool isFocusOnPrecedingVehicleOnly = true;      // only keep keypoints on the preceding vehicle?
+    bool saveKeypointDetectionImagesToFile = true;  // save keypoint detection images to file
+    bool saveKeypointMatchImagesToFile = true;      // save keypoint matching images to file
 };
 
 struct TotalKeypoints

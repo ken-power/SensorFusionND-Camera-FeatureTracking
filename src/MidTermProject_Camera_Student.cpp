@@ -151,7 +151,7 @@ void RunExperiment(Experiment &experiment)
 
     /* MAIN LOOP OVER ALL IMAGES */
     ExperimentResult experimentResult;
-    const bool visualizeImages = experiment.hyperparameters.displayImageWindows;
+    const bool visualizeImages = experiment.displayImageWindows;
 
     for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex++)
     {
@@ -190,7 +190,7 @@ void RunExperiment(Experiment &experiment)
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
-        bool saveImagesToFile = experiment.hyperparameters.saveKeypointDetectionImagesToFile;
+        bool saveImagesToFile = experiment.saveKeypointDetectionImagesToFile;
         switch (experiment.hyperparameters.keypointDetector)
         {
             case KeypointDetector::Shi_Tomasi:
@@ -227,7 +227,7 @@ void RunExperiment(Experiment &experiment)
 
         // define a rectangle that encloses the preceding vehicle
         cv::Rect vehicleRect(535, 180, 180, 150);
-        if (experiment.hyperparameters.isFocusOnPrecedingVehicleOnly)
+        if (experiment.isFocusOnPrecedingVehicleOnly)
         {
             cout << "Focusing just on the preceding vehicle " << endl;
             cout << "Total Keypoints detected in the image = " << keypoints.size() << endl;
@@ -341,7 +341,7 @@ void RunExperiment(Experiment &experiment)
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
 
             // visualize matches between current and previous image
-            if (visualizeImages || experiment.hyperparameters.saveKeypointMatchImagesToFile)
+            if (visualizeImages || experiment.saveKeypointMatchImagesToFile)
             {
                 cv::Mat matchImg = ((dataBuffer.end() - 1)->cameraImg).clone();
                 cv::drawMatches((dataBuffer.end() - 2)->cameraImg, (dataBuffer.end() - 2)->keypoints,
@@ -358,7 +358,7 @@ void RunExperiment(Experiment &experiment)
                     cout << "Press key to continue to next image" << endl;
                     cv::waitKey(0); // wait for key to be pressed
                 }
-                if(experiment.hyperparameters.saveKeypointMatchImagesToFile)
+                if(experiment.saveKeypointMatchImagesToFile)
                 {
                     string dir_keypoint_matches = "../results/images/keypoint_matches/";
                     string imageFileNameMatches = dir_keypoint_matches + DetectorNameAsString(experiment.hyperparameters.keypointDetector) + "_" + experiment.hyperparameters.descriptor + "_" + to_string(imgIndex) + ".png";
